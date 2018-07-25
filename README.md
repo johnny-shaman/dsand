@@ -169,50 +169,7 @@ _(function () {}).descript({
         value: 5
     }
 }).from._.b === 5
-~~~
-## Event driven development
-### Only node.js...
-~~~javascript
-const EETest = function () {
-    EventEmitter.call(this);
-};
 
-EETest.prototype = _(EventEmitter.prototype).create({
-    constructor: {
-        configurable: true,
-        writable: true,
-        value: EETest
-    }
-})._;
-
-const eeTest = new EETest();
-
-//addLitener
-_(eeTest).on({
-    a: 3,
-    "get" () {
-        this.a === 3 // true
-        this.put() // can call it
-    },
-    "put": () => {},
-    "post": () => {},
-    "delete": () => {}
-})
-
-//addOnce
-_(eeTest).once({
-    b: 10,
-    "get" () {
-        this.b === 10 // true
-        this.put() // can call it
-    },
-    "put": () => {},
-    "post": () => {},
-    "delete": () => {}
-})
-~~~
-## worker or browser
-~~~javascript
 //addLitener
 _(EventTarget).on({
     "click" () {},
@@ -228,10 +185,8 @@ _(EventTarget).off({
     "dragend" () {},
     "message" () {},
 })
-~~~
-## Browser Only!!
-~~~javascript
-//append HTMLElement
+
+//construct on HTMLElement
 body
 .$(
     header.$(
