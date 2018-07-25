@@ -7,13 +7,16 @@
         ol
         li
         optgroup
+        input
+        label
+        radio
 */
 
 (() => {
     const $ = _(function (n) {
         return _(
             (n.tagName !== undefined && $[n.tagName]) ?
-            $_$[n.tagName].prototype :
+            $[n.tagName].prototype :
             $.prototype
         )
         .create({
@@ -28,20 +31,25 @@
         _: {
             configurable: true,
             value (o) {
-                return _(this).$($ => _(o)
-                    .draw(o["#"] !== undefined ? this["#"](o) : {})
-                    .draw(o["."] !== undefined ? this["."](o) : {})
-                    .draw(o.css  !== undefined ? this.css(o)  : {})
-                    .$(_o => {
-                        _o.$ !== undefined && this.$(...o.$);
-                        _o.on !== undefined && this.on(_o.on);
-                        delete _o["#"];
-                        delete _o["."];
-                        delete _o.$;
-                        delete _o.on;
-                    })
-                    .give($.setAttribute.bind($))
-                )._;
+                _(o)
+                .draw(o["#"] !== undefined ? this["#"](o) : {})
+                .draw(o["."] !== undefined ? this["."](o) : {})
+                .draw(o.css  !== undefined ? this.css(o.css) : {})
+                .map(o => {
+                    o.$ !== undefined && this.$(...o.$);
+                    o.on !== undefined && this.on(o.on);
+                    o.id !== undefined && !$.ids.includes(o.id) && $.ids.push(o.id);
+                    o.class !== undefined && !$.classes.includes(o.class) && $.classes.push(o.class);
+                    o.name !== undefined && !$.names.includes(o.name) && $.names.push(o.name);
+                    delete o["#"];
+                    delete o["."];
+                    delete o.css;
+                    delete o.$;
+                    delete o.on;
+                    return o;
+                })
+                .give(this.n.setAttribute.bind(this.n));
+                return this;
             }
         },
         css: {
@@ -140,15 +148,15 @@
             }
         }
     })
-    .draw({
+    .$(c => _(c).draw({
         version: "dsand@0.2.1",
         $: s => $(document.createElement(s)),
         _  : s => $(document.querySelector(s)),
-        __ : s => $(document.querySelectorAll(s))
-    })._;
-
-    const $_$ = {
-        TABLE: _($).fork(function(){}).descript({
+        __ : s => $(document.querySelectorAll(s)),
+        ids: [],
+        names: [],
+        classes:[],
+        TABLE: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (n) {
@@ -189,7 +197,7 @@
                 }
             }
         })._,
-        TR: _($).fork(function(){}).descript({
+        TR: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (n) {
@@ -204,13 +212,29 @@
                 }
             }
         })._,
-        TD: _($).fork(function(){}).descript({each: {
+        TD: _(c).fork(function(){}).descript({each: {
             configurable: true,
             value (f, ...v) {
                 return f(this.n.children, ...v);
             }
         }})._,
-        SELECT: _($).fork(function(){}).descript({
+        UL: _(c).fork(function(){}).descript({$: {
+            configurable: true,
+            value (a) {
+                $.prototype.$.call(this, ...a.map(
+                    v => v.constructor === Array ? ul.$(v) : li.$(v)
+                ));
+                return this;
+            }
+        }})._,
+        OL: _(c).fork(function(){}).descript({$: {
+            configurable: true,
+            value (a) {
+                $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
+                return this;
+            }
+        }})._,
+        SELECT: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (n) {
@@ -241,7 +265,7 @@
                 }
             }
         })._,
-        OPTGROUP: _($).fork(function(){}).descript({$: {
+        OPTGROUP: _(c).fork(function(){}).descript({$: {
             configurable: true,
             value (n) {
                 $.prototype.$.call(this, ...(
@@ -254,80 +278,33 @@
                 return this;
             }
         }})._,
-        UL: _($).fork(function(){}).descript({$: {
-            configurable: true,
-            value (a) {
-                $.prototype.$.call(this, ...a.map(
-                    v => v.constructor === Array ? ul.$(v) : li.$(v)
-                ));
-                return this;
-            }
-        }})._,
-        OL: _($).fork(function(){}).descript({$: {
-            configurable: true,
-            value (a) {
-                $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
-                return this;
-            }
-        }})._,
-        INPUT: _($).fork(function(){}).descript({
+        INPUT: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (v) {
-                    return _(this).$(o => v === null ? $.prototype.$.call(o, v) : o.now = v)._;
+                    return _(this).$(o => v === undefined ? $.prototype.$.call(o.n, v) : o.now = v)._;
                 }
             },
             now: {
                 configurable: true,
                 get () {
                     return _(this).map(o => (
-                        (o.n.type === "checkbox" || o.n.type === "radio") ? o[o.n.type] : o.n.value
+                        (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked : o.n.value
                     ))._;
                 },
                 set (v) {
                     _(this).$(o => (
-                        (o.n.type === "checkbox" || o.n.type === "radio") ? o[o.n.type] = v : o.n.value = v
+                        (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked = v : o.n.value = v
                     ));
-                    v = void 0;
-                }
-            },
-            radio: {
-                configurable: true,
-                get () {
-                    return _(this).$(
-                        o => _($.__(`[name="${o.n.name}"]`).n)
-                        .list
-                        .map(
-                            a => a.
-                            filter(r => r.checked)
-                            .pop()
-                            .value
-                        )._
-                    );
-                },
-                set (v) {
-                    v.constructor === Boolean
-                    ? this.n.checked = v
-                    : _(this).$(o => $._(`[name*="${o.n.name}"][value*="${v}"]`).n.checked = true);
-                    v = void 0;
-                }
-            },
-            check: {
-                configurable: true,
-                get () {
-                    return this.n.checked;
-                },
-                set (v) {
-                    this.n.checked = v;
                     v = void 0;
                 }
             }
         })._,
-        TEXTAREA: _($).fork(function(){}).descript({
+        TEXTAREA: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (v) {
-                    v === null ? $.prototype.$.call(this, v) : this.now = v;
+                    v === undefined ? $.prototype.$.call(this, v) : this.now = v;
                     return this;
                 }
             },
@@ -342,11 +319,22 @@
                 }
             }
         })._,
-        IMG: _($).fork(function(){}).descript({
+        FORM: _(c).fork(function(){}).descript({
+            now: {
+                configurable: true,
+                get () {
+                    return this.names.reduce(
+                        (p, c) => _(p).draw({[c]: this.n[c].value}),
+                        {}
+                    );
+                }
+            }
+        })._,
+        IMG: _(c).fork(function(){}).descript({
             $: {
                 configurable: true,
                 value (v) {
-                    v === null ? $.prototype.$.call(this, v) : this.now = v;
+                    v === undefined ? $.prototype.$.call(this, v) : this.now = v;
                     return this;
                 }
             },
@@ -360,28 +348,9 @@
                     v = void 0;
                 }
             }
-        })._,
-        LABEL: _($).fork(function(){}).descript({
-            $: {
-                configurable: true,
-                value (v) {
-                    v.constructor === Boolean
-                    ? this.now = v
-                    : $.prototype.$.call(this, v);
-                    return this;
-                }
-            },
-            now: {
-                configurable: true,
-                get () {
-                    return this.pick.now;
-                },
-                set (v) {
-                    this.pick.now = v;
-                }
-            }
         })._
-    };
+    }))._;
+
 
     _(window)
     .draw({
@@ -435,18 +404,28 @@
         form:       {get: () => $(document.createElement("form"))},
         label:      {get: () => $(document.createElement("label"))},
         input:      {get: () => $(document.createElement("input"))},
-        checkbox:   {get: () => $(document.createElement("input"))._({type: "checkbox"})},
-        range:      {get: () => $(document.createElement("input"))._({type: "range"})},
-        text:       {get: () => $(document.createElement("input"))._({type: "text"})},
-        radio:      {value: (n, v) => $(document.createElement("input"))._({type: "radio", name: n, value: v})},
+        radio:      {get: () => input._({type: "radio"})},
+        radios:     {value: (name, o) => _(o).keys._.map(
+            k => label.$(
+                radio._({name, value: o[k]}),
+                o.constructor === Array ? o[k] : k
+            )
+        )},
+        checkbox:   {get: () => input._({type: "checkbox"})},
+        range:      {get: () => input._({type: "range"})},
+        text:       {get: () => input._({type: "text"})},
+        date:       {get: () => input._({type: "date"})},
+        number:     {get: () => input._({type: "namber"})},
+        file:       {get: () => input._({type: "file"})},
+        password:   {get: () => input._({type: "password"})},
         textarea:   {get: () => $(document.createElement("textarea"))},
+        select:     {get: () => $(document.createElement("select"))},
         button:     {get: () => $(document.createElement("button"))},
         img:        {get: () => $(document.createElement("img"))},
         area:       {get: () => $(document.createElement("area"))},
         map:        {get: () => $(document.createElement("map"))},
         canvas:     {get: () => $(document.createElement("canvas"))},
         iframe:     {get: () => $(document.createElement("iframe"))},
-        select:     {get: () => $(document.createElement("select"))},
         option:     {get: () => $(document.createElement("option"))},
         optgroup:   {get: () => $(document.createElement("optgroup"))},
         a:          {get: () => $(document.createElement("a"))},

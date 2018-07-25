@@ -1,0 +1,39 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/ubuntu/.nvm/versions/node/v6.11.2/bin/node',
+1 verbose cli   '/home/ubuntu/.nvm/versions/node/v6.11.2/bin/npm',
+1 verbose cli   'star',
+1 verbose cli   'losand' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.2
+4 silly mapToRegistry name losand
+5 silly mapToRegistry using default registry
+6 silly mapToRegistry registry https://registry.npmjs.org/
+7 silly mapToRegistry data Result {
+7 silly mapToRegistry   raw: 'losand',
+7 silly mapToRegistry   scope: null,
+7 silly mapToRegistry   escapedName: 'losand',
+7 silly mapToRegistry   name: 'losand',
+7 silly mapToRegistry   rawSpec: '',
+7 silly mapToRegistry   spec: 'latest',
+7 silly mapToRegistry   type: 'tag' }
+8 silly mapToRegistry uri https://registry.npmjs.org/losand
+9 verbose stack Error: Must be logged in to star/unstar packages
+9 verbose stack     at CachingRegistryClient.star (/home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/node_modules/npm-registry-client/lib/star.js:15:14)
+9 verbose stack     at /home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/lib/star.js:36:20
+9 verbose stack     at mapToRegistry (/home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/lib/utils/map-to-registry.js:62:3)
+9 verbose stack     at /home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/lib/star.js:29:5
+9 verbose stack     at /home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+9 verbose stack     at Array.forEach (native)
+9 verbose stack     at /home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+9 verbose stack     at Array.forEach (native)
+9 verbose stack     at asyncMap (/home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+9 verbose stack     at EventEmitter.star (/home/ubuntu/.nvm/versions/node/v6.11.2/lib/node_modules/npm/lib/star.js:28:3)
+10 verbose cwd /home/ubuntu/workspace
+11 error Linux 4.9.80-c9
+12 error argv "/home/ubuntu/.nvm/versions/node/v6.11.2/bin/node" "/home/ubuntu/.nvm/versions/node/v6.11.2/bin/npm" "star" "losand"
+13 error node v6.11.2
+14 error npm  v3.10.10
+15 error code ENEEDAUTH
+16 error need auth Must be logged in to star/unstar packages
+17 error need auth You need to authorize this machine using `npm adduser`
+18 verbose exit [ 1, true ]

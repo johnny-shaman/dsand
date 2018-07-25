@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <script type="text/javascript" src="https://unpkg.com/losand@0.2.1/losand.js"></script>
+        <script type="text/javascript" src="../dsand.js"></script>
+        <script type="text/javascript">
+            body
+            .$(
+                header.$(
+                    h1.$("Hello _(losand)._").css({margin: "16px"}),
+                    h2.$("Untouchable Any Directly").css({margin: "16px"})
+                )
+                ._({
+                    "#": "head",
+                    ".": "wrapper"
+                })
+                .css({
+                    margin: "0, auto"
+                }),
+                article.$(
+                    h1.$("_(losand) wrapping a value").css({
+                        margin: "8px",
+                        padding:"8px",
+                        borderBottom: "1px solid #888888"
+                    }),
+                    p.$("losand wrapping a value on monad and like to Usage here"),
+                    //link
+                    p.$(a._({href:"https://github.com/johnny-shaman/losand/blob/master/README.md"}).$("readme on github")),
+                    //img
+                    p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
+                    //button & clicks
+                    p.$(button.on({
+                        click (e) {
+                            console.log(this !== e.target); // true
+                            alert("hello _(losand)._");
+                        }
+                    }).$("click me")),
+                    //table
+                    table.$([
+                        [1,2,3],
+                        [4,5,6],
+                        [7,8,9]
+                    ]),
+                    //ul, ol
+                    ul.$([
+                        1,[1,[2,3]],
+                        2,[4,[5,6]],
+                        3,[7,[8,9]]
+                    ]),
+                    //input
+                    select.$({test: 0, test1: 1}),
+                    select.$([3,4,5,6,7]),
+                    select.$({
+                        testgrp: {
+                            test: 0,
+                            test1: 1
+                        },
+                        testgrp1:
+                        [3,4,5,6,7]
+                    }),
+                    label.$(checkbox, "test"),
+                    label.$(checkbox, "test1"),
+                    ...radios("p1",[1,2,3]),
+                    ...radios("p2",{test1: 1, test2: 2})
+                )
+                ._({
+                    "#": "today",
+                    ".": "wrapper article"
+                })
+            )
+            ._({
+                "#": "view",
+                ".": "wrapper"
+            });
+        </script>
+    </body>
+</html>
