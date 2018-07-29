@@ -3,7 +3,7 @@
     <head>
     </head>
     <body>
-        <script type="text/javascript" src="https://unpkg.com/losand@0.2.1/losand.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/losand@0.2.2/losand.js"></script>
         <script type="text/javascript" src="../dsand.js"></script>
         <script type="text/javascript">
             body
@@ -50,20 +50,23 @@
                         3,[7,[8,9]]
                     ]),
                     //input
-                    select.$({test: 0, test1: 1}),
-                    select.$([3,4,5,6,7]),
-                    select.$({
-                        testgrp: {
-                            test: 0,
-                            test1: 1
-                        },
-                        testgrp1:
-                        [3,4,5,6,7]
-                    }),
-                    label.$(checkbox, "test"),
-                    label.$(checkbox, "test1"),
-                    ...radios("p1",[1,2,3]),
-                    ...radios("p2",{test1: 1, test2: 2})
+                    form.$(
+                        select._({name: "tSelect1"}).$({test: 0, test1: 1}),
+                        select._({name: "tSelect2"}).$([3,4,5,6,7]),
+                        select._({name: "tSelect3"}).$({
+                            testgrp: {
+                                test: 0,
+                                test1: 1
+                            },
+                            testgrp1:
+                            [3,4,5,6,7]
+                        })
+                        ,
+                        label.$(checkbox._({name: "tCheck1"}), "test"),
+                        label.$(checkbox._({name: "tCheck2"}), "test1"),
+                        ...radios("tRadio1",[1,2,3]),
+                        ...radios("tRadio2",{test1: 1, test2: 2})
+                    )
                 )
                 ._({
                     "#": "today",

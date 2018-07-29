@@ -231,20 +231,22 @@ body
             3,[7,[8,9]]
         ]),
         //input
-        select.$({test: 0, test1: 1}),
-        select.$([3,4,5,6,7]),
-        select.$({
-            testgrp: {
-                test: 0,
-                test1: 1
-            },
-            testgrp1:
-            [3,4,5,6,7]
-        }),
-        label.$(checkbox, "test"),
-        label.$(checkbox, "test1"),
-        ...radios("p1",[1,2,3]),
-        ...radios("p2",{test1: 1, test2: 2})
+        form.$(
+            select.$({test: 0, test1: 1}),
+            select.$([3,4,5,6,7]),
+            select.$({
+                testgrp: {
+                    test: 0,
+                    test1: 1
+                },
+                testgrp1:
+                [3,4,5,6,7]
+            }),
+            label.$(checkbox, "test"),
+            label.$(checkbox, "test1"),
+            ...radios("p1",[1,2,3]),
+            ...radios("p2",{test1: 1, test2: 2})
+        )
     )
     ._({
         "#": "today",
@@ -261,4 +263,7 @@ $._("#today").$(p.$("append"));
 
 //remove Selected Query
 $._("#today").$();
+
+//formdata to js Object
+$._("form").now
 ~~~
