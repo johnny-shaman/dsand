@@ -1,5 +1,5 @@
 # $(dsand).$()
-## $(dsand).$() is a JSON like Render with \_(losand).\_
+## $(dsand) is a JSON like Render with \_(losand).\_
 ## Usage
 
 ### html
