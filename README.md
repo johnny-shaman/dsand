@@ -4,7 +4,7 @@
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/losand@0.2.1/losand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/losand@0.2.2/losand.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/johnny-shaman/dsand@0.2.2/dsand.js"></script>
 ~~~
 ~~~javascript
