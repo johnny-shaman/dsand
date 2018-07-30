@@ -265,5 +265,5 @@ $._("#today").$(p.$("append"));
 $._("#today").$();
 
 //formdata to js Object
-$._("form").now
+$._("form").now._
 ~~~
