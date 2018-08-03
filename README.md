@@ -4,8 +4,8 @@
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/losand@0.2.7/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/johnny-shaman/dsand@0.2.2/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/losand@0.3.0/losand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.1/dsand.js"></script>
 ~~~
 ~~~javascript
 //join
