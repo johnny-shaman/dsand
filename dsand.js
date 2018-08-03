@@ -31,45 +31,40 @@
     _: {
       configurable: true,
       value (o) {
-        _(o)
-        .draw(o["#"] !== undefined ? this["#"](o) : {})
-        .draw(o["."] !== undefined ? this["."](o) : {})
-        .draw(o.css !== undefined ? this.css(o.css) : {})
-        .map(o => {
-          o.$ !== undefined && this.$(...o.$);
-          o.on !== undefined && this.on(o.on);
-          o.id !== undefined && !$.ids.includes(o.id) && $.ids.push(o.id);
-          o.class !== undefined && !$.classes.includes(o.class) && $.classes.push(o.class);
-          o.name !== undefined && !$.names.includes(o.name) && $.names.push(o.name);
-          delete o["#"];
-          delete o["."];
-          delete o.css;
-          delete o.$;
-          delete o.on;
-          return o;
-        })
-        .give(this.n.setAttribute.bind(this.n));
-        return this;
+        return _(this).$(
+          t => _(o)
+          .exist("#", ".")
+          .$(a => a.forEach(k => _(o).draw(t[k](o[k]))))
+          .drop(o)
+          .$(
+            p => _(p)
+            .exist("id", "name", "class")
+            .$(a => a.forEach(
+              k => o[k].split(" ")
+              .filter(v => !$[`${k}List`].includes(v))
+              .forEach($[`${k}List`].push.bind($[`${k}List`]))
+          )))
+          .give(t.n.setAttribute.bind(t.n))
+        )._;
       }
     },
     css: {
       configurable: true,
       value (o) {
         _(this.n.style).draw(o);
-        o = void 0;
         return this;
       }
     },
     "#": {
       configurable: true,
-      value (o) {
-        return {id: o["#"]};
+      value (id) {
+        return {id};
       }
     },
     ".": {
       configurable: true,
-      value (o) {
-        return {"class": o["."]};
+      value (v) {
+        return {"class": v};
       }
     },
     on: {
@@ -149,13 +144,13 @@
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.2.2",
+    version: "dsand@0.0.1",
     $: s => $(document.createElement(s)),
     _ : s => $(document.querySelector(s)),
     __ : s => $(document.querySelectorAll(s)),
-    ids: [],
-    classes: [],
-    names: [],
+    "idList":     [],
+    "classList":  [],
+    "nameList":   [],
     TABLE: _(c).fork(function(){}).descript({
       $: {
         configurable: true,
@@ -323,9 +318,9 @@
       now: {
         configurable: true,
         get () {
-          return $.names.reduce(
+          return $.nameList.reduce(
             (p, c) => p.draw({
-              [c]: this.n[c].type === "checkbox" ? this.n[c].checked : this.n[c].value
+              [c]: this.n[c].type === "checkbox" ? this.n[c].checked : this.n[c].value.json._
             }),
             _({})
           );

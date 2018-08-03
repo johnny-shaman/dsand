@@ -1,0 +1,24 @@
+{
+  "name": "dsand",
+  "version": "0.0.1",
+  "description": "$(dsand).$ is client side render on losand",
+  "main": "dsand.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnny-shaman/dsand.git"
+  },
+  "keywords": [
+    "functional",
+    "render",
+    "JSON"
+  ],
+  "author": "Noboru Okazaki",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/johnny-shaman/dsand/issues"
+  },
+  "homepage": "https://github.com/johnny-shaman/dsand#readme"
+}
