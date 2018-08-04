@@ -33,12 +33,12 @@
       value (o) {
         return _(this).$(
           t => _(o)
-          .exist("#", ".")
+          .exists("#", ".")
           .$(a => a.forEach(k => _(o).draw(t[k](o[k]))))
           .drop(o)
           .$(
             p => _(p)
-            .exist("id", "name", "class")
+            .exists("id", "name", "class")
             .$(a => a.forEach(
               k => o[k].split(" ")
               .filter(v => !$[`${k}List`].includes(v))
@@ -144,7 +144,7 @@
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.0.1",
+    version: "dsand@0.0.2",
     $: s => $(document.createElement(s)),
     _ : s => $(document.querySelector(s)),
     __ : s => $(document.querySelectorAll(s)),
@@ -338,10 +338,10 @@
       now: {
         configurable: true,
         get () {
-          return this.src;
+          return this.n.src;
         },
         set (v) {
-          this.src = v;
+          this.n.src = v;
           v = void 0;
         }
       }
