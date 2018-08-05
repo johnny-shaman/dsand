@@ -144,7 +144,7 @@
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.0.2",
+    version: "dsand@0.0.3",
     $: s => $(document.createElement(s)),
     _ : s => $(document.querySelector(s)),
     __ : s => $(document.querySelectorAll(s)),
