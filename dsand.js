@@ -27,7 +27,7 @@
       }
     })._;
   })
-  .descript({
+  .annex({
     _: {
       configurable: true,
       value (o) {
@@ -41,9 +41,9 @@
             .exists("id", "name", "class")
             .$(a => a.forEach(
               k => o[k].split(" ")
-              .filter(v => !$[`${k}List`].includes(v))
-              .forEach($[`${k}List`].push.bind($[`${k}List`]))
-          )))
+              .forEach(v => _($[`${k}List`]).draw({[v]: undefined}))
+            ))
+          )
           .give(t.n.setAttribute.bind(t.n))
         )._;
       }
@@ -72,10 +72,14 @@
       value (d, ...a) {
         a.length !== 0
         ? a.forEach(
-          v => this.n.addEventListener.call(this.n, v, d)
+          v => this.n.addEventListener.call(
+            this.n, v, d instanceof _.Listener ? d : _.Listener(d)
+          )
         )
         : _(d).keys._.forEach(
-          k => this.n.addEventListener.call(this.n, k, d)
+          k => this.n.addEventListener.call(
+            this.n, k, d instanceof _.Listener ? d : _.Listener(d)
+          )
         );
         return this;
       }
@@ -85,10 +89,14 @@
       value (d, ...a) {
         a.length !== 0
         ? a.forEach(
-          v => this.n.removeEventListener.call(this.n, v, d)
+          v => this.n.removeEventListener.call(
+            this.n, v, d instanceof _.Listener ? d : _.Listener(d)
+          )
         )
         : _(d).keys._.forEach(
-          k => this.n.removeEventListener.call(this.n, k, d)
+          k => this.n.removeEventListener.call(
+            this.n, k, d instanceof _.Listener ? d : _.Listener(d)
+          )
         );
         return this;
       }
@@ -104,6 +112,12 @@
         )
         : this.n.remove.call(this.n);
         return this;
+      }
+    },
+    action: {
+      configurable: true,
+      value (n) {
+        this.now = n;
       }
     },
     pick: {
@@ -144,14 +158,14 @@
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.0.3",
+    version: "dsand@0.0.4",
     $: s => $(document.createElement(s)),
     _ : s => $(document.querySelector(s)),
     __ : s => $(document.querySelectorAll(s)),
-    "idList":     [],
-    "classList":  [],
-    "nameList":   [],
-    TABLE: _(c).fork(function(){}).descript({
+    "idList":     {},
+    "classList":  {},
+    "nameList":   {},
+    TABLE: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (n) {
@@ -192,7 +206,7 @@
         }
       }
     })._,
-    TR: _(c).fork(function(){}).descript({
+    TR: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (n) {
@@ -207,13 +221,13 @@
         }
       }
     })._,
-    TD: _(c).fork(function(){}).descript({each: {
+    TD: _(c).fork(function(){}).annex({each: {
       configurable: true,
       value (f, ...v) {
         return f(this.n.children, ...v);
       }
     }})._,
-    UL: _(c).fork(function(){}).descript({$: {
+    UL: _(c).fork(function(){}).annex({$: {
       configurable: true,
       value (a) {
         $.prototype.$.call(this, ...a.map(
@@ -222,14 +236,14 @@
         return this;
       }
     }})._,
-    OL: _(c).fork(function(){}).descript({$: {
+    OL: _(c).fork(function(){}).annex({$: {
       configurable: true,
       value (a) {
         $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
         return this;
       }
     }})._,
-    SELECT: _(c).fork(function(){}).descript({
+    SELECT: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (n) {
@@ -260,7 +274,7 @@
         }
       }
     })._,
-    OPTGROUP: _(c).fork(function(){}).descript({$: {
+    OPTGROUP: _(c).fork(function(){}).annex({$: {
       configurable: true,
       value (n) {
         $.prototype.$.call(this, ...(
@@ -273,7 +287,7 @@
         return this;
       }
     }})._,
-    INPUT: _(c).fork(function(){}).descript({
+    INPUT: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (v) {
@@ -295,7 +309,7 @@
         }
       }
     })._,
-    TEXTAREA: _(c).fork(function(){}).descript({
+    TEXTAREA: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (v) {
@@ -314,11 +328,12 @@
         }
       }
     })._,
-    FORM: _(c).fork(function(){}).descript({
+    FORM: _(c).fork(function(){}).annex({
       now: {
         configurable: true,
         get () {
-          return $.nameList.reduce(
+          return _($.nameList).keys._
+          .reduce(
             (p, c) => p.draw({
               [c]: this.n[c].type === "checkbox" ? this.n[c].checked : this.n[c].value.json._
             }),
@@ -327,7 +342,7 @@
         }
       }
     })._,
-    IMG: _(c).fork(function(){}).descript({
+    media: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (v) {
@@ -346,6 +361,12 @@
         }
       }
     })._
+  }))
+  .$(c => _(c).draw({
+    IMG: _(c.media).fork(function () {})._,
+    VIDEO: _(c.media).fork(function () {})._,
+    AUDIO: _(c.media).fork(function () {})._,
+    IFRAME: _(c.media).fork(function () {})._,
   }))._;
 
 
@@ -419,6 +440,8 @@
     select:   {get: () => $(document.createElement("select"))},
     button:   {get: () => $(document.createElement("button"))},
     img:    {get: () => $(document.createElement("img"))},
+    video:    {get: () => $(document.createElement("video"))},
+    audio:    {get: () => $(document.createElement("audio"))},
     area:    {get: () => $(document.createElement("area"))},
     map:    {get: () => $(document.createElement("map"))},
     canvas:   {get: () => $(document.createElement("canvas"))},

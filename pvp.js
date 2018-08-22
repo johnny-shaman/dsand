@@ -13,7 +13,7 @@ const PvP = (
     uri = env.here,
     ssl = env.https,
     term = {},
-    l = [
+    iceServers = [
         {url: "stun:stun.l.google.com:19302"},
         {url: "stun:stun3.l.google.com:19302"},
     ]
@@ -47,8 +47,8 @@ const PvP = (
         },
         datachannel (e) {
              _(this)
-                .off(PvP.signaling.$($ => $.close())._, "message")
-                .off(PvP.rtc._, "icecandidate", "datachannel")
+            .off(PvP.signaling.$($ => $.close())._, "message")
+            .off(PvP.rtc._, "icecandidate", "datachannel")
             .$(o => _(PvP).draw({
                 _: (
                     e.target === PvP.rtc._ ?
@@ -73,7 +73,7 @@ const PvP = (
         );
         _(PvP).draw({
             signaling: _($(new WebSocket(`${ssl ? "wss" : "ws"}://${uri}`)).on(o, "message").n),
-            rtc : _($(new RTCPeerConnection({iceServers: l})).on(o, "icecandidate", "datachannel").n),
+            rtc : _($(new RTCPeerConnection({iceServers})).on(o, "icecandidate", "datachannel").n),
             _: undefined
         });
     })

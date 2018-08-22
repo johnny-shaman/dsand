@@ -4,7 +4,8 @@
         <meta charset="utf-8"/>
     </head>
     <body>
-        <script type="text/javascript" src="https://unpkg.com/losand@0.3.2/losand.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/losand@0.3.3/losand.js"></script>
+        <script type="text/javascript" src="../lo_for_d.js"></script>
         <script type="text/javascript" src="../dsand.js"></script>
         <script type="text/javascript">
             body
@@ -35,6 +36,7 @@
                     p.$(button.on({
                         click (e) {
                             console.log(this !== e.target); // true
+                            console.log(this);
                             alert("hello _(losand)._");
                         }
                     }).$("click me")),
