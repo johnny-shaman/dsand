@@ -12,12 +12,14 @@
     radio
 */
 
-(() => {
+this._.lib === "losand" && (() => {
+  "use strict";
+
   const $ = _(function (n) {
     return _(
-      (n.tagName !== undefined && $[n.tagName]) ?
-      $[n.tagName].prototype :
-      $.prototype
+      (n.tagName !== undefined && $[n.tagName] !== undefined)
+      ? $[n.tagName].prototype
+      : $.prototype
     )
     .create({
       n: {
@@ -25,79 +27,99 @@
         writable: true,
         value: n
       }
-    })._;
+    })
+    ._;
   })
   .annex({
-    _: {
+    id: {
       configurable: true,
-      value (o) {
+      value (id) {
+        return _(this).$(t => (_($._id).set(true, id), _(t.n).draw({id})))._;
+      }
+    },
+    "class": {
+      configurable: true,
+      value (...s) {
         return _(this).$(
-          t => _(o)
-          .exists("#", ".")
-          .$(a => a.forEach(k => _(o).draw(t[k](o[k]))))
-          .drop(o)
-          .$(
-            p => _(p)
-            .exists("id", "name", "class")
-            .$(a => a.forEach(
-              k => o[k].split(" ")
-              .forEach(v => _($[`${k}List`]).draw({[v]: undefined}))
-            ))
-          )
-          .give(t.n.setAttribute.bind(t.n))
+          t => (_($._class).draw(_(s).turn._), _(t.n).draw({"class": s.join(" ")}))
         )._;
+      }
+    },
+    name: {
+      configurable: true,
+      value (name) {
+        return _(this).$(t => (_($._name).set(true, name), _(t.n).draw({name})))._;
+      }
+    },
+    "#": {
+      configurable: true,
+      get () {
+        return this.id;
+      }
+    },
+    ".": {
+      configurable: true,
+      get () {
+        return this.class;
       }
     },
     css: {
       configurable: true,
       value (o) {
-        _(this.n.style).draw(o);
-        return this;
+        return _(this).$(t => _(t.n.style).draw(o.css))._;
       }
     },
-    "#": {
+    style: {
       configurable: true,
-      value (id) {
-        return {id};
+      value (o) {
+        return _(this).$(t => _(t.n.style).draw(o.style))._;
       }
     },
-    ".": {
+    item: {
       configurable: true,
-      value (v) {
-        return {"class": v};
+      value (o) {
+        return _(o).draw(_(o.item).keys.bind(
+          a => a.reduce((p, c) => p.draw({[`item${c}`]: o.item[c]}), _({}))
+        )._);
+      }
+    },
+    from: {
+      configurable: true,
+      value (s) {
+        return _(this).$(t => _(t.n.dataset).draw({from: s}))._;
+      }
+    },
+    deed: {
+      configurable: true,
+      get () {
+        return $.from[this.n.dataset.from];
       }
     },
     on: {
       configurable: true,
-      value (d, ...a) {
-        a.length !== 0
-        ? a.forEach(
-          v => this.n.addEventListener.call(
-            this.n, v, d instanceof _.Listener ? d : _.Listener(d)
-          )
-        )
-        : _(d).keys._.forEach(
-          k => this.n.addEventListener.call(
-            this.n, k, d instanceof _.Listener ? d : _.Listener(d)
-          )
-        );
+      value (...a) {
+        a.forEach(v => this.n.addEventListener.call(this.n, v, $.on));
         return this;
       }
     },
     off: {
       configurable: true,
-      value (d, ...a) {
-        a.length !== 0
-        ? a.forEach(
-          v => this.n.removeEventListener.call(
-            this.n, v, d instanceof _.Listener ? d : _.Listener(d)
-          )
-        )
-        : _(d).keys._.forEach(
-          k => this.n.removeEventListener.call(
-            this.n, k, d instanceof _.Listener ? d : _.Listener(d)
-          )
-        );
+      value (...a) {
+        a.forEach(v => this.n.removeEventListener.call(this.n, v, $.on));
+        return this;
+      }
+    },
+    once: {
+      configurable: true,
+      value (...a) {
+        a.forEach(v => this.addEventListener.call(this.n, v, $.once));
+        return this;
+      }
+    },
+    "@once": {
+      configurable: true,
+      value (...a) {
+        a.forEach(v => this.removeEventListener.call(this.n, v, $.once));
         return this;
       }
     },
@@ -112,12 +134,6 @@
         )
         : this.n.remove.call(this.n);
         return this;
-      }
-    },
-    action: {
-      configurable: true,
-      value (n) {
-        this.now = n;
       }
     },
     pick: {
@@ -155,16 +171,48 @@
       set (v) {
         return this.n.innerText = v;
       }
+    },
+    seem: {
+      configurable: true,
+      value (v) {
+        this.now = v;
+        return this;
+      }
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.0.4",
+    version: "dsand@0.0.9",
     $: s => $(document.createElement(s)),
-    _ : s => $(document.querySelector(s)),
-    __ : s => $(document.querySelectorAll(s)),
-    "idList":     {},
-    "classList":  {},
-    "nameList":   {},
+    _id:    {},
+    _class: {},
+    _name:  {},
+    from:   {},
+    role:   {},
+    pack:   {},
+    uri: `${location.protocol}//${location.hostname}/`,
+    on (e) {
+      _(e)
+      .been
+        .preventDefault()
+        .stopPropagation()
+      .to
+      .get("target")
+      .bind(
+        t => (
+          _(t).get("role")[""]
+          ? _(t).get("class")
+          : _(t).get("role")
+        )
+        .map(s => s.split(" "))
+      )
+      .$(
+        a => a.each(k => ($.pack[k] && $.pack[k](e.target), $.role[k](e)))
+      );
+    },
+    once (e) {
+      $.on(e);
+      $(e.target)["@off"](e.type);
+    },
     TABLE: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
@@ -188,13 +236,11 @@
         }
       },
       cols: {
+        configurable: true,
         get () {
-          return new Proxy ([], {
+          return new Proxy (this.n.rows, {
             get (t, k) {
-              Array
-              .from(this.n.rows)
-              .forEach(r => t.push($(r.n.cells[k])));
-              return t;
+              return t.reduce((p, c) => p.push(c.cells[k]), []);
             }
           });
         }
@@ -221,28 +267,34 @@
         }
       }
     })._,
-    TD: _(c).fork(function(){}).annex({each: {
-      configurable: true,
-      value (f, ...v) {
-        return f(this.n.children, ...v);
+    TD: _(c).fork(function(){}).annex({
+      each: {
+        configurable: true,
+        value (f, ...v) {
+          return f(this.n.children, ...v);
+        }
       }
-    }})._,
-    UL: _(c).fork(function(){}).annex({$: {
-      configurable: true,
-      value (a) {
-        $.prototype.$.call(this, ...a.map(
-          v => v.constructor === Array ? ul.$(v) : li.$(v)
-        ));
-        return this;
+    })._,
+    UL: _(c).fork(function(){}).annex({
+      $: {
+        configurable: true,
+        value (a) {
+          $.prototype.$.call(this, ...a.map(
+            v => v.constructor === Array ? ul.$(v) : li.$(v)
+          ));
+          return this;
+        }
       }
-    }})._,
-    OL: _(c).fork(function(){}).annex({$: {
-      configurable: true,
-      value (a) {
-        $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
-        return this;
+    })._,
+    OL: _(c).fork(function(){}).annex({
+      $: {
+        configurable: true,
+        value (a) {
+          $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
+          return this;
+        }
       }
-    }})._,
+    })._,
     SELECT: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
@@ -251,7 +303,7 @@
             n.constructor === Object
             ? _(n).keys._.map(k => (
               n[k].constructor === Array || n[k].constructor === Object
-              ? optgroup._({label: k}).$(n[k])
+              ? optgroup.label(k).$(n[k])
               : new Option(k, n[k]))
             )
             : (
@@ -270,28 +322,43 @@
         },
         set (v) {
           this.n.value = v;
-          v = void 0;
+          v = undefined;
+          return true;
         }
       }
     })._,
-    OPTGROUP: _(c).fork(function(){}).annex({$: {
-      configurable: true,
-      value (n) {
-        $.prototype.$.call(this, ...(
-          n.constructor === Object
-          ? _(n).keys._.map(k => new Option(k, n[k]))
-          : n.map(
-            v => v.constructor === Option ? v : new Option(v, v)
-          )
-        ));
-        return this;
+    OPTGROUP: _(c).fork(function(){}).annex({
+      $: {
+        configurable: true,
+        value (n) {
+          $.prototype.$.call(this, ...(
+            n.constructor === Object
+            ? _(n).keys._.map(k => new Option(k, n[k]))
+            : n.map(
+              v => v.constructor === Option ? v : new Option(v, v)
+            )
+          ));
+          return this;
+        }
+      },
+      label: {
+        configurable: true,
+        value (s) {
+          return _(this).$(t => _(t.n).draw({label: s}))._;
+        }
       }
-    }})._,
+    })._,
     INPUT: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (v) {
           return _(this).$(o => v === undefined ? $.prototype.$.call(o.n, v) : o.now = v)._;
+        }
+      },
+      type: {
+        configurable: true,
+        value (s) {
+          return _(this).$(t => _(t.n).draw({type: s}))._;
         }
       },
       now: {
@@ -305,7 +372,8 @@
           _(this).$(o => (
             (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked = v : o.n.value = v
           ));
-          v = void 0;
+          v = undefined;
+          return true;
         }
       }
     })._,
@@ -324,23 +392,32 @@
         },
         set (v) {
           this.n.value = v;
-          v = void 0;
+          v = undefined;
+          return true;
         }
       }
     })._,
     FORM: _(c).fork(function(){}).annex({
-      now: {
+      get: {
         configurable: true,
         get () {
-          return _($.nameList).keys._
+          return _($._name).keys._
           .reduce(
             (p, c) => p.draw({
               [c]: this.n[c].type === "checkbox" ? this.n[c].checked : this.n[c].value.json._
             }),
-            _({})
+            _($._name)
           );
         }
       }
+    })._,
+    A: _(c).fork(function(){}).annex({
+      href: {
+        configurable: true,
+        value (s) {
+          return _(this).$(t => _(t.n).draw({s}))._;
+        }
+      },
     })._,
     media: _(c).fork(function(){}).annex({
       $: {
@@ -357,7 +434,8 @@
         },
         set (v) {
           this.n.src = v;
-          v = void 0;
+          v = undefined;
+          return true;
         }
       }
     })._
@@ -368,7 +446,6 @@
     AUDIO: _(c.media).fork(function () {})._,
     IFRAME: _(c.media).fork(function () {})._,
   }))._;
-
 
   _(window)
   .draw({
@@ -422,20 +499,20 @@
     form:    {get: () => $(document.createElement("form"))},
     label:   {get: () => $(document.createElement("label"))},
     input:   {get: () => $(document.createElement("input"))},
-    radio:   {get: () => input._({type: "radio"})},
+    radio:   {get: () => input.type("radio")},
     radios:   {value: (name, o) => _(o).keys._.map(
       k => label.$(
-        radio._({name, value: o[k]}),
+        radio.name(name).$(o[k]),
         o.constructor === Array ? o[k] : k
       )
     )},
-    checkbox:  {get: () => input._({type: "checkbox"})},
-    range:   {get: () => input._({type: "range"})},
-    text:    {get: () => input._({type: "text"})},
-    date:    {get: () => input._({type: "date"})},
-    number:   {get: () => input._({type: "namber"})},
-    file:    {get: () => input._({type: "file"})},
-    password:  {get: () => input._({type: "password"})},
+    checkbox:  {get: () => input.type("checkbox")},
+    range:   {get: () => input.type("range")},
+    text:    {get: () => input.type("text")},
+    date:    {get: () => input.type("date")},
+    number:   {get: () => input.type("namber")},
+    file:    {get: () => input.type("file")},
+    password:  {get: () => input.type("password")},
     textarea:  {get: () => $(document.createElement("textarea"))},
     select:   {get: () => $(document.createElement("select"))},
     button:   {get: () => $(document.createElement("button"))},
@@ -453,5 +530,6 @@
     strong:   {get: () => $(document.createElement("strong"))},
     span:    {get: () => $(document.createElement("span"))}
   });
+
   this.$ = $;
 })();

@@ -4,20 +4,43 @@
         <meta charset="utf-8"/>
     </head>
     <body>
-        <script type="text/javascript" src="https://unpkg.com/losand@0.3.3/losand.js"></script>
-        <script type="text/javascript" src="../lo_for_d.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/losand@1.0.1/losand.js"></script>
         <script type="text/javascript" src="../dsand.js"></script>
         <script type="text/javascript">
+            //$.from is state modeling and presence on emutable data relation
+            _($.from).draw({
+                countUp : (function* () {
+                    let y = 0;
+                    while (true) {
+                        yield ++y;
+                    }
+                })()
+            });
+
+            //$.role reforming data structure functions that name have Elemnent.class
+            _($.role).draw({
+                sample (e) {
+                    _($(e.target)).$(
+                        t => alert(`${t.deed.next().value} time(s) clicked!`)
+                    )._;
+                }
+            });
+
+            //$.pack rendering functions that name have Elemnent.class
+            _($.pack).draw({
+                sample (t) {
+                    $(t).seem("once more!");
+                }
+            });
+
+            //start initial rendering
             body
             .$(
-                header.$(
+                header.id("head").class("wrapper")
+                .$(
                     h1.$("Hello _(losand)._").css({margin: "16px"}),
                     h2.$("Untouchable Any Directly").css({margin: "16px"})
                 )
-                ._({
-                    "#": "head",
-                    ".": "wrapper"
-                })
                 .css({
                     margin: "0, auto"
                 }),
@@ -29,17 +52,11 @@
                     }),
                     p.$("losand wrapping a value on monad and like to Usage here"),
                     //link
-                    p.$(a._({href:"https://github.com/johnny-shaman/losand/blob/master/README.md"}).$("readme on github")),
+                    p.$(a.href("https://github.com/johnny-shaman/losand/blob/master/README.md").$("readme on github")),
                     //img
                     p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
                     //button & clicks
-                    p.$(button.on({
-                        click (e) {
-                            console.log(this !== e.target); // true
-                            console.log(this);
-                            alert("hello _(losand)._");
-                        }
-                    }).$("click me")),
+                    p.$(button.from("countUp").class("sample").on("click").$("click me")),
                     //table
                     table.$([
                         [1,2,3],
@@ -90,11 +107,12 @@
                             ]
                         ],
                     ]),
+
                     //input
                     form.$(
-                        select._({name: "tSelect1"}).$({test: 0, test1: 1}),
-                        select._({name: "tSelect2"}).$([3,4,5,6,7]),
-                        select._({name: "tSelect3"}).$({
+                        select.name("tSelect1").$({test: 0, test1: 1}),
+                        select.name("tSelect2").$([3,4,5,6,7]),
+                        select.name("tSelect3").$({
                             testgrp: {
                                 test: 0,
                                 test1: 1
@@ -103,21 +121,17 @@
                             [3,4,5,6,7]
                         })
                         ,
-                        label.$(checkbox._({name: "tCheck1"}), "test"),
-                        label.$(checkbox._({name: "tCheck2"}), "test1"),
+                        label.$(checkbox.name("tCheck1"), "test"),
+                        label.$(checkbox.name("tCheck2"), "test1"),
                         ...radios("tRadio1",[1,2,3]),
                         ...radios("tRadio2",{test1: 1, test2: 2})
                     )
                 )
-                ._({
-                    "#": "today",
-                    ".": "wrapper article"
-                })
+                .id("today")
+                .class("wrapper article")
             )
-            ._({
-                "#": "view",
-                ".": "wrapper"
-            });
+            .id("view")
+            .class("wrapper");
         </script>
     </body>
 </html>

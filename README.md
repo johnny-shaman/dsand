@@ -10,11 +10,10 @@ importScripts("./lib/losand.js, ./lib/lo_for_d.js")
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/losand@0.3.3/losand.js"> </script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.4/lo_for_d.js"> </script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.4/dsand.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/losand@1.0.1/losand.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.9/dsand.js"> </script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.4/pvp.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.0.9/pvp.js"> </script>
 ~~~
 ~~~javascript
 //join
@@ -288,37 +287,41 @@ _((x, y, z) => (x + y) * z).cache(3, 2, 4).re.cache(5, 3, 7)._ === 20
 //.recache presence delay and force mutate cached value
 _((x, y, z) => (x + y) * z).cache(3, 2, 4).re.recache(5, 3, 7)._ === 56
 
-//addLitener
-_(EventTarget).on({
-    "click" () {},
-    "dragstart" () {},
-    "dragend" () {},
-    "message" () {},
-}),
+//construct on view state activate scripting
+//$.from is state modeling and presence on emutable data relation
+_($.from).draw({
+    countUp : (function* () {
+        let y = 0;
+        while (true) {
+            yield ++y;
+        }
+    })()
+});
 
-_(Handler).on(EventTarget)
+//$.role reforming data structure functions that name have Elemnent.class
+_($.role).draw({
+    sample (e) {
+        _($(e.target)).$(
+            t => alert(`${t.deed.next().value} time(s) clicked!`)
+        )._;
+    }
+});
 
-//removeListener
-_(EventTarget).off({
-    "click" () {},
-    "dragstart" () {},
-    "dragend" () {},
-    "message" () {},
-})
+//$.pack rendering functions that name have Elemnent.class
+_($.pack).draw({
+    sample (t) {
+        $(t).seem("once more!");
+    }
+});
 
-_(Handler).off(EventTarget)
-
-//construct on HTMLElement
+//start initial rendering
 body
 .$(
-    header.$(
+    header.id("head").class("wrapper")
+    .$(
         h1.$("Hello _(losand)._").css({margin: "16px"}),
         h2.$("Untouchable Any Directly").css({margin: "16px"})
     )
-    ._({
-        "#": "head",
-        ".": "wrapper"
-    })
     .css({
         margin: "0, auto"
     }),
@@ -330,16 +333,11 @@ body
         }),
         p.$("losand wrapping a value on monad and like to Usage here"),
         //link
-        p.$(a._({href:"https://github.com/johnny-shaman/losand/blob/master/README.md"}).$("readme on github")),
+        p.$(a.href("https://github.com/johnny-shaman/losand/blob/master/README.md").$("readme on github")),
         //img
         p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
         //button & clicks
-        p.$(button.on({
-            click (e) {
-                console.log(this !== e.target); // true
-                alert("hello _(losand)._");
-            }
-        }).$("click me")),
+        p.$(button.from("countUp").class("sample").on("click").$("click me")),
         //table
         table.$([
             [1,2,3],
@@ -348,37 +346,73 @@ body
         ]),
         //ul, ol
         ul.$([
-            1,[1,[2,3]],
-            2,[4,[5,6]],
-            3,[7,[8,9]]
+            "総則",
+            [
+                "本会の目的は、…",
+                [
+                    "この…",
+                    "この…"
+                ],
+                "総則は以下の…",
+                [
+                    "この総則は…",
+                    "この総則の…"
+                ]
+            ],
+            "分則１",
+            [
+                "本会は、…",
+                "本会にて…は以下に定める",
+                [
+                    "この…",
+                    "この…"
+                ],
+                "本会は、以下の…",
+                [
+                    "この総則は…",
+                    "この総則の…"
+                ]
+            ],
+            "分則２",
+            [
+                "本会にて…は以下に定める",
+                [
+                    "この…",
+                    "この…"
+                ],
+                "本会は、…",
+                "本会は、以下の…",
+                [
+                    "この総則は…",
+                    "この総則の…"
+                ]
+            ],
         ]),
+
         //input
         form.$(
-            select.$({test: 0, test1: 1}),
-            select.$([3,4,5,6,7]),
-            select.$({
+            select.name("tSelect1").$({test: 0, test1: 1}),
+            select.name("tSelect2").$([3,4,5,6,7]),
+            select.name("tSelect3").$({
                 testgrp: {
                     test: 0,
                     test1: 1
                 },
                 testgrp1:
                 [3,4,5,6,7]
-            }),
-            label.$(checkbox, "test"),
-            label.$(checkbox, "test1"),
-            ...radios("p1",[1,2,3]),
-            ...radios("p2",{test1: 1, test2: 2})
+            })
+            ,
+            label.$(checkbox.name("tCheck1"), "test"),
+            label.$(checkbox.name("tCheck2"), "test1"),
+            ...radios("tRadio1",[1,2,3]),
+            ...radios("tRadio2",{test1: 1, test2: 2})
         )
     )
-    ._({
-        "#": "today",
-        ".": "wrapper article"
-    })
+    .id("today")
+    .class("wrapper article")
 )
-._({
-    "#": "view",
-    ".": "wrapper"
-})
+.id("view")
+.class("wrapper");
 
 //querySelector
 $._("#today").$(p.$("append"));

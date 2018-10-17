@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.0.3",
+  "version": "0.0.9",
   "description": "$(dsand).$ is client side render on losand",
   "main": "dsand.js",
   "scripts": {
@@ -13,7 +13,9 @@
   "keywords": [
     "functional",
     "render",
-    "JSON"
+    "algebra",
+    "algebraic",
+    "losand"
   ],
   "author": "Noboru Okazaki",
   "license": "GPL-3.0",
