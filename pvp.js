@@ -1,80 +1,156 @@
 /*
-    global
-        _
-        $
-        RTCSessionDescription
-        RTCPeerConnection
-        body
-        iframe
-        env
+  global
+    _
+    $
+    RTCSessionDescription
+    RTCPeerConnection
+    body
+    iframe
+    env
 */
-
-const PvP = (
-    uri = env.here,
-    ssl = env.https,
-    term = {},
-    iceServers = [
-        {url: "stun:stun.l.google.com:19302"},
-        {url: "stun:stun3.l.google.com:19302"},
-    ]
-) => new Promise((res = (v) => v) => _({
-        message (e) {
-            e.data.json._ ?
-            PvP.rtc.$(r => {
-                r.setRemoteDescription(
-                    new RTCSessionDescription(e.data.json._)
-                );
-                r.createAnswer()
-                .then(v => r.setLocalDescription(
-                    new RTCSessionDescription(v)
-                ), (e) => e);
-            }) :
-            PvP.rtc.$(r => {
-                $(r.createDataChannel("talk"))
-                .on(this.datachannel, "open");
-                r.createOffer()
-                .then(v => r.setLocalDescription(
-                    new RTCSessionDescription(v)
-                ), (e) => e);
-            });
-        },
-        icecandidate (e) {
-            e.candidate && PvP.rtc.$(
-                r => PvP.signaling._.send(
-                    _(r.localDescription).draw(term).json
-                )
-            );
-        },
-        datachannel (e) {
-             _(this)
-            .off(PvP.signaling.$($ => $.close())._, "message")
-            .off(PvP.rtc._, "icecandidate", "datachannel")
-            .$(o => _(PvP).draw({
-                _: (
-                    e.target === PvP.rtc._ ?
-                    _(e.channel) :
-                    _($(e.target).off(o.datachannel, "open").n)
-                )
-            }));
-            res(PvP._._);
-        },
-    }).$(o => {
-        body.$(
-            iframe
-            ._({
-                src: `${ssl ? "https" : "http"}://${uri}`
-            })
-            .css({
-                width: "1px",
-                height: "1px",
-                display: "block",
-                border: "none"
-            })
-        );
-        _(PvP).draw({
-            signaling: _($(new WebSocket(`${ssl ? "wss" : "ws"}://${uri}`)).on(o, "message").n),
-            rtc : _($(new RTCPeerConnection({iceServers})).on(o, "icecandidate", "datachannel").n),
-            _: undefined
-        });
+const PvP = (term = {}) => {
+  body.$(
+    iframe
+    .class("pvpLoader")
+    .$(`${env.https ? "https" : "http"}://${env.here}`)
+    .css({
+      width: "1px",
+      height: "1px",
+      display: "block",
+      border: "none"
     })
-);
+    .on("load")
+  );
+
+  const PvP = _(function (term) {
+    _(this).draw({
+      rtc: new RTCPeerConnection({
+        iceServers: [
+          {url: "stun:stun.l.google.com:19302"},
+          {url: "stun:stun3.l.google.com:19302"}
+        ]
+      }),
+      way: new WebSocket(`${env.https ? "wss" : "ws"}://${env.here}`),
+    })
+    .$(
+      p => _(p.rtc)
+      .been
+      .addEventListener("icecandidate", p)
+      .addEventListener("datachannel",  p)
+    )
+    .$(
+      p => p.way.addEventListener("message", p)
+    );
+  })
+  .annex({
+    message: {
+      configurable: true,
+      value (e) {
+        _(e.data.json._)
+        .$(
+          d => d
+          ? this.createAnswer(d)
+          : this.createOffer()
+        );
+      }
+    },
+    createOffer () {
+      _(this.rtc)
+      .been
+      .createDataChannel("talk")
+      .addEventListener("open", this)
+      .to
+      .$(
+        async r => _(await r.createOffer())
+        .$(
+          v => r.setLocalDescription(
+            new RTCSessionDescription(v)
+          ), err => err
+        )
+      );
+    },
+    createAnswer (data) {
+      _(this.rtc)
+      .been
+      .setRemoteDescription(
+        new RTCSessionDescription(data)
+      )
+      .to
+      .$(
+        async r => _(await r.createAnswer())
+        .$
+      )
+      (r => {
+        r;
+        r.createAnswer().then(v => r.setLocalDescription(
+          new RTCSessionDescription(v)
+        ), err => err);
+      });
+    },
+    icecandidate: {
+      configurable: true,
+      value (e) {
+        e.candidate && _(this.rtc).$(
+          r => this.way.send(_(r.localDescription).cast(term).json)
+        );
+      }
+    },
+    open: {
+      configurable: true,
+      value (e) {
+        this.rtc.removeEventListener("open", this);
+        this.establish(e.target);
+      }
+    },
+    datachannel: {
+      configurable: true,
+      value (e) {
+        $.from.pvp.establish(e.channel);
+      }
+    },
+    establish: {
+      configurable: true,
+      value (c) {
+        _(this.way)
+        .been
+        .removeEventListener("message", this)
+        .close();
+        _(this.rtc)
+        .been
+        .removeEventListener("icecandidate", this)
+        .removeEventListener("datachannel",  this);
+        _($)
+        .set(
+          $(
+            _(c)
+            .define({
+              say : {
+                configurable: true,
+                value (s) {
+                  return _(this).been.send(_(s).by._ === String ? s : _(s).json)._;
+                }
+              }
+            })
+            ._
+          )
+          .end,
+          "pvp"
+        );
+        delete $.role.pvpLoader;
+        delete $.from.pvp;
+      }
+    },
+    handleEvent:{
+      configurable: true,
+      value (e) {
+        this[e.type](e);
+      }
+    }
+  })._;
+
+  _($.role).draw({
+    pvpLoader (e) {
+      _($.from).draw({pvp: new PvP(term)});
+    }
+  });
+};

@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "$(dsand).$ is client side render on losand",
   "main": "dsand.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "losand"
   ],
   "author": "Noboru Okazaki",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/johnny-shaman/dsand/issues"
   },

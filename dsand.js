@@ -10,6 +10,7 @@
     input
     label
     radio
+    Node
 */
 
 this._.lib === "losand" && (() => {
@@ -31,24 +32,33 @@ this._.lib === "losand" && (() => {
     ._;
   })
   .annex({
+    end: {
+      configurable: true,
+      get () {
+        return this.n;
+      }
+    },
     id: {
       configurable: true,
       value (id) {
-        return _(this).$(t => (_($._id).set(true, id), _(t.n).draw({id})))._;
+        return _(this).$(t => (_($.id).set(this, id), _(t.n).draw({id})))._;
       }
     },
     "class": {
       configurable: true,
       value (...s) {
         return _(this).$(
-          t => (_($._class).draw(_(s).turn._), _(t.n).draw({"class": s.join(" ")}))
+          t => (s.each(k => _($.class).draw({[k]: [this]}))
+          , _(t.n).draw({"class": s.join(" ")}))
         )._;
       }
     },
     name: {
       configurable: true,
       value (name) {
-        return _(this).$(t => (_($._name).set(true, name), _(t.n).draw({name})))._;
+        return _(this).$(
+          t => (_($.name).set(this, name), _(t.n).draw({name}))
+        )._;
       }
     },
     "#": {
@@ -178,17 +188,31 @@ this._.lib === "losand" && (() => {
         this.now = v;
         return this;
       }
+    },
+    role: {
+      configurable: true,
+      value () {
+        return _(this).$(
+          t => t.n.class.split(" ").each(k => $.role[k] && $.role[k](t))
+        )._;
+      }
+    },
+    pack: {
+      configurable: true,
+      value () {
+        return _(this).$(
+          t => t.n.class.split(" ").each(k => $.pack[k] && $.pack[k](t))
+        )._;
+      }
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.0.9",
+    version: "dsand@0.1.0",
     $: s => $(document.createElement(s)),
-    _id:    {},
-    _class: {},
-    _name:  {},
     from:   {},
     role:   {},
     pack:   {},
+    pvp: false,
     uri: `${location.protocol}//${location.hostname}/`,
     on (e) {
       _(e)
@@ -206,7 +230,7 @@ this._.lib === "losand" && (() => {
         .map(s => s.split(" "))
       )
       .$(
-        a => a.each(k => ($.pack[k] && $.pack[k](e.target), $.role[k](e)))
+        a => a.each(k => $(e.target).role().pack())
       );
     },
     once (e) {
@@ -315,6 +339,12 @@ this._.lib === "losand" && (() => {
           return this;
         }
       },
+      select: {
+        configurable: true,
+        value (value) {
+          return _(this).$(t => _(t.n).draw({value}))._;
+        }
+      },
       now: {
         configurable: true,
         get () {
@@ -357,8 +387,26 @@ this._.lib === "losand" && (() => {
       },
       type: {
         configurable: true,
-        value (s) {
-          return _(this).$(t => _(t.n).draw({type: s}))._;
+        value (type) {
+          return _(this).$(t => _(t.n).draw({type}))._;
+        }
+      },
+      value: {
+        configurable: true,
+        value (value) {
+          return _(this).$(t => _(t.n).draw({value}))._;
+        }
+      },
+      check: {
+        configurable: true,
+        value (checked) {
+          return _(this).$(t => _(t.n).draw({checked}))._;
+        }
+      },
+      shift: {
+        configurable: true,
+        value () {
+          return this.check(!this.n.checked);
         }
       },
       now: {
@@ -367,13 +415,6 @@ this._.lib === "losand" && (() => {
           return _(this).map(o => (
             (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked : o.n.value
           ))._;
-        },
-        set (v) {
-          _(this).$(o => (
-            (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked = v : o.n.value = v
-          ));
-          v = undefined;
-          return true;
         }
       }
     })._,
@@ -401,21 +442,21 @@ this._.lib === "losand" && (() => {
       get: {
         configurable: true,
         get () {
-          return _($._name).keys._
+          return _($.name).keys._
           .reduce(
-            (p, c) => p.draw({
-              [c]: this.n[c].type === "checkbox" ? this.n[c].checked : this.n[c].value.json._
+            (p, k) => p.draw({
+              [k]: this.n[k].type === "checkbox" ? this.n[k].checked : this.n[k].value.json._
             }),
-            _($._name)
-          );
+            _({})
+          )._;
         }
       }
     })._,
     A: _(c).fork(function(){}).annex({
       href: {
         configurable: true,
-        value (s) {
-          return _(this).$(t => _(t.n).draw({s}))._;
+        value (href) {
+          return _(this).$(t => _(t.n).draw({href}))._;
         }
       },
     })._,
@@ -439,6 +480,44 @@ this._.lib === "losand" && (() => {
         }
       }
     })._
+  }).define({
+    "id": {
+      configurable: true,
+      value: new Proxy({}, {
+        get (t, k, r) {
+          return $(t[k]);
+        },
+        set (t, k, v, r) {
+          t[k] = v.n instanceof Node ? v.n : v;
+          return true;
+        }
+      })
+    },
+    "class": {
+      configurable: true,
+      value: new Proxy({}, {
+        get (t, k, r) {
+          return t[k].map(v => $(v));
+        },
+        set (t, k, v, r) {
+          _(v.n instanceof Node ? v.n : v)
+          .$(x => t[k] === undefined ? _(t).draw({[k]: x}) : t[k].push(x));
+          return true;
+        }
+      })
+    },
+    "name":  {
+      configurable: true,
+      value: new Proxy({}, {
+        get (t, k, r) {
+          return $(t[k]);
+        },
+        set (t, k, v, r) {
+          t[k] = v.n instanceof Node ? v.n : v;
+          return true;
+        }
+      })
+    }
   }))
   .$(c => _(c).draw({
     IMG: _(c.media).fork(function () {})._,
@@ -502,7 +581,7 @@ this._.lib === "losand" && (() => {
     radio:   {get: () => input.type("radio")},
     radios:   {value: (name, o) => _(o).keys._.map(
       k => label.$(
-        radio.name(name).$(o[k]),
+        radio.name(name).value(o[k]),
         o.constructor === Array ? o[k] : k
       )
     )},

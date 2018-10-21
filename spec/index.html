@@ -19,22 +19,25 @@
 
             //$.role reforming data structure functions that name have Elemnent.class
             _($.role).draw({
-                sample (e) {
-                    _($(e.target)).$(
-                        t => alert(`${t.deed.next().value} time(s) clicked!`)
-                    )._;
+                sample (t) {
+                    alert(`${t.deed.next().value} time(s) clicked!`);
+                },
+                getData (e) {
+                    alert(_($.id.myForm.get).json)
                 }
             });
 
             //$.pack rendering functions that name have Elemnent.class
             _($.pack).draw({
                 sample (t) {
-                    $(t).seem("once more!");
+                    t.seem("once more!");
                 }
             });
 
             //start initial rendering
             body
+            .id("view")
+            .class("wrapper")
             .$(
                 header.id("head").class("wrapper")
                 .$(
@@ -44,25 +47,37 @@
                 .css({
                     margin: "0, auto"
                 }),
-                article.$(
+                article
+                .id("today")
+                .class("wrapper article")
+                .$(
+
+                    //h1
                     h1.$("_(losand) wrapping a value").css({
                         margin: "8px",
                         padding:"8px",
                         borderBottom: "1px solid #888888"
                     }),
+
+                    //paragraph
                     p.$("losand wrapping a value on monad and like to Usage here"),
+
                     //link
                     p.$(a.href("https://github.com/johnny-shaman/losand/blob/master/README.md").$("readme on github")),
+
                     //img
                     p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
+
                     //button & clicks
                     p.$(button.from("countUp").class("sample").on("click").$("click me")),
+
                     //table
                     table.$([
                         [1,2,3],
                         [4,5,6],
                         [7,8,9]
                     ]),
+
                     //ul, ol
                     ul.$([
                         "総則",
@@ -109,9 +124,9 @@
                     ]),
 
                     //input
-                    form.$(
-                        select.name("tSelect1").$({test: 0, test1: 1}),
-                        select.name("tSelect2").$([3,4,5,6,7]),
+                    form.id("myForm").$(
+                        select.name("tSelect1").$({test: 0, test1: 1}), br,
+                        select.name("tSelect2").$([3,4,5,6,7]), br,
                         select.name("tSelect3").$({
                             testgrp: {
                                 test: 0,
@@ -119,19 +134,15 @@
                             },
                             testgrp1:
                             [3,4,5,6,7]
-                        })
-                        ,
+                        }), br,
                         label.$(checkbox.name("tCheck1"), "test"),
                         label.$(checkbox.name("tCheck2"), "test1"),
-                        ...radios("tRadio1",[1,2,3]),
-                        ...radios("tRadio2",{test1: 1, test2: 2})
+                        ...radios("tRadio1",[1,2,3]), br,
+                        ...radios("tRadio2",{test1: 1, test2: 2}), br,
+                        button.class("getData").$("Get FormData").on("click")
                     )
                 )
-                .id("today")
-                .class("wrapper article")
-            )
-            .id("view")
-            .class("wrapper");
+            );
         </script>
     </body>
 </html>
