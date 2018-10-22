@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.0.1/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.0/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.1/dsand.js"></script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.1/pvp.js"></script>
 ~~~
 
 ~~~javascript

@@ -193,7 +193,9 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value () {
         return _(this).$(
-          t => t.n.class.split(" ").each(k => $.role[k] && $.role[k](t))
+          t => _(t.n.class).$(
+            s => s.split(" ").each(k => $.role[k] && $.role[k](t))
+          )
         )._;
       }
     },
@@ -201,7 +203,9 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value () {
         return _(this).$(
-          t => t.n.class.split(" ").each(k => $.pack[k] && $.pack[k](t))
+          t => _(t.n.class).$(
+            s => s.split(" ").each(k => $.pack[k] && $.pack[k](t))
+          )
         )._;
       }
     }
@@ -214,6 +218,7 @@ this._.lib === "losand" && (() => {
     pack:   {},
     pvp: false,
     uri: `${location.protocol}//${location.hostname}/`,
+    wsuri: `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.hostname}/`,
     on (e) {
       _(e)
       .been

@@ -8,7 +8,7 @@
     iframe
     env
 */
-const PvP = (term = {}) => {
+const PvP = (term = {}, ...role) => {
   body.$(
     iframe
     .class("pvpLoader")
@@ -30,7 +30,8 @@ const PvP = (term = {}) => {
           {url: "stun:stun3.l.google.com:19302"}
         ]
       }),
-      way: new WebSocket(`${env.https ? "wss" : "ws"}://${env.here}`),
+      way: new WebSocket($.wsuri),
+      role: role.length === 0 ? "establish" : role.join(" ")
     })
     .$(
       p => _(p.rtc)
@@ -105,7 +106,7 @@ const PvP = (term = {}) => {
     datachannel: {
       configurable: true,
       value (e) {
-        $.from.pvp.establish(e.channel);
+        this.establish(e.channel);
       }
     },
     establish: {
@@ -133,9 +134,10 @@ const PvP = (term = {}) => {
             })
             ._
           )
-          .end,
+          .n,
           "pvp"
         );
+        $(this).role();
         delete $.role.pvpLoader;
         delete $.from.pvp;
       }
