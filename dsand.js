@@ -431,15 +431,16 @@ this._.lib === "losand" && (() => {
           return this;
         }
       },
+      value: {
+        configurable: true,
+        value (value) {
+          return _(this).$(t => _(t.n).draw({value}))._;
+        }
+      },
       now: {
         configurable: true,
         get () {
           return this.n.value;
-        },
-        set (v) {
-          this.n.value = v;
-          v = undefined;
-          return true;
         }
       }
     })._,
@@ -469,19 +470,26 @@ this._.lib === "losand" && (() => {
       $: {
         configurable: true,
         value (v) {
-          v === undefined ? $.prototype.$.call(this, v) : this.now = v;
+          v === undefined ? $.prototype.$.call(this, v) : this.src(v);
           return this;
+        }
+      },
+      src: {
+        configurable: true,
+        value (src) {
+          return _(this).$(t => _(t.n).draw({src}))._;
+        }
+      },
+      alt: {
+        configurable: true,
+        value (alt) {
+          return _(this).$(t => _(t.n).draw({alt}))._;
         }
       },
       now: {
         configurable: true,
         get () {
           return this.n.src;
-        },
-        set (v) {
-          this.n.src = v;
-          v = undefined;
-          return true;
         }
       }
     })._

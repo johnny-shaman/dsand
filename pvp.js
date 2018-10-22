@@ -9,9 +9,21 @@
     env
 */
 const PvP = (term = {}, ...role) => {
+  _($.role).draw({
+    pvpLoadFrame (e) {
+      _($.from).draw({pvp: new PvP(term, role)});
+    }
+  });
+
+  _($.pack).draw({
+    pvpLoadFrame (t) {
+      t.$();
+    }
+  });
+
   body.$(
     iframe
-    .class("pvpLoader")
+    .class("pvpLoadFrame")
     .$(`${env.https ? "https" : "http"}://${env.here}`)
     .css({
       width: "1px",
@@ -22,7 +34,7 @@ const PvP = (term = {}, ...role) => {
     .on("load")
   );
 
-  const PvP = _(function (term) {
+  const PvP = _(function (term, role) {
     _(this).draw({
       rtc: new RTCPeerConnection({
         iceServers: [
@@ -31,7 +43,7 @@ const PvP = (term = {}, ...role) => {
         ]
       }),
       way: new WebSocket($.wsuri),
-      role: role.length === 0 ? "establish" : role.join(" ")
+      role: role.length === 0 ? ["establish"] : role,
     })
     .$(
       p => _(p.rtc)
@@ -137,8 +149,9 @@ const PvP = (term = {}, ...role) => {
           .n,
           "pvp"
         );
-        $(this).role();
+        this.role.each(k => $.role[k](c));
         delete $.role.pvpLoader;
+        delete $.pack.pvpLoader;
         delete $.from.pvp;
       }
     },
@@ -149,10 +162,4 @@ const PvP = (term = {}, ...role) => {
       }
     }
   })._;
-
-  _($.role).draw({
-    pvpLoader (e) {
-      _($.from).draw({pvp: new PvP(term)});
-    }
-  });
 };
