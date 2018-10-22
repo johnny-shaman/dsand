@@ -1,5 +1,5 @@
 # $(dsand).$()
-## $(dsand) is a JSON like Render with [\_(losand).\_](https://www.npmjs.com/package/losand)
+## $(dsand) is a pure javascript Render with [\_(losand).\_](https://www.npmjs.com/package/losand)
 ## Usage
 
 ### html
