@@ -211,7 +211,8 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.1.12",
+    version: "0.1.2",
+    lib: "dsand",
     $: s => $(document.createElement(s)),
     from:   {},
     role:   {},
@@ -267,7 +268,7 @@ this._.lib === "losand" && (() => {
       cols: {
         configurable: true,
         get () {
-          return new Proxy (this.n.rows, {
+          return new Proxy(this.n.rows, {
             get (t, k) {
               return t.reduce((p, c) => p.push(c.cells[k]), []);
             }
