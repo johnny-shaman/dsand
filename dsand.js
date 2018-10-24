@@ -211,7 +211,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "dsand@0.1.0",
+    version: "dsand@0.1.11",
     $: s => $(document.createElement(s)),
     from:   {},
     role:   {},
@@ -493,7 +493,8 @@ this._.lib === "losand" && (() => {
         }
       }
     })._
-  }).define({
+  })
+  .define({
     "id": {
       configurable: true,
       value: new Proxy({}, {
@@ -536,8 +537,9 @@ this._.lib === "losand" && (() => {
     IMG: _(c.media).fork(function () {})._,
     VIDEO: _(c.media).fork(function () {})._,
     AUDIO: _(c.media).fork(function () {})._,
-    IFRAME: _(c.media).fork(function () {})._,
-  }))._;
+    IFRAME: _(c.media).fork(function () {})._
+  }))
+  ._;
 
   _(window)
   .draw({
