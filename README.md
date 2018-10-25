@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.1.0/losand.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.2/dsand.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.2.0/dsand.min.js"></script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.1.2/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.2.0/pvp.js"></script>
 ~~~
 
 ~~~javascript
@@ -145,6 +145,15 @@ body
       ...radios("tRadio2",{test1: 1, test2: 2}), br,
       button.class("getData").$("Get FormData").on("click")
     )
+    .set({
+        tSelect1: 1,
+        tSelect2: 7,
+        tSelect3: 5,
+        tCheck1: false,
+        tCheck2: true,
+        tRadio1: 3,
+        tRadio2: 1
+    })
   )
 );
 
@@ -155,5 +164,5 @@ $.id.today.$(p.$("append"));
 $.id.today.$();
 
 //formdata to js Object
-$.id.myForm.get
+$.id.myForm.cast
 ~~~

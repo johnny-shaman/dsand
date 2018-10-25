@@ -39,7 +39,9 @@
             .id("view")
             .class("wrapper")
             .$(
-                header.id("head").class("wrapper")
+                header
+                .id("head")
+                .class("wrapper")
                 .$(
                     h1.$("Hello _(losand)._").css({margin: "16px"}),
                     h2.$("Untouchable Any Directly").css({margin: "16px"})
@@ -124,7 +126,9 @@
                     ]),
 
                     //input
-                    form.id("myForm").$(
+                    form
+                    .id("myForm")
+                    .$(
                         select.name("tSelect1").$({test: 0, test1: 1}), br,
                         select.name("tSelect2").$([3,4,5,6,7]), br,
                         select.name("tSelect3").$({
@@ -141,6 +145,15 @@
                         ...radios("tRadio2",{test1: 1, test2: 2}), br,
                         button.class("getData").$("Get FormData").on("click")
                     )
+                    .set({
+                        tSelect1: 1,
+                        tSelect2: 7,
+                        tSelect3: 5,
+                        tCheck1: false,
+                        tCheck2: true,
+                        tRadio1: 3,
+                        tRadio2: 1
+                    })
                 )
             );
         </script>

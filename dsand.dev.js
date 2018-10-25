@@ -211,7 +211,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.1.2",
+    version: "0.2.0",
     lib: "dsand",
     $: s => $(document.createElement(s)),
     from:   {},
@@ -452,9 +452,31 @@ this._.lib === "losand" && (() => {
           return _($.name).keys._
           .reduce(
             (p, k) => p.draw({
-              [k]: this.n[k].type === "checkbox" ? this.n[k].checked : this.n[k].value.json._
+              [k]: (
+                _(this.n)
+                .map(n => (
+                  n[k].type === "checkbox"
+                  ? n[k].checked
+                  : n[k].value.json._
+                ))
+              )._
             }),
             _({})
+          )._;
+        }
+      },
+      set: {
+        configurable: true,
+        value (o) {
+          return _(this)
+          .$(
+            t => _(o).entries._.each(
+              ([k, v]) => (
+                t.n[k].type === "checkbox"
+                ? t.n[k].checked = o[k]
+                : t.n[k].value = o[k]
+              )
+            )
           )._;
         }
       }
