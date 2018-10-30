@@ -24,7 +24,7 @@ const PvP = (term = {}, ...role) => {
   body.$(
     iframe
     .class("pvpLoadFrame")
-    .$(`${env.https ? "https" : "http"}://${env.here}`)
+    .$(env.uri)
     .css({
       width: "1px",
       height: "1px",
@@ -42,7 +42,7 @@ const PvP = (term = {}, ...role) => {
           {url: "stun:stun3.l.google.com:19302"}
         ]
       }),
-      way: new WebSocket($.wsuri),
+      way: new WebSocket(env.wsuri),
       role: role.length === 0 ? ["establish"] : role,
     })
     .$(

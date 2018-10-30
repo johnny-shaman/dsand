@@ -41,15 +41,14 @@ this._.lib === "losand" && (() => {
     id: {
       configurable: true,
       value (id) {
-        return _(this).$(t => (_($.id).set(this, id), _(t.n).draw({id})))._;
+        return _(this).$(t => _(t.n).draw({id}))._;
       }
     },
     "class": {
       configurable: true,
       value (...s) {
         return _(this).$(
-          t => (s.each(k => _($.class).draw({[k]: [this]}))
-          , _(t.n).draw({"class": s.join(" ")}))
+          t => t.n.classList.add(...s)
         )._;
       }
     },
@@ -57,32 +56,20 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (name) {
         return _(this).$(
-          t => (_($.name).set(this, name), _(t.n).draw({name}))
+          t => (_(t.n).draw({name}), $.names.add(name))
         )._;
-      }
-    },
-    "#": {
-      configurable: true,
-      get () {
-        return this.id;
-      }
-    },
-    ".": {
-      configurable: true,
-      get () {
-        return this.class;
       }
     },
     css: {
       configurable: true,
       value (o) {
-        return _(this).$(t => _(t.n.style).draw(o.css))._;
+        return _(this).$(t => _(t.n.style).draw(o))._;
       }
     },
     style: {
       configurable: true,
       value (o) {
-        return _(this).$(t => _(t.n.style).draw(o.style))._;
+        return _(this).$(t => _(t.n.style).draw(o))._;
       }
     },
     item: {
@@ -93,16 +80,16 @@ this._.lib === "losand" && (() => {
         )._);
       }
     },
-    from: {
+    mark: {
       configurable: true,
       value (s) {
-        return _(this).$(t => _(t.n.dataset).draw({from: s}))._;
+        return _(this).$(t => _(t.n.dataset).draw({mark: s}))._;
       }
     },
-    deed: {
+    look: {
       configurable: true,
       get () {
-        return $.from[this.n.dataset.from];
+        return $.data[this.n.dataset.mark];
       }
     },
     on: {
@@ -163,7 +150,7 @@ this._.lib === "losand" && (() => {
     inner: {
       configurable: true,
       get () {
-        return $(this.n.children);
+        return _(this.n.children).list._.map(c => $(c));
       }
     },
     each: {
@@ -191,52 +178,53 @@ this._.lib === "losand" && (() => {
     },
     role: {
       configurable: true,
-      value () {
+      get () {
         return _(this).$(
-          t => _(t.n.class).$(
-            s => s.split(" ").each(k => $.role[k] && $.role[k](t))
+          t => _(t.n.classList).list.$(
+            a => a.each(k => $.role[k] && $.role[k](this.look))
           )
         )._;
       }
     },
     pack: {
       configurable: true,
-      value () {
+      get () {
         return _(this).$(
-          t => _(t.n.class).$(
-            s => s.split(" ").each(k => $.pack[k] && $.pack[k](t))
+          t => _(t.n.classList).list.$(
+            a => a.each(k => $.pack[k] && $.pack[k](this))
           )
         )._;
       }
     }
   })
   .$(c => _(c).draw({
-    version: "0.2.0",
+    version: "0.3.0",
     lib: "dsand",
-    $: s => $(document.createElement(s)),
-    from:   {},
-    role:   {},
-    pack:   {},
+    _: s => $(document.createElement(s)),
+    $: (...s) => $(
+      _(document.querySelectorAll(...s)).map(l => l.length === 1 ? l[0] : l)
+    ),
+    data: {},
+    role: {},
+    pack: {},
+    names: new Set(),
     pvp: false,
-    uri: `${location.protocol}//${location.hostname}/`,
-    wsuri: `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.hostname}/`,
     on (e) {
       _(e)
       .been
-        .preventDefault()
-        .stopPropagation()
+      .preventDefault()
+      .stopPropagation()
       .to
       .get("target")
       .bind(
         t => (
           _(t).get("role")[""]
-          ? _(t).get("class")
+          ? _(t).get("classList").list
           : _(t).get("role")
         )
-        .map(s => s.split(" "))
       )
       .$(
-        a => a.each(k => $(e.target).role().pack())
+        a => a.each(k => $["@role"](e, k)["@pack"](e, k))
       );
     },
     once (e) {
@@ -449,7 +437,7 @@ this._.lib === "losand" && (() => {
       get: {
         configurable: true,
         get () {
-          return _($.name).keys._
+          return _($.names).list._
           .reduce(
             (p, k) => p.draw({
               [k]: (
@@ -518,43 +506,64 @@ this._.lib === "losand" && (() => {
     })._
   })
   .define({
-    "id": {
+    id: {
       configurable: true,
-      value: new Proxy({}, {
-        get (t, k, r) {
-          return $(t[k]);
-        },
-        set (t, k, v, r) {
-          t[k] = v.n instanceof Node ? v.n : v;
-          return true;
+      value: new Proxy ({}, {
+        get (t, k) {
+          return $(document.getElementById(k));
         }
       })
     },
     "class": {
       configurable: true,
-      value: new Proxy({}, {
-        get (t, k, r) {
-          return t[k].map(v => $(v));
-        },
-        set (t, k, v, r) {
-          _(v.n instanceof Node ? v.n : v)
-          .$(x => t[k] === undefined ? _(t).draw({[k]: x}) : t[k].push(x));
-          return true;
+      value: new Proxy ({}, {
+        get (t, k) {
+          return _(document.getElementsByClassName(k)).list._.map(n => $(n))._;
         }
       })
     },
-    "name":  {
+    name: {
       configurable: true,
-      value: new Proxy({}, {
-        get (t, k, r) {
-          return $(t[k]);
-        },
-        set (t, k, v, r) {
-          t[k] = v.n instanceof Node ? v.n : v;
-          return true;
+      value: new Proxy ({}, {
+        get (t, k) {
+          return $(document.getElementsByName(k));
         }
       })
-    }
+    },
+    "@role": {
+      configurable: true,
+      value (e, k) {
+        $.role[k] && $.role[k](_(e.data)[""] ? $(e.target).look: e.data);
+        return $;
+      }
+    },
+    "@pack": {
+      configurable: true,
+      value (e, k) {
+        $.pack[k] && $.pack[k]($(e.target));
+        return $;
+      }
+    },
+    env: {
+      configurable: true,
+      value: {
+        ssl: location.protocol === "https:",
+        get "ws:" () {
+          return location.protocol === "https:" ? "wss:" : "ws";
+        },
+        protocol: location.protocol,
+        here: location.hostname,
+        PORT: location.port === "" ? 80: location.port.json,
+        get port () {
+          return $.env.PORT;
+        },
+        path: location.pathname,
+        uri : [location.protocol, "//", location.hostname, "/"].join(),
+        get  wsuri () {
+          return [$.env["ws:"], "//", location.hostname, "/"].join();
+        }
+      }
+    },
   }))
   .$(c => _(c).draw({
     IMG: _(c.media).fork(function () {})._,
@@ -575,19 +584,8 @@ this._.lib === "losand" && (() => {
     get body () {
       return $(document.body);
     },
-    env: {
-      get https () {
-        return location.protocol === "https:";
-      },
-      get here () {
-        return location.hostname;
-      },
-      get port () {
-        return location.port;
-      },
-      get path () {
-        return location.pathname;
-      }
+    get env () {
+      return $.env;
     }
   })
   .define({

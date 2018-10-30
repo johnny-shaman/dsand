@@ -1,161 +1,156 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-    </head>
-    <body>
-        <script src="https://cdn.jsdelivr.net/npm/losand@1.1.0/losand.min.js"></script>
-        <script type="text/javascript" src="../dsand.min.js"></script>
-        <script type="text/javascript">
-            //$.from is state modeling and presence on emutable data relation
-            _($.from).draw({
-                countUp : (function* () {
-                    let y = 0;
-                    while (true) {
-                        yield ++y;
-                    }
-                })()
-            });
 
-            //$.role reforming data structure functions that name have Elemnent.class
-            _($.role).draw({
-                sample (t) {
-                    alert(`${t.deed.next().value} time(s) clicked!`);
-                },
-                getData (e) {
-                    alert(_($.id.myForm.get).json)
-                }
-            });
+<head>
+  <meta charset="utf-8" />
+</head>
 
-            //$.pack rendering functions that name have Elemnent.class
-            _($.pack).draw({
-                sample (t) {
-                    t.seem("once more!");
-                }
-            });
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/losand@1.1.1/losand.min.js"></script>
+  <script type="text/javascript" src="../dsand.dev.js"></script>
+  <script type="text/javascript">
+    //$.data is state modeling and presence on emutable data relation
+    _($.data).draw({
+      countUp: (function*() {
+        let y = 0;
+        while (true) {
+          yield ++y;
+        }
+      })()
+    });
 
-            //start initial rendering
-            body
-            .id("view")
-            .class("wrapper")
-            .$(
-                header
-                .id("head")
-                .class("wrapper")
-                .$(
-                    h1.$("Hello _(losand)._").css({margin: "16px"}),
-                    h2.$("Untouchable Any Directly").css({margin: "16px"})
-                )
-                .css({
-                    margin: "0, auto"
-                }),
-                article
-                .id("today")
-                .class("wrapper article")
-                .$(
+    //$.role reforming data structure functions that name have Elemnent.class
+    _($.role).draw({
+      sample(d) {
+        alert(`${d.next().value} time(s) clicked!`);
+      },
+      getData(e) {
+        alert(_($.id.myForm.get).json);
+      }
+    });
 
-                    //h1
-                    h1.$("_(losand) wrapping a value").css({
-                        margin: "8px",
-                        padding:"8px",
-                        borderBottom: "1px solid #888888"
-                    }),
+    //$.pack rendering functions that name have Elemnent.class
+    _($.pack).draw({
+      sample(t) {
+        t.seem("once more!");
+      }
+    });
 
-                    //paragraph
-                    p.$("losand wrapping a value on monad and like to Usage here"),
+    //start initial rendering
+    body
+      .id("view")
+      .class("wrapper")
+      .$(
+        header
+        .id("head")
+        .class("wrapper")
+        .$(
+          h1.$("Hello _(losand)._").css({ margin: "16px" }),
+          h2.$("Untouchable Any Directly").css({ margin: "16px" })
+        )
+        .css({
+          margin: "0, auto"
+        }),
+        article
+        .id("today")
+        .class("wrapper", "article")
+        .$(
 
-                    //link
-                    p.$(a.href("https://github.com/johnny-shaman/losand/blob/master/README.md").$("readme on github")),
+          //h1
+          h1.$("_(losand) wrapping a value").css({
+            margin: "8px",
+            padding: "8px",
+            borderBottom: "1px solid #888888"
+          }),
 
-                    //img
-                    p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
+          //paragraph
+          p.$("losand wrapping a value on monad and like to Usage here"),
 
-                    //button & clicks
-                    p.$(button.from("countUp").class("sample").on("click").$("click me")),
+          //link
+          p.$(a.href("https://github.com/johnny-shaman/losand/blob/master/README.md").$("readme on github")),
 
-                    //table
-                    table.$([
-                        [1,2,3],
-                        [4,5,6],
-                        [7,8,9]
-                    ]),
+          //img
+          p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
-                    //ul, ol
-                    ul.$([
-                        "総則",
-                        [
-                            "本会の目的は、…",
-                            [
-                                "この…",
-                                "この…"
-                            ],
-                            "総則は以下の…",
-                            [
-                                "この総則は…",
-                                "この総則の…"
-                            ]
-                        ],
-                        "分則１",
-                        [
-                            "本会は、…",
-                            "本会にて…は以下に定める",
-                            [
-                                "この…",
-                                "この…"
-                            ],
-                            "本会は、以下の…",
-                            [
-                                "この総則は…",
-                                "この総則の…"
-                            ]
-                        ],
-                        "分則２",
-                        [
-                            "本会にて…は以下に定める",
-                            [
-                                "この…",
-                                "この…"
-                            ],
-                            "本会は、…",
-                            "本会は、以下の…",
-                            [
-                                "この総則は…",
-                                "この総則の…"
-                            ]
-                        ],
-                    ]),
+          // button & clicks
+          // $.mark like QueryKeyword for $.data
+          // $.role[$.class]($.data[$.mark])
+          // $.pack[$.class]($(thisButton))
+          p.$(button.mark("countUp").class("sample").on("click").$("click me")),
 
-                    //input
-                    form
-                    .id("myForm")
-                    .$(
-                        select.name("tSelect1").$({test: 0, test1: 1}), br,
-                        select.name("tSelect2").$([3,4,5,6,7]), br,
-                        select.name("tSelect3").$({
-                            testgrp: {
-                                test: 0,
-                                test1: 1
-                            },
-                            testgrp1:
-                            [3,4,5,6,7]
-                        }), br,
-                        label.$(checkbox.name("tCheck1"), "test"),
-                        label.$(checkbox.name("tCheck2"), "test1"),
-                        ...radios("tRadio1",[1,2,3]), br,
-                        ...radios("tRadio2",{test1: 1, test2: 2}), br,
-                        button.class("getData").$("Get FormData").on("click")
-                    )
-                    .set({
-                        tSelect1: 1,
-                        tSelect2: 7,
-                        tSelect3: 5,
-                        tCheck1: false,
-                        tCheck2: true,
-                        tRadio1: 3,
-                        tRadio2: 1
-                    })
-                )
-            );
-        </script>
-    </body>
+          //table
+          table.$([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+          ]),
+
+          //ul, ol
+          ul.$([
+            "総則", [
+              "本会の目的は、…", [
+                "この…",
+                "この…"
+              ],
+              "総則は以下の…", [
+                "この総則は…",
+                "この総則の…"
+              ]
+            ],
+            "分則１", [
+              "本会は、…",
+              "本会にて…は以下に定める", [
+                "この…",
+                "この…"
+              ],
+              "本会は、以下の…", [
+                "この総則は…",
+                "この総則の…"
+              ]
+            ],
+            "分則２", [
+              "本会にて…は以下に定める", [
+                "この…",
+                "この…"
+              ],
+              "本会は、…",
+              "本会は、以下の…", [
+                "この総則は…",
+                "この総則の…"
+              ]
+            ],
+          ]),
+
+          //input
+          form
+          .id("myForm")
+          .$(
+            select.name("tSelect1").$({ test: 0, test1: 1 }), br,
+            select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
+            select.name("tSelect3").$({
+              testgrp: {
+                test: 0,
+                test1: 1
+              },
+              testgrp1: [3, 4, 5, 6, 7]
+            }), br,
+            label.$(checkbox.name("tCheck1"), "test"),
+            label.$(checkbox.name("tCheck2"), "test1"),
+            ...radios("tRadio1", [1, 2, 3]), br,
+            ...radios("tRadio2", { test1: 1, test2: 2 }), br,
+            button.class("getData").$("Get FormData").on("click")
+          )
+          .set({
+            tSelect1: 1,
+            tSelect2: 7,
+            tSelect3: 5,
+            tCheck1: false,
+            tCheck2: true,
+            tRadio1: 3,
+            tRadio2: 1
+          })
+        )
+      );
+    </script>
+  </body>
 </html>

@@ -5,14 +5,14 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.1.0/losand.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.2.0/dsand.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.0/dsand.min.js"></script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.2.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.0/pvp.js"></script>
 ~~~
 
 ~~~javascript
-//$.from is state modeling and presence on emutable data relation
-_($.from).draw({
+//$.data is state modeling and presence on emutable data relation
+_($.data).draw({
   countUp : (function* () {
     let y = 0;
     while (true) {
@@ -23,11 +23,11 @@ _($.from).draw({
 
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).draw({
-  sample (t) {
-    alert(`${t.deed.next().value} time(s) clicked!`);
+  sample (d) {
+    alert(`${d.next().value} time(s) clicked!`);
   },
   getData (e) {
-    alert(_($.id.myForm.get).json)
+    alert(_($.id.myForm.get).json);
   }
 });
 
@@ -43,7 +43,9 @@ body
 .id("view")
 .class("wrapper")
 .$(
-  header.id("head").class("wrapper")
+  header
+  .id("head")
+  .class("wrapper")
   .$(
     h1.$("Hello _(losand)._").css({margin: "16px"}),
     h2.$("Untouchable Any Directly").css({margin: "16px"})
@@ -53,7 +55,7 @@ body
   }),
   article
   .id("today")
-  .class("wrapper article")
+  .class("wrapper", "article")
   .$(
 
     //h1
@@ -72,8 +74,11 @@ body
     //img
     p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
-    //button & clicks
-    p.$(button.from("countUp").class("sample").on("click").$("click me")),
+    // button & clicks
+    // $.mark like QueryKeyword for $.data
+    // $.role[$.class]($.data[$.mark])
+    // $.pack[$.class]($(thisButton))
+    p.$(button.mark("countUp").class("sample").on("click").$("click me")),
 
     //table
     table.$([
@@ -128,7 +133,9 @@ body
     ]),
 
     //input
-    form.id("myForm").$(
+    form
+    .id("myForm")
+    .$(
       select.name("tSelect1").$({test: 0, test1: 1}), br,
       select.name("tSelect2").$([3,4,5,6,7]), br,
       select.name("tSelect3").$({
@@ -146,19 +153,26 @@ body
       button.class("getData").$("Get FormData").on("click")
     )
     .set({
-        tSelect1: 1,
-        tSelect2: 7,
-        tSelect3: 5,
-        tCheck1: false,
-        tCheck2: true,
-        tRadio1: 3,
-        tRadio2: 1
+      tSelect1: 1,
+      tSelect2: 7,
+      tSelect3: 5,
+      tCheck1: false,
+      tCheck2: true,
+      tRadio1: 3,
+      tRadio2: 1
     })
   )
 );
 
 //querySelector
-$.id.today.$(p.$("append"));
+$.id.today;
+$.class.wrapper[1]
+$.name.tRadio1
+
+//append
+$.id.today.$(
+  p.$("append")
+)
 
 //remove Selected Query
 $.id.today.$();
