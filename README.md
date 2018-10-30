@@ -4,10 +4,10 @@
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/losand@1.1.0/losand.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.0/dsand.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/losand@1.1.1/losand.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.1/dsand.min.js"></script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.1/pvp.js"></script>
 ~~~
 
 ~~~javascript

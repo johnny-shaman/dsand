@@ -198,7 +198,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.3.0",
+    version: "0.3.1",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
