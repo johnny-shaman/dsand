@@ -11,7 +11,7 @@
 const PvP = (term = {}, ...role) => {
   _($.role).draw({
     pvpLoadFrame (e) {
-      _($.from).draw({pvp: new PvP(term, role)});
+      _($.data).draw({pvp: new PvP(term, role)});
     }
   });
 
@@ -152,7 +152,7 @@ const PvP = (term = {}, ...role) => {
         this.role.each(k => $.role[k](c));
         delete $.role.pvpLoader;
         delete $.pack.pvpLoader;
-        delete $.from.pvp;
+        delete $.data.pvp;
       }
     },
     handleEvent:{
