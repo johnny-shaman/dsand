@@ -175,8 +175,4 @@ $.id.today.$();
 
 //formdata to js Object
 $.id.myForm.get
-<<<<<<< HEAD
 ~~~
-=======
-~~~
->>>>>>> 86c8c68d632d12fb7d6fa9b144c888a4a862d0ef
