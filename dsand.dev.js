@@ -10,7 +10,8 @@
     input
     label
     radio
-    Node
+    Event
+    Element
 */
 
 this._.lib === "losand" && (() => {
@@ -26,7 +27,11 @@ this._.lib === "losand" && (() => {
       n: {
         configurable: true,
         writable: true,
-        value: n
+        value: (
+          n instanceof Event
+          ? n.target
+          : n
+        )
       }
     })
     ._;
@@ -77,47 +82,124 @@ this._.lib === "losand" && (() => {
       value (o) {
         return _(o).draw(_(o.item).keys.bind(
           a => a.reduce((p, c) => p.draw({[`item${c}`]: o.item[c]}), _({}))
-        )._);
+        ));
+      }
+    },
+    "@$set":{
+      configurable: true,
+      value (k, s) {
+        return _(this).$(
+          t => t.n instanceof Element
+          ? s === undefined
+            ? delete t.n.dataset[k]
+            : _(t.n.dataset).draw({[k]: s})
+          : _(t.n).draw({[k]: s})
+        )._;
+      }
+    },
+    "@$get":{
+      configurable: true,
+      value (k) {
+        return _(this).map(
+          t => t.n instanceof Element
+          ? t.n.dataset[k]
+          : t.n[k]
+        )._;
       }
     },
     mark: {
       configurable: true,
       value (s) {
-        return _(this).$(t => _(t.n.dataset).draw({mark: s}))._;
+        return this["@$set"]("mark", s);
       }
     },
     look: {
       configurable: true,
       get () {
-        return $.data[this.n.dataset.mark];
+        return $.data[this["@$get"]("mark")];
       }
     },
     on: {
       configurable: true,
       value (...a) {
-        a.forEach(v => this.n.addEventListener.call(this.n, v, $.on));
-        return this;
+        return _(this).$(
+          t => a.each(v => t.n.addEventListener.call(t.n, v, $.on))
+        )._;
       }
     },
     off: {
       configurable: true,
       value (...a) {
-        a.forEach(v => this.n.removeEventListener.call(this.n, v, $.on));
-        return this;
+        return _(this).$(
+          t => a.each(v => t.n.removeEventListener.call(t.n, v, $.on))
+        )._;
       }
     },
     once: {
       configurable: true,
       value (...a) {
-        a.forEach(v => this.addEventListener.call(this.n, v, $.once));
-        return this;
+        return _(this).$(
+          t => a.each(
+            v => (
+              t.n.addEventListener.call(t.n, v, $.on),
+              t.n.addEventListener.call(t.n, v, $.prototype["@once"])
+            )
+          )
+        )._;
       }
     },
     "@once": {
       configurable: true,
-      value (...a) {
-        a.forEach(v => this.removeEventListener.call(this.n, v, $.once));
-        return this;
+      value (e) {
+        return _($(e)).$(
+          t => (
+            t.off.call(t, e.type, $.on),
+            t.n.removeEventListener.call(t.n, e.type, $.prototype["@once"])
+          )
+        )._;
+      }
+    },
+    beat: {
+      configurable: true,
+      value (m, ...a) {
+        return _(this).$(
+          t => (
+            t.once(...a),
+            t["@beat"](m, ...a)
+          )
+        )._;
+      }
+    },
+    "@beat": {
+      configurable: true,
+      value (m, ...a) {
+        return _(this).$(
+          t => m && setTimeout(() => t.beat(m, ...a), m)
+        )._;
+      }
+    },
+    wait: {
+      configurable: true,
+      value (m) {
+        return this["@$set"]("wait", m);
+      }
+    },
+    "@wait": {
+      configurable: true,
+      get () {
+        return this["@$get"]("wait");
+      }
+    },
+    "@setTimer": {
+      configurable: true,
+      value (v) {
+        return this["@$set"]("timer", v);
+      }
+    },
+    "@getTimer": {
+      configurable: true,
+      get () {
+        return this["@$get"]("timer");
       }
     },
     $: {
@@ -153,20 +235,14 @@ this._.lib === "losand" && (() => {
         return _(this.n.children).list._.map(c => $(c));
       }
     },
-    each: {
-      configurable: true,
-      value (f, ...v) {
-        _(this.n.children).list._.forEach(vv => f($(vv), ...v));
-        return this;
-      }
-    },
     now: {
       configurable: true,
       get () {
         return this.n.innerText;
       },
       set (v) {
-        return this.n.innerText = v;
+        this.n.innerText = v;
+        return true;
       }
     },
     seem: {
@@ -198,7 +274,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.3.1",
+    version: "0.3.3",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -224,19 +300,29 @@ this._.lib === "losand" && (() => {
         )
       )
       .$(
-        a => a.each(k => $["@role"](e, k)["@pack"](e, k))
+        a => $(e)["@wait"] === undefined
+        ? $.soon(e, a)
+        : $.wait(e, a)
       );
     },
-    once (e) {
-      $.on(e);
-      $(e.target)["@off"](e.type);
+    soon (e, a) {
+      a.each(k => $["@pack"](e, k, $["@role"](e, k)));
+    },
+    wait (e, a) {
+      _($(e)["@getTimer"]).$(t => clearTimeout(t.json._));
+      _($(e)["@wait"]).$(
+        m => $(e)["@setTimer"](_(setTimeout(() => $.soon(e, a), m.json._)).json)
+      );
     },
     TABLE: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
         value (n) {
-          n.each(v => $(this.n.insertRow.call(this.n)).$(v));
-          return this;
+          return _(this).$(
+            t => n.each(
+              v => $(this.n.insertRow.call(this.n)).$(v)
+            )
+          );
         }
       },
       cell: {
@@ -342,7 +428,7 @@ this._.lib === "losand" && (() => {
       now: {
         configurable: true,
         get () {
-          return this.n.value.json;
+          return this.n.value.json._;
         },
         set (v) {
           this.n.value = v;
@@ -450,7 +536,9 @@ this._.lib === "losand" && (() => {
               )._
             }),
             _({})
-          )._;
+          )
+          .valid
+          ._;
         }
       },
       set: {
@@ -475,7 +563,7 @@ this._.lib === "losand" && (() => {
         value (href) {
           return _(this).$(t => _(t.n).draw({href}))._;
         }
-      },
+      }
     })._,
     media: _(c).fork(function(){}).annex({
       $: {
@@ -508,40 +596,46 @@ this._.lib === "losand" && (() => {
   .define({
     id: {
       configurable: true,
-      value: new Proxy ({}, {
+      value: new Proxy (document, {
         get (t, k) {
-          return $(document.getElementById(k));
+          return $(t.getElementById(k));
         }
       })
     },
     "class": {
       configurable: true,
-      value: new Proxy ({}, {
+      value: new Proxy (document, {
         get (t, k) {
-          return _(document.getElementsByClassName(k)).list._.map(n => $(n))._;
+          return _(t.getElementsByClassName(k)).list._.map(n => $(n));
         }
       })
     },
     name: {
       configurable: true,
-      value: new Proxy ({}, {
+      value: new Proxy (document, {
         get (t, k) {
-          return $(document.getElementsByName(k));
+          return _(t.getElementsByName(k)).list._.map(n => $(n));
         }
       })
     },
     "@role": {
       configurable: true,
       value (e, k) {
-        $.role[k] && $.role[k](_(e.data)[""] ? $(e.target).look: e.data);
-        return $;
+        return (
+          _($.role[k]).by._ === Function
+          ? $.role[k](e)
+          : $.role[k]
+        );
       }
     },
     "@pack": {
       configurable: true,
-      value (e, k) {
-        $.pack[k] && $.pack[k]($(e.target));
-        return $;
+      value (e, k, d) {
+        return (
+          _($.pack[k]).by._ === Function
+          ? $.pack[k](e, d)
+          : $.pack[k]
+        );
       }
     },
     env: {
@@ -553,7 +647,7 @@ this._.lib === "losand" && (() => {
         },
         protocol: location.protocol,
         here: location.hostname,
-        PORT: location.port === "" ? 80: location.port.json,
+        PORT: location.port === "" ? 80 : location.port.json._,
         get port () {
           return $.env.PORT;
         },
@@ -563,7 +657,7 @@ this._.lib === "losand" && (() => {
           return [$.env["ws:"], "//", location.hostname, "/"].join();
         }
       }
-    },
+    }
   }))
   .$(c => _(c).draw({
     IMG: _(c.media).fork(function () {})._,

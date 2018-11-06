@@ -6,8 +6,8 @@
 </head>
 
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/losand@1.1.1/losand.min.js"></script>
-  <script type="text/javascript" src="../dsand.dev.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/losand@1.2.0/losand.js"></script>
+  <script type="text/javascript" src="../dsand.js"></script>
   <script type="text/javascript">
     //$.data is state modeling and presence on emutable data relation
     _($.data).draw({
@@ -21,8 +21,8 @@
 
     //$.role reforming data structure functions that name have Elemnent.class
     _($.role).draw({
-      sample(d) {
-        alert(`${d.next().value} time(s) clicked!`);
+      sample(e) {
+        alert(`${$(e).look.next().value} time(s) clicked!`);
       },
       getData(e) {
         alert(_($.id.myForm.get).json);
@@ -31,8 +31,8 @@
 
     //$.pack rendering functions that name have Elemnent.class
     _($.pack).draw({
-      sample(t) {
-        t.seem("once more!");
+      sample(e) {
+        $(e).seem("once more!");
       }
     });
 
@@ -74,9 +74,15 @@
 
           // button & clicks
           // $.mark like QueryKeyword for $.data
-          // $.role[$.class]($.data[$.mark])
-          // $.pack[$.class]($(thisButton))
+          // $.role[$.class](e)
+          // $.pack[$.class](e)
           p.$(button.mark("countUp").class("sample").on("click").$("click me")),
+          // once is only one time handling
+          p.$(button.mark("countUp").class("sample").once("click").$("It's can click")),
+          // beat can handle on each time
+          p.$(button.mark("countUp").class("sample").beat(1000, "click").$("click me")),
+          // dull will be handle the event wait on it last time
+          p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
 
           //table
           table.$([
