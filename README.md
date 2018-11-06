@@ -174,5 +174,5 @@ $.id.today.$(
 $.id.today.$();
 
 //formdata to js Object
-$.id.myForm.cast
+$.id.myForm.get
 ~~~
