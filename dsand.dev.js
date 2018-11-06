@@ -12,6 +12,7 @@
     radio
     Event
     Element
+    navigator
 */
 
 this._.lib === "losand" && (() => {
@@ -274,7 +275,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.3.5",
+    version: "0.3.6",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -655,7 +656,8 @@ this._.lib === "losand" && (() => {
         uri : [location.protocol, "//", location.hostname, "/"].join(),
         get  wsuri () {
           return [$.env["ws:"], "//", location.hostname, "/"].join();
-        }
+        },
+        language : navigator.language
       }
     }
   }))
@@ -666,7 +668,6 @@ this._.lib === "losand" && (() => {
     IFRAME: _(c.media).fork(function () {})._
   }))
   ._;
-
   _(window)
   .draw({
     get html () {
