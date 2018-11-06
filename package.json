@@ -11,11 +11,12 @@
     "url": "git+https://github.com/johnny-shaman/dsand.git"
   },
   "keywords": [
-    "functional",
     "render",
     "algebra",
     "algebraic",
-    "losand"
+    "losand",
+    "flux",
+    "client"
   ],
   "author": "Noboru Okazaki",
   "license": "MIT",
