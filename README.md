@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.2.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.6/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.7/dsand.js"></script>
 <!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.6/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.7/pvp.js"></script>
 ~~~
 
 ~~~javascript
@@ -175,4 +175,6 @@ $.id.today.$();
 
 //formdata to js Object
 $.id.myForm.get
+//include
+include("http://sample.io/foo.js");
 ~~~

@@ -275,7 +275,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.3.6",
+    version: "0.3.7",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -323,7 +323,7 @@ this._.lib === "losand" && (() => {
             t => n.each(
               v => $(this.n.insertRow.call(this.n)).$(v)
             )
-          );
+          )._;
         }
       },
       cell: {
@@ -395,7 +395,9 @@ this._.lib === "losand" && (() => {
       $: {
         configurable: true,
         value (a) {
-          $.prototype.$.call(this, ...a.map(v => v.constructor === Array ? ol.$(v) : li.$(v)));
+          $.prototype.$.call(this, ...a.map(
+            v => v.constructor === Array ? ol.$(v) : li.$(v)
+          ));
           return this;
         }
       }
@@ -661,13 +663,19 @@ this._.lib === "losand" && (() => {
       }
     }
   }))
-  .$(c => _(c).draw({
-    IMG: _(c.media).fork(function () {})._,
-    VIDEO: _(c.media).fork(function () {})._,
-    AUDIO: _(c.media).fork(function () {})._,
-    IFRAME: _(c.media).fork(function () {})._
-  }))
+  .$(c => _([
+      "IMG",
+      "VIDEO",
+      "AUDIO",
+      "IFRAME",
+      "SCRIPT"
+    ]).$(a => a.reduce(
+      (p, k) => p.draw({[k]: _(c.media).fork(function () {})._}),
+      _(c)
+    )
+  ))
   ._;
+
   _(window)
   .draw({
     get html () {
@@ -684,61 +692,63 @@ this._.lib === "losand" && (() => {
     }
   })
   .define({
+    include:  {value: s => $.body.$($(document.createElement("script")).src(s))},
+    script:   {value: s => $(document.createElement("script")).src(s)},
     article:  {get: () => $(document.createElement("article"))},
-    div:    {get: () => $(document.createElement("div"))},
+    div:      {get: () => $(document.createElement("div"))},
     section:  {get: () => $(document.createElement("section"))},
-    nav:    {get: () => $(document.createElement("nav"))},
-    aside:   {get: () => $(document.createElement("aside"))},
+    nav:      {get: () => $(document.createElement("nav"))},
+    aside:    {get: () => $(document.createElement("aside"))},
     header:   {get: () => $(document.createElement("header"))},
     footer:   {get: () => $(document.createElement("footer"))},
-    h1:     {get: () => $(document.createElement("h1"))},
-    h2:     {get: () => $(document.createElement("h2"))},
-    h3:     {get: () => $(document.createElement("h3"))},
-    h4:     {get: () => $(document.createElement("h4"))},
-    h5:     {get: () => $(document.createElement("h5"))},
-    h6:     {get: () => $(document.createElement("h6"))},
-    p:     {get: () => $(document.createElement("p"))},
-    br:     {get: () => $(document.createElement("br"))},
-    table:   {get: () => $(document.createElement("table"))},
-    ul:     {get: () => $(document.createElement("ul"))},
-    ol:     {get: () => $(document.createElement("ol"))},
-    li:     {get: () => $(document.createElement("li"))},
-    dl:     {get: () => $(document.createElement("dl"))},
-    dt:     {get: () => $(document.createElement("dt"))},
-    dd:     {get: () => $(document.createElement("dd"))},
-    form:    {get: () => $(document.createElement("form"))},
-    label:   {get: () => $(document.createElement("label"))},
-    input:   {get: () => $(document.createElement("input"))},
-    radio:   {get: () => input.type("radio")},
+    h1:       {get: () => $(document.createElement("h1"))},
+    h2:       {get: () => $(document.createElement("h2"))},
+    h3:       {get: () => $(document.createElement("h3"))},
+    h4:       {get: () => $(document.createElement("h4"))},
+    h5:       {get: () => $(document.createElement("h5"))},
+    h6:       {get: () => $(document.createElement("h6"))},
+    p:        {get: () => $(document.createElement("p"))},
+    br:       {get: () => $(document.createElement("br"))},
+    table:    {get: () => $(document.createElement("table"))},
+    ul:       {get: () => $(document.createElement("ul"))},
+    ol:       {get: () => $(document.createElement("ol"))},
+    li:       {get: () => $(document.createElement("li"))},
+    dl:       {get: () => $(document.createElement("dl"))},
+    dt:       {get: () => $(document.createElement("dt"))},
+    dd:       {get: () => $(document.createElement("dd"))},
+    form:     {get: () => $(document.createElement("form"))},
+    label:    {get: () => $(document.createElement("label"))},
+    input:    {get: () => $(document.createElement("input"))},
+    radio:    {get: () => input.type("radio")},
     radios:   {value: (name, o) => _(o).keys._.map(
       k => label.$(
         radio.name(name).value(o[k]),
         o.constructor === Array ? o[k] : k
       )
     )},
-    checkbox:  {get: () => input.type("checkbox")},
-    range:   {get: () => input.type("range")},
-    text:    {get: () => input.type("text")},
-    date:    {get: () => input.type("date")},
+    checkbox: {get: () => input.type("checkbox")},
+    range:    {get: () => input.type("range")},
+    text:     {get: () => input.type("text")},
+    date:     {get: () => input.type("date")},
     number:   {get: () => input.type("namber")},
-    file:    {get: () => input.type("file")},
-    password:  {get: () => input.type("password")},
-    textarea:  {get: () => $(document.createElement("textarea"))},
+    file:     {get: () => input.type("file")},
+    password: {get: () => input.type("password")},
+    textarea: {get: () => $(document.createElement("textarea"))},
     select:   {get: () => $(document.createElement("select"))},
     button:   {get: () => $(document.createElement("button"))},
-    img:    {get: () => $(document.createElement("img"))},
+    img:      {get: () => $(document.createElement("img"))},
     video:    {get: () => $(document.createElement("video"))},
     audio:    {get: () => $(document.createElement("audio"))},
-    area:    {get: () => $(document.createElement("area"))},
-    map:    {get: () => $(document.createElement("map"))},
+    area:     {get: () => $(document.createElement("area"))},
+    map:      {get: () => $(document.createElement("map"))},
     canvas:   {get: () => $(document.createElement("canvas"))},
     iframe:   {get: () => $(document.createElement("iframe"))},
     option:   {get: () => $(document.createElement("option"))},
-    optgroup:  {get: () => $(document.createElement("optgroup"))},
-    a:     {get: () => $(document.createElement("a"))},
-    em:     {get: () => $(document.createElement("em"))},
+    optgroup: {get: () => $(document.createElement("optgroup"))},
+    a:        {get: () => $(document.createElement("a"))},
+    em:       {get: () => $(document.createElement("em"))},
     strong:   {get: () => $(document.createElement("strong"))},
-    span:    {get: () => $(document.createElement("span"))}
+    span:     {get: () => $(document.createElement("span"))}
   });
 
   this.$ = $;
