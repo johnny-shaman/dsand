@@ -6,35 +6,35 @@
 </head>
 
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/losand@1.2.0/losand.js"></script>
-  <script type="text/javascript" src="../dsand.dev.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/losand@1.3.0/losand.js"></script>
+  <script type="text/javascript" src="../dsand.js"></script>
   <script type="text/javascript">
     //$.data is state modeling and presence on emutable data relation
-    _($.data).draw({
+    _($.data).draw(() => ({
       countUp: (function*() {
         let y = 0;
         while (true) {
           yield ++y;
         }
       })()
-    });
+    }));
 
     //$.role reforming data structure functions that name have Elemnent.class
-    _($.role).draw({
+    _($.role).draw(() => ({
       sample(e) {
         alert(`${$(e).look.next().value} time(s) clicked!`);
       },
       getData(e) {
         alert(_($.id.myForm.get).json);
       }
-    });
+    }));
 
     //$.pack rendering functions that name have Elemnent.class
-    _($.pack).draw({
+    _($.pack).draw(() => ({
       sample(e) {
         $(e).seem("once more!");
       }
-    });
+    }));
 
     //start initial rendering
     body

@@ -8,158 +8,126 @@
     iframe
     env
 */
-const PvP = (term = {}, ...role) => {
-  _($.role).draw({
-    pvpLoadFrame (e) {
-      _($.data).draw({pvp: new PvP(term, role)});
-    }
-  });
 
-  _($.pack).draw({
-    pvpLoadFrame (t) {
-      t.$();
-    }
-  });
-
+const PvP = (
+  term = {},
+  uri = env.uri
+) => (
+  ...iceServers
+) => {
   body.$(
     iframe
-    .class("pvpLoadFrame")
-    .$(env.uri)
+    .$(uri)
     .css({
       width: "1px",
       height: "1px",
       display: "block",
       border: "none"
     })
+    .class("pvpLoadFrame")
     .on("load")
   );
 
-  const PvP = _(function (term, role) {
-    _(this).draw({
-      rtc: new RTCPeerConnection({
-        iceServers: [
-          {url: "stun:stun.l.google.com:19302"},
-          {url: "stun:stun3.l.google.com:19302"}
-        ]
-      }),
-      way: new WebSocket(env.wsuri),
-      role: role.length === 0 ? ["establish"] : role,
-    })
-    .$(
-      p => _(p.rtc)
-      .been
-      .addEventListener("icecandidate", p)
-      .addEventListener("datachannel",  p)
-    )
-    .$(
-      p => p.way.addEventListener("message", p)
-    );
-  })
-  .annex({
-    message: {
-      configurable: true,
-      value (e) {
-        _(e.data.json._)
-        .$(
-          d => d
-          ? this.createAnswer(d)
-          : this.createOffer()
-        );
-      }
+  _($.pack).draw(p => ({
+    pvpLoadFrame (t) {
+      t.$();
+      delete p.pvpLoadFrame;
+    }
+  }));
+
+  _($.role).draw(r => ({
+    pvpLoadFrame (e) {
+      _($.data).draw(d => ({
+        pvpMsg: (
+          $(
+            _(uri.split("/"))
+            .map(
+              ([p, ...s]) => new WebSocket(s.unshift(
+                p === "https"
+                ? "wss"
+                : "ws"
+              ).join("/"))
+            )
+            ._
+          )
+          .class("pvpMsg")
+          .mark("rtc")
+          .on("message")
+          .n
+        ),
+        rtc: (
+          $(new RTCPeerConnection({
+            iceServers: (
+              iceServers.length === 0
+              ? _(iceServers).$(a => a.push(
+                {url: "stun:stun.l.google.com:19302"},
+                {url: "stun:stun3.l.google.com:19302"}
+              ))._
+              : iceServers.map(v => _(v).by._ === String ? {url: v} : v)
+            )
+          }))
+          .class(
+            "pvpICE",
+            "pvpDCE"
+          )
+          .mark("pvpMsg")
+          .on(
+            "icecandidate",
+            "datachannel"
+          ).n
+        )
+      }));
     },
-    createOffer () {
-      _(this.rtc)
-      .been
-      .createDataChannel("talk")
-      .addEventListener("open", this)
-      .to
+    pvpMsg (e) {
+      _(e.data.json._)
       .$(
-        async r => _(await r.createOffer())
-        .$(
-          v => r.setLocalDescription(
-            new RTCSessionDescription(v)
-          ), err => err
+        d => (
+          d
+          ? _($(e).look).been
+          .setRemoteDescription(new RTCSessionDescription(d)).to
+          .$(async p => _(await p.createAnswer()).$(
+            v => p.setLocalDescription(new RTCSessionDescription(v)),
+            err => err
+          ))
+          : _($(e).look)
+          .$(p => $(p).off("datachannel").on("open")).been
+          .createDataChannel("pvp").to
+          .$(async p => _(await p.createOffer()).$(
+            v => p.setLocalDescription(new RTCSessionDescription(v)),
+            err => err
+          ))
         )
       );
     },
-    createAnswer (data) {
-      _(this.rtc)
-      .been
-      .setRemoteDescription(
-        new RTCSessionDescription(data)
+    pvpICE (e) {
+      e.candidate && $(e).look.send(_($(e).n.localDescription).cast(term).json);
+    },
+    pvpDCE (e) {
+      _($.data)
+      .$(d => (
+        $(d.pvpMsg)
+        .off("message"),
+        delete d.pvpMsg
+      ))
+      .$(d => (
+        $(d.rtc)
+        .off("icecandidate", "datachannel", "open"),
+        delete d.rtc
+      ));
+      _(
+        e.channel
+        ? e.channel
+        : (
+          e.target.constructor === RTCPeerConnection
+          ? null
+          : e.target
+        )
       )
-      .to
-      .$(
-        async r => _(await r.createAnswer())
-        .$
-      )
-      (r => {
-        r;
-        r.createAnswer().then(v => r.setLocalDescription(
-          new RTCSessionDescription(v)
-        ), err => err);
-      });
-    },
-    icecandidate: {
-      configurable: true,
-      value (e) {
-        e.candidate && _(this.rtc).$(
-          r => this.way.send(_(r.localDescription).cast(term).json)
-        );
-      }
-    },
-    open: {
-      configurable: true,
-      value (e) {
-        this.rtc.removeEventListener("open", this);
-        this.establish(e.target);
-      }
-    },
-    datachannel: {
-      configurable: true,
-      value (e) {
-        this.establish(e.channel);
-      }
-    },
-    establish: {
-      configurable: true,
-      value (c) {
-        _(this.way)
-        .been
-        .removeEventListener("message", this)
-        .close();
-        _(this.rtc)
-        .been
-        .removeEventListener("icecandidate", this)
-        .removeEventListener("datachannel",  this);
-        _($)
-        .set(
-          $(
-            _(c)
-            .define({
-              say : {
-                configurable: true,
-                value (s) {
-                  return _(this).been.send(_(s).by._ === String ? s : _(s).json)._;
-                }
-              }
-            })
-            ._
-          )
-          .n,
-          "pvp"
-        );
-        this.role.each(k => $.role[k](c));
-        delete $.role.pvpLoader;
-        delete $.pack.pvpLoader;
-        delete $.data.pvp;
-      }
-    },
-    handleEvent:{
-      configurable: true,
-      value (e) {
-        this[e.type](e);
-      }
+      .$(o => (
+        _($.role.pvpEstablish)
+        .$(p => _(p).by._ === Function ? p(o) : o)
+        .$(pvp => _($).draw(() => {pvp}))
+      ));
     }
-  })._;
+  }));
 };
