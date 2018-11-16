@@ -15,26 +15,6 @@ const PvP = (
 ) => (
   ...iceServers
 ) => {
-  body.$(
-    iframe
-    .$(uri)
-    .css({
-      width: "1px",
-      height: "1px",
-      display: "block",
-      border: "none"
-    })
-    .class("pvpLoadFrame")
-    .on("load")
-  );
-
-  _($.pack).draw(p => ({
-    pvpLoadFrame (t) {
-      t.$();
-      delete p.pvpLoadFrame;
-    }
-  }));
-
   _($.role).draw(r => ({
     pvpLoadFrame (e) {
       _($.data).draw(d => ({
@@ -42,13 +22,12 @@ const PvP = (
           $(
             _(uri.split("/"))
             .map(
-              ([p, ...s]) => new WebSocket(s.unshift(
-                p === "https"
-                ? "wss"
-                : "ws"
-              ).join("/"))
-            )
-            ._
+              ([p, ...s]) => new WebSocket(_(s).$(s => s.unshift(
+                p === "https:"
+                ? "wss:"
+                : "ws:"
+              )
+            )._.join("/")))._
           )
           .class("pvpMsg")
           .mark("rtc")
@@ -100,7 +79,7 @@ const PvP = (
       );
     },
     pvpICE (e) {
-      e.candidate && $(e).look.send(_($(e).n.localDescription).cast(term).json);
+      e.candidate && $(e).look.send(_($(e).n.localDescription).draw(() => term).json);
     },
     pvpDCE (e) {
       _($.data)
@@ -130,4 +109,27 @@ const PvP = (
       ));
     }
   }));
+
+  uri !== env.uri
+  ? (
+    _($.pack).draw(p => ({
+      pvpLoadFrame (t) {
+        t.$();
+        delete p.pvpLoadFrame;
+      }
+    })),
+    body.$(
+      iframe
+      .$(uri)
+      .css({
+        width: "1px",
+        height: "1px",
+        display: "block",
+        border: "none"
+      })
+      .class("pvpLoadFrame")
+      .on("load")
+    )
+  )
+  : $.role.pvpLoadFrame();
 };

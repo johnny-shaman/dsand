@@ -47,24 +47,27 @@ this._.lib === "losand" && (() => {
     id: {
       configurable: true,
       value (id) {
-        return _(this).$(t => _(t.n).draw(() => ({id})))._;
+        return _(this).$(t => _(t.n).draw({id}))._;
       }
     },
     "class": {
       configurable: true,
       value (...s) {
         return _(this).$(
-          t => (
-            t.n instanceof Element
-            ? t.n.classList.toggle(...s)
-            : _(t.n).draw(n => ({
+          t => _(
+            t.n
+          )
+          .$(n => (
+            n instanceof Element
+            ? n.classList.toggle(...s)
+            : _(n).draw({
               role: (
                 n.role === undefined
                 ? s
                 : n.role.filter(v => !s.includes(v))
               )
-            }))
-          )
+            })
+          ))
         )._;
       }
     },
@@ -72,28 +75,28 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (name) {
         return _(this).$(
-          t => (_(t.n).draw(() => ({name})), $.names.add(name))
+          t => (_(t.n).draw({name}), $.names.add(name))
         )._;
       }
     },
     css: {
       configurable: true,
       value (o) {
-        return _(this).$(t => _(t.n.style).draw(() => o))._;
+        return _(this).$(t => _(t.n.style).draw(o))._;
       }
     },
     style: {
       configurable: true,
       value (o) {
-        return _(this).$(t => _(t.n.style).draw(() => o))._;
+        return _(this).$(t => _(t.n.style).draw(o))._;
       }
     },
     item: {
       configurable: true,
       value (o) {
         return _(o).draw(o => _(o.item).keys.bind(
-          a => a.reduce((p, c) => p.draw(() => ({[`item${c}`]: o.item[c]})), _({}))
-        ));
+          a => a.reduce((p, c) => p.draw({[`item${c}`]: o.item[c]})), _({}))
+        );
       }
     },
     "@$set":{
@@ -103,8 +106,8 @@ this._.lib === "losand" && (() => {
           t => t.n instanceof Element
           ? s === undefined
             ? delete t.n.dataset[k]
-            : _(t.n.dataset).draw(() => ({[k]: s}))
-          : _(t.n).draw(() => ({[k]: s}))
+            : _(t.n.dataset).draw({[k]: s})
+          : _(t.n).draw({[k]: s})
         )._;
       }
     },
@@ -284,8 +287,8 @@ this._.lib === "losand" && (() => {
       }
     }
   })
-  .draw(c => ({
-    version: "0.3.9",
+  .$(c => _(c).draw({
+    version: "0.3.952",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -435,7 +438,7 @@ this._.lib === "losand" && (() => {
       select: {
         configurable: true,
         value (value) {
-          return _(this).$(t => _(t.n).draw(() => ({value})))._;
+          return _(this).$(t => _(t.n).draw({value}))._;
         }
       },
       now: {
@@ -467,7 +470,7 @@ this._.lib === "losand" && (() => {
       label: {
         configurable: true,
         value (label) {
-          return _(this).$(t => _(t.n).draw(() => ({label})))._;
+          return _(this).$(t => _(t.n).draw({label}))._;
         }
       }
     })._,
@@ -481,19 +484,19 @@ this._.lib === "losand" && (() => {
       type: {
         configurable: true,
         value (type) {
-          return _(this).$(t => _(t.n).draw(() => ({type})))._;
+          return _(this).$(t => _(t.n).draw({type}))._;
         }
       },
       value: {
         configurable: true,
         value (value) {
-          return _(this).$(t => _(t.n).draw(() => ({value})))._;
+          return _(this).$(t => _(t.n).draw({value}))._;
         }
       },
       check: {
         configurable: true,
         value (checked) {
-          return _(this).$(t => _(t.n).draw(() => ({checked})))._;
+          return _(this).$(t => _(t.n).draw({checked}))._;
         }
       },
       shift: {
@@ -522,7 +525,7 @@ this._.lib === "losand" && (() => {
       value: {
         configurable: true,
         value (value) {
-          return _(this).$(t => _(t.n).draw(() => ({value})))._;
+          return _(this).$(t => _(t.n).draw({value}))._;
         }
       },
       now: {
@@ -538,7 +541,7 @@ this._.lib === "losand" && (() => {
         get () {
           return _($.names).list._
           .reduce(
-            (p, k) => p.draw(() => ({
+            (p, k) => p.draw({
               [k]: (
                 _(this.n)
                 .map(n => (
@@ -547,7 +550,7 @@ this._.lib === "losand" && (() => {
                   : n[k].value.json._
                 ))
               )._
-            })),
+            }),
             _({})
           )
           .valid
@@ -574,7 +577,7 @@ this._.lib === "losand" && (() => {
       href: {
         configurable: true,
         value (href) {
-          return _(this).$(t => _(t.n).draw(() => ({href})))._;
+          return _(this).$(t => _(t.n).draw({href}))._;
         }
       }
     })._,
@@ -589,13 +592,13 @@ this._.lib === "losand" && (() => {
       src: {
         configurable: true,
         value (src) {
-          return _(this).$(t => _(t.n).draw(() =>({src})))._;
+          return _(this).$(t => _(t.n).draw({src}))._;
         }
       },
       alt: {
         configurable: true,
         value (alt) {
-          return _(this).$(t => _(t.n).draw(() => ({alt})))._;
+          return _(this).$(t => _(t.n).draw({alt}))._;
         }
       },
       now: {
@@ -613,7 +616,7 @@ this._.lib === "losand" && (() => {
       "IFRAME",
       "SCRIPT"
     ]).$(a => a.reduce(
-      (p, k) => p.draw(() => ({[k]: _(c.media).fork(function () {})._})),
+      (p, k) => p.draw({[k]: _(c.media).fork(function () {})._}),
       _(c)
     )
   ))
@@ -687,7 +690,7 @@ this._.lib === "losand" && (() => {
   ._;
 
   _(window)
-  .draw(() => ({
+  .draw({
     get html () {
       return document.documentElement;
     },
@@ -700,7 +703,7 @@ this._.lib === "losand" && (() => {
     get env () {
       return $.env;
     }
-  }))
+  })
   .define({
     include:  {value: s => $.body.$($(document.createElement("script")).src(s))},
     script:   {value: s => $(document.createElement("script")).src(s)},
