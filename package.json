@@ -1,8 +1,11 @@
 {
   "name": "dsand",
-  "version": "0.3.953",
+  "version": "0.4.0",
   "description": "$(dsand).$ is client side render on losand",
   "main": "dsand.js",
+  "dependencies": {
+    "losand": "^1.4.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +19,9 @@
     "algebraic",
     "losand",
     "flux",
-    "client"
+    "client",
+    "WebRTC",
+    "PvP"
   ],
   "author": "Noboru Okazaki",
   "license": "MIT",

@@ -5,10 +5,12 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.953/dsand.js"></script>
-<!--if you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.3.953/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.0/dsand.js"></script>
+<!--If you use about webRTC on losand.pvp-->
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.0/pvp.js"></script>
 ~~~
+
+If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
 
 ~~~javascript
 //$.data is state modeling and presence on emutable data relation

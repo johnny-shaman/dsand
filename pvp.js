@@ -15,9 +15,9 @@ const PvP = (
 ) => (
   ...iceServers
 ) => {
-  _($.role).draw(r => ({
+  _($.role).draw({
     pvpLoadFrame (e) {
-      _($.data).draw(d => ({
+      _($.data).draw({
         pvpMsg: (
           $(
             _(uri.split("/"))
@@ -55,44 +55,40 @@ const PvP = (
             "datachannel"
           ).n
         )
-      }));
+      });
     },
     pvpMsg (e) {
       _(e.data.json._)
       .$(
         d => (
           d
-          ? _($(e).look).been
-          .setRemoteDescription(new RTCSessionDescription(d)).to
-          .$(async p => _(await p.createAnswer()).$(
-            v => p.setLocalDescription(new RTCSessionDescription(v)),
-            err => err
-          ))
+          ? _($(e).look)
+          .been
+          .setRemoteDescription(new RTCSessionDescription(d))
+          .to
+          .$(async p => p.localDescription || _(await p.createAnswer()).$(
+              v => p.setLocalDescription(new RTCSessionDescription(v))
+            )
+          )
           : _($(e).look)
-          .$(p => $(p).off("datachannel").on("open")).been
-          .createDataChannel("pvp").to
-          .$(async p => _(await p.createOffer()).$(
-            v => p.setLocalDescription(new RTCSessionDescription(v)),
-            err => err
+          .$(p => _($).draw({
+            pvp: (
+              $(p.createDataChannel("pvp"))
+              .class("pvpDCE")
+              .on("open")
+              .n
+            )
+          }))
+          .$(async p => p.localDescription || _(await p.createOffer()).$(
+            v => p.setLocalDescription(new RTCSessionDescription(v))
           ))
         )
       );
     },
     pvpICE (e) {
-      e.candidate && $(e).look.send(_($(e).n.localDescription).draw(() => term).json);
+      e.candidate && $(e).look.send(_($(e).n.localDescription).draw(term).json);
     },
     pvpDCE (e) {
-      _($.data)
-      .$(d => (
-        $(d.pvpMsg)
-        .off("message"),
-        delete d.pvpMsg
-      ))
-      .$(d => (
-        $(d.rtc)
-        .off("icecandidate", "datachannel", "open"),
-        delete d.rtc
-      ));
       _(
         e.channel
         ? e.channel
@@ -102,22 +98,41 @@ const PvP = (
           : e.target
         )
       )
-      .$(o => (
-        _($.role.pvpEstablish)
-        .$(p => _(p).by._ === Function ? p(o) : o)
-        .$(pvp => _($).draw(() => {pvp}))
+      .$(pvp => (
+        _($.role.onPvP)
+        .$(p => _(p).by._ === Function ? p(pvp) : pvp),
+        _($).draw({pvp}),
+        _($.data)
+        .$(d => (
+          $(d.pvpMsg)
+          .off("message"),
+          delete d.pvpMsg
+        ))
+        .$(d => (
+          $(d.rtc)
+          .off("icecandidate", "datachannel", "open"),
+          delete d.rtc
+        )),
+        _($.role)
+        .$(r => (
+          delete r.pvpMsg,
+          delete r.pvpICE,
+          delete r.pvpLoadFrame,
+          delete r.pvpDCE
+        ))
       ));
     }
-  }));
+  });
 
   uri !== env.uri
   ? (
-    _($.pack).draw(p => ({
+    _($.pack).$(p => _(p).draw({
       pvpLoadFrame (t) {
         t.$();
         delete p.pvpLoadFrame;
       }
     })),
+
     body.$(
       iframe
       .$(uri)
