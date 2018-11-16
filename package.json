@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.3.952",
+  "version": "0.3.953",
   "description": "$(dsand).$ is client side render on losand",
   "main": "dsand.js",
   "scripts": {
