@@ -13,6 +13,8 @@
     Event
     Element
     navigator
+    script
+    body
 */
 
 this._.lib === "losand" && (() => {
@@ -288,7 +290,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.4.0",
+    version: "0.4.1",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -705,7 +707,21 @@ this._.lib === "losand" && (() => {
     }
   })
   .define({
-    include:  {value: s => $.body.$($(document.createElement("script")).src(s))},
+    imports:  {
+      value: (...s) => _($.role).draw({
+        imported (e) {
+          e && $(e).off("load");
+          s.length === 0
+          ? (
+            _($.role.onImports).is(Function).$(f => f())._,
+            delete $.role.imported
+          )
+          : body.$(script(s.shift()).class("imported").on("load"));
+        }
+      })
+      ._
+      .imported()
+    },
     script:   {value: s => $(document.createElement("script")).src(s)},
     article:  {get: () => $(document.createElement("article"))},
     div:      {get: () => $(document.createElement("div"))},
