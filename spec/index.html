@@ -25,7 +25,7 @@
         alert(`${$(e).look.next().value} time(s) clicked!`);
       },
       getData: {
-        click (e) {
+        CliCk (e) {
           alert(_($.id.myForm.get).json);
         }
       }
@@ -82,7 +82,7 @@
           // once is only one time handling
           p.$(button.mark("countUp").class("sample").once("click").$("It's can click")),
           // beat can handle on each time
-          p.$(button.mark("countUp").class("sample").beat(1000, "click").$("click me")),
+          p.$(button.mark("countUp").class("sample").beat(3000, "click").$("click me")),
           // dull will be handle the event wait on it last time
           p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
 

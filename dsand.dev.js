@@ -180,8 +180,8 @@ this._.lib === "losand" && (() => {
       value (m, ...a) {
         return _(this).$(
           t => (
-            t.once(...a),
-            t["@beat"](m, ...a)
+            m && t.once(...a),
+            m && t["@beat"](m, ...a)
           )
         )._;
       }
@@ -290,7 +290,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.4.4",
+    version: "0.4.5",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -650,25 +650,33 @@ this._.lib === "losand" && (() => {
     "@role": {
       configurable: true,
       value (e, k) {
-        return _($.role[k]).map(f => (
-          _(f).by._ === Function
-          ? f(e)
-          : _(f[e.type.toLowerCase()]).by._ === Function
-            ? f[e.type.toLowerCase()](e)
-            : f
+        return _($.role[k]).bind(m => (
+          _(m).by._ === Object
+          ? _(m)
+          .keys
+          .map(a => a.filter(k => k.toLowerCase() === e.type))
+          .pick(m)
+          .vals
+          .get(0)
+          .map(f => f(e))
+          : _(m).map(f => f(e))
         ))._;
       }
     },
     "@pack": {
       configurable: true,
       value (e, k, d) {
-        return _($.pack[k]).map(f => (
-          _(f).by._ === Function
-          ? f(e, d)
-          : _(f[e.type.toLowerCase()]).by._ === Function
-            ? f[e.type.toLowerCase()](e, d)
-            : f
-        ))._;
+        _($.pack[k]).bind(m => (
+          _(m).by._ === Object
+          ? _(m)
+          .keys
+          .map(a => a.filter(k => k.toLowerCase() === e.type))
+          .pick(m)
+          .vals
+          .get(0)
+          .map(f => f(e, d))
+          : _(m).map(f => f(e, d))
+        ));
       }
     },
     env: {
