@@ -21,11 +21,13 @@
 
     //$.role reforming data structure functions that name have Elemnent.class
     _($.role).draw({
-      sample(e) {
+      sample (e) {
         alert(`${$(e).look.next().value} time(s) clicked!`);
       },
-      getData(e) {
-        alert(_($.id.myForm.get).json);
+      getData: {
+        click (e) {
+          alert(_($.id.myForm.get).json);
+        }
       }
     });
 

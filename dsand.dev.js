@@ -290,7 +290,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.4.2",
+    version: "0.4.3",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -650,21 +650,25 @@ this._.lib === "losand" && (() => {
     "@role": {
       configurable: true,
       value (e, k) {
-        return (
-          _($.role[k]).by._ === Function
-          ? $.role[k](e)
-          : $.role[k]
-        );
+        return _($.role[k]).map(f => (
+          _(f).by._ === Function
+          ? f(e)
+          : _(f[e.type]).by._ === Function
+            ? f[e.type](e)
+            : f
+        ))._;
       }
     },
     "@pack": {
       configurable: true,
       value (e, k, d) {
-        return (
-          _($.pack[k]).by._ === Function
-          ? $.pack[k](e, d)
-          : $.pack[k]
-        );
+        return _($.pack[k]).map(f => (
+          _(f).by._ === Function
+          ? f(e, d)
+          : _(f[e.type]).by._ === Function
+            ? f[e.type](e, d)
+            : f
+        ))._;
       }
     },
     env: {

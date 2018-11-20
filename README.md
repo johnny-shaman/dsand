@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.2/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.3/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.2/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.3/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -25,11 +25,14 @@ _($.data).draw(data => ({
 
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).draw(role => ({
-  sample(e) {
+  sample (e) {
     alert(`${$(e).look.next().value} time(s) clicked!`);
   },
-  getData(e) {
-    alert(_($.id.myForm.get).json);
+// can Assign eventType's Method's as you like it;
+  getData: {
+    click (e) {
+      alert(_($.id.myForm.get).json);
+    }
   }
 }));
 
