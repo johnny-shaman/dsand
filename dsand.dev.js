@@ -290,7 +290,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.4.3",
+    version: "0.4.4",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -653,8 +653,8 @@ this._.lib === "losand" && (() => {
         return _($.role[k]).map(f => (
           _(f).by._ === Function
           ? f(e)
-          : _(f[e.type]).by._ === Function
-            ? f[e.type](e)
+          : _(f[e.type.toLowerCase()]).by._ === Function
+            ? f[e.type.toLowerCase()](e)
             : f
         ))._;
       }
@@ -665,8 +665,8 @@ this._.lib === "losand" && (() => {
         return _($.pack[k]).map(f => (
           _(f).by._ === Function
           ? f(e, d)
-          : _(f[e.type]).by._ === Function
-            ? f[e.type](e, d)
+          : _(f[e.type.toLowerCase()]).by._ === Function
+            ? f[e.type.toLowerCase()](e, d)
             : f
         ))._;
       }
