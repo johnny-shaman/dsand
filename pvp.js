@@ -9,12 +9,7 @@
     env
 */
 
-const PvP = (
-  term = {},
-  uri = env.uri
-) => (
-  ...iceServers
-) => {
+const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
   _($.role).draw({
     pvpLoadFrame (e) {
       _($.data).draw({
@@ -37,12 +32,12 @@ const PvP = (
         rtc: (
           $(new RTCPeerConnection({
             iceServers: (
-              iceServers.length === 0
-              ? _(iceServers).$(a => a.push(
+              ice.length === 0
+              ? _(ice).$(a => a.push(
                 {url: "stun:stun.l.google.com:19302"},
                 {url: "stun:stun3.l.google.com:19302"}
               ))._
-              : iceServers.map(v => _(v).by._ === String ? {url: v} : v)
+              : ice.map(url => _(url).by._ === String ? {url} : url)
             )
           }))
           .class(
@@ -99,7 +94,8 @@ const PvP = (
         )
       )
       .$(pvp => (
-        _($.role.onPvP)
+        $(pvp).class("pvpDCE").off("open"),
+        _($.role.pvpCE)
         .$(p => _(p).by._ === Function ? p(pvp) : pvp),
         _($).draw({pvp}),
         _($.data)
@@ -110,7 +106,7 @@ const PvP = (
         ))
         .$(d => (
           $(d.rtc)
-          .off("icecandidate", "datachannel", "open"),
+          .off("icecandidate", "datachannel"),
           delete d.rtc
         )),
         _($.role)
@@ -132,7 +128,6 @@ const PvP = (
         delete p.pvpLoadFrame;
       }
     })),
-
     body.$(
       iframe
       .$(uri)
