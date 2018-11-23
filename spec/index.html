@@ -18,26 +18,30 @@
         }
       })()
     });
-
+    
     //$.role reforming data structure functions that name have Elemnent.class
     _($.role).draw({
       sample (e) {
-        alert(`${$(e).look.next().value} time(s) clicked!`);
+        return _($(e).look.next().value)
+        .$(v => alert(`${v} time(s) clicked!`))
+        ._;
       },
+    // can Assign eventType's Method's as you like it;
       getData: {
-        CliCk (e) {
+        click (e) {
           alert(_($.id.myForm.get).json);
         }
       }
     });
-
+    
     //$.pack rendering functions that name have Elemnent.class
+    //e = event, d = $.role's return value
     _($.pack).draw({
-      sample(e) {
-        $(e).seem("once more!");
+      sample(e, d) {
+        $(e).seem(`once more! (${d})`);
       }
     });
-
+    
     //start initial rendering
     body
       .id("view")

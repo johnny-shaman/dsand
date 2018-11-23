@@ -14,19 +14,21 @@ If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/lo
 
 ~~~javascript
 //$.data is state modeling and presence on emutable data relation
-_($.data).draw(data => ({
+_($.data).draw({
   countUp: (function*() {
     let y = 0;
     while (true) {
       yield ++y;
     }
   })()
-}));
+});
 
 //$.role reforming data structure functions that name have Elemnent.class
-_($.role).draw(role => ({
+_($.role).draw({
   sample (e) {
-    alert(`${$(e).look.next().value} time(s) clicked!`);
+    return _($(e).look.next().value)
+    .$(v => alert(`${v} time(s) clicked!`))
+    ._;
   },
 // can Assign eventType's Method's as you like it;
   getData: {
@@ -34,14 +36,15 @@ _($.role).draw(role => ({
       alert(_($.id.myForm.get).json);
     }
   }
-}));
+});
 
 //$.pack rendering functions that name have Elemnent.class
-_($.pack).draw(pack => ({
-  sample(e) {
-    $(e).seem("once more!");
+//e = event, d = $.role's return value
+_($.pack).draw({
+  sample(e, d) {
+    $(e).seem(`once more! (${d})`);
   }
-}));
+});
 
 //start initial rendering
 body
