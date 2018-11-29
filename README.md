@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.5/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.0/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.4.5/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.0/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -20,7 +20,10 @@ _($.data).draw({
     while (true) {
       yield ++y;
     }
-  })()
+  })(),
+  example: {
+    text: "Hello losand!"
+  }
 });
 
 //$.role reforming data structure functions that name have Elemnent.class
@@ -29,6 +32,11 @@ _($.role).draw({
     return _($(e).look.next().value)
     .$(v => alert(`${v} time(s) clicked!`))
     ._;
+  },
+  example : {
+    click (e) {
+      alert($(e).look);
+    }
   },
 // can Assign eventType's Method's as you like it;
   getData: {
@@ -41,9 +49,14 @@ _($.role).draw({
 //$.pack rendering functions that name have Elemnent.class
 //e = event, d = $.role's return value
 _($.pack).draw({
-  sample(e, d) {
+  sample (e, d) {
     $(e).seem(`once more! (${d})`);
-  }
+  },
+  example : {
+    click (e) {
+      $(e).seem("Thank you!");
+    }
+  },
 });
 
 //start initial rendering
@@ -67,7 +80,7 @@ body
   .$(
 
     //h1
-    h1.$("_(losand) wrapping a value").css({
+    h1.$("_(losand)._ wrapping a value").css({
       margin: "8px",
       padding: "8px",
       borderBottom: "1px solid #888888"
@@ -90,10 +103,11 @@ body
     // once is only one time handling
     p.$(button.mark("countUp").class("sample").once("click").$("It's can click")),
     // beat can handle on each time
-    p.$(button.mark("countUp").class("sample").beat(1000, "click").$("click me")),
+    p.$(button.mark("countUp").class("sample").beat(3000, "click").$("click me")),
     // dull will be handle the event wait on it last time
     p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
-
+    // distinate other way of data and methods
+    p.$(button.mark("example, text").class("example").on("click").$("click please")),
     //table
     table.$([
       [1, 2, 3],
@@ -172,6 +186,9 @@ body
 $.id.today;
 $.class.wrapper[1]
 $.name.tRadio1[1]
+
+//getRawElement or Node
+$.id.today.get
 
 //append
 $.id.today.$(

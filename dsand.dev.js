@@ -40,7 +40,7 @@ this._.lib === "losand" && (() => {
     ._;
   })
   .annex({
-    end: {
+    get: {
       configurable: true,
       get () {
         return this.n;
@@ -132,7 +132,9 @@ this._.lib === "losand" && (() => {
     look: {
       configurable: true,
       get () {
-        return $.data[this["@$get"]("mark")];
+        return _(this["@$get"]("mark")).map(
+          s => s.split(", ").reduce((p, c) => p[c], $.data)
+        )._;
       }
     },
     on: {
@@ -290,7 +292,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.4.51",
+    version: "0.5.0",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
