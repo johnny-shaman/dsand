@@ -46,6 +46,14 @@ this._.lib === "losand" && (() => {
         return this.n;
       }
     },
+    set: {
+      configurable: true,
+      value (o) {
+        return _(this).$(
+          ({get}) => _(o).give((k, v) => get.setAttribute(k, v))
+        )._;
+      }
+    },
     id: {
       configurable: true,
       value (id) {
@@ -96,9 +104,12 @@ this._.lib === "losand" && (() => {
     item: {
       configurable: true,
       value (o) {
-        return _(o).draw(o => _(o.item).keys.bind(
-          a => a.reduce((p, c) => p.draw({[`item${c}`]: o.item[c]})), _({}))
-        );
+        return _(this).$(
+          ({get}) => _(o).entries.$(a => a.reduce(
+            (p, [k, v]) => p(`item${k}`, v),
+            get.setAttribute
+          ))
+        )._;
       }
     },
     "@$set":{
@@ -129,11 +140,19 @@ this._.lib === "losand" && (() => {
         return this["@$set"]("mark", s);
       }
     },
-    look: {
+    want: {
       configurable: true,
       get () {
         return _(this["@$get"]("mark")).map(
           s => s.split(", ").reduce((p, c) => p[c], $.data)
+        )._;
+      }
+    },
+    look: {
+      configurable: true,
+      get () {
+        return _(this["@$get"]("mark")).map(
+          s => $.data[s.split(", ").shift()]
         )._;
       }
     },
@@ -159,7 +178,7 @@ this._.lib === "losand" && (() => {
         return _(this).$(
           t => a.each(
             v => (
-              t.n.addEventListener.call(t.n, v, $.on),
+              t.on(v),
               t.n.addEventListener.call(t.n, v, $.prototype["@once"])
             )
           )
@@ -171,7 +190,7 @@ this._.lib === "losand" && (() => {
       value (e) {
         return _($(e)).$(
           t => (
-            t.off.call(t, e.type, $.on),
+            t.off(e.type),
             t.n.removeEventListener.call(t.n, e.type, $.prototype["@once"])
           )
         )._;
@@ -181,18 +200,7 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (m, ...a) {
         return _(this).$(
-          t => (
-            m && t.once(...a),
-            m && t["@beat"](m, ...a)
-          )
-        )._;
-      }
-    },
-    "@beat": {
-      configurable: true,
-      value (m, ...a) {
-        return _(this).$(
-          t => m && setTimeout(() => t.beat(m, ...a), m)
+          t => m && setTimeout(() => m && t.once(...a).beat(m, ...a), m)
         )._;
       }
     },
@@ -273,26 +281,22 @@ this._.lib === "losand" && (() => {
     role: {
       configurable: true,
       get () {
-        return _(this).$(
-          t => _(t.n.classList).list.$(
-            a => a.each(k => $.role[k] && $.role[k](this))
-          )
+        return _(this).bind(
+          t => _(t.n.classList).list.map(a => a.map(k => $.role[k]))
         )._;
       }
     },
     pack: {
       configurable: true,
       get () {
-        return _(this).$(
-          t => _(t.n.classList).list.$(
-            a => a.each(k => $.pack[k] && $.pack[k](this))
-          )
+        return _(this).bind(
+          t => _(t.n.classList).list.map(a => a.map(k => $.pack[k]))
         )._;
       }
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.0",
+    version: "0.5.5",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
