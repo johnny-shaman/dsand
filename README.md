@@ -33,10 +33,21 @@ _($.role).draw({
     .$(v => alert(`${v} time(s) clicked!`))
     ._;
   },
-  example : {
+  ex1 : {
     click (e) {
-      alert($(e).look);
+      alert($(e).look.text);
     }
+  },
+  ex2 : {
+    click (e) {
+      alert($(e).want);
+    }
+  },
+  ex3 (e) {
+    alert($(e).look.text);
+  },
+  ex4 (e) {
+    alert($(e).want);
   },
 // can Assign eventType's Method's as you like it;
   getData: {
@@ -52,11 +63,22 @@ _($.pack).draw({
   sample (e, d) {
     $(e).seem(`once more! (${d})`);
   },
-  example : {
+  ex1 : {
     click (e) {
       $(e).seem("Thank you!");
     }
   },
+  ex2 (e) {
+    $(e).seem("Thank you!");
+  },
+  ex3 (e) {
+    $(e).seem("Thank you!");
+  },
+  ex4 : {
+    click (e) {
+      $(e).seem("Thank you!");
+    }
+  }
 });
 
 //start initial rendering
@@ -107,7 +129,13 @@ body
     // dull will be handle the event wait on it last time
     p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
     // distinate other way of data and methods
-    p.$(button.mark("example, text").class("example").on("click").$("click please")),
+    p.$(button.mark("example, text").class("ex1").on("click").$("click please")),
+    // distinate other way of data and methods
+    p.$(button.mark("example, text").class("ex2").on("click").$("click please")),
+    // distinate other way of data and methods
+    p.$(button.mark("example, text").class("ex3").on("click").$("click please")),
+    // distinate other way of data and methods
+    p.$(button.mark("example, text").class("ex4").on("click").$("click please")),
     //table
     table.$([
       [1, 2, 3],
@@ -180,8 +208,7 @@ body
       tRadio2: 1
     })
   )
-);
-
+  );
 //getElements
 $.id.today;
 $.class.wrapper[1]
