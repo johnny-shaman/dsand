@@ -74,7 +74,10 @@ this._.lib === "losand" && (() => {
               role: (
                 n.role === undefined
                 ? s
-                : n.role.filter(v => !s.includes(v))
+                : _(s)
+                .map(
+                  a => a.map(v => n.role.includes(v) ? false: v).filter(v => v)
+                )._
               )
             })
           ))
@@ -136,8 +139,8 @@ this._.lib === "losand" && (() => {
     },
     mark: {
       configurable: true,
-      value (s) {
-        return this["@$set"]("mark", s);
+      value (...s) {
+        return _(this).$(t => t["@$set"]("mark", s.join(", ")))._;
       }
     },
     want: {
@@ -296,7 +299,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.5",
+    version: "0.5.53",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(

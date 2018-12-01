@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.5.5",
+  "version": "0.5.53",
   "description": "$(dsand).$ is client side render on losand",
   "main": "dsand.js",
   "dependencies": {

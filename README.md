@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.0/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.53/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.53/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -131,9 +131,9 @@ body
     // distinate other way of data and methods
     p.$(button.mark("example, text").class("ex1").on("click").$("click please")),
     // distinate other way of data and methods
-    p.$(button.mark("example, text").class("ex2").on("click").$("click please")),
+    p.$(button.mark("example", "text").class("ex2").on("click").$("click please")),
     // distinate other way of data and methods
-    p.$(button.mark("example, text").class("ex3").on("click").$("click please")),
+    p.$(button.mark("example", "text").class("ex3").on("click").$("click please")),
     // distinate other way of data and methods
     p.$(button.mark("example, text").class("ex4").on("click").$("click please")),
     //table
