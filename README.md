@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.53/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.55/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.53/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.55/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -217,10 +217,19 @@ $.name.tRadio1[1]
 //getRawElement or Node
 $.id.today.get
 
+//setRawElement's Attribute or Node
+$.id.today.set("test", true);
+
+//class is every togglable
+$.class.wrapper[0].class("wrapper", "warp", "foooooYah");
+
 //append
 $.id.today.$(
   p.$("appended")
 )
+
+//Likely Backend window Item can use it
+$(new WebSocket("http://sample.io/")).class("test").on("message");
 
 //remove Selected Query
 $.id.today.$();
@@ -230,3 +239,4 @@ $.id.myForm.get
 //imports
 imports("http://sample.io/foo.js", "http://sample.io/bar.js", "http://sample.io/baz.js");
 ~~~
+
