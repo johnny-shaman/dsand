@@ -299,7 +299,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.55",
+    version: "0.5.6",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -735,7 +735,7 @@ this._.lib === "losand" && (() => {
           s.length === 0
           ? (
             _($.role.onImports).is(Function).$(f => f())._,
-            delete $.role.imported
+            setTimeout(() => delete $.role.imported, 50)
           )
           : body.$(script(s.shift()).class("imported").on("load"));
         }
