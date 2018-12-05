@@ -309,6 +309,7 @@ this._.lib === "losand" && (() => {
     role: {},
     pack: {},
     names: new Set(),
+    imports: new Set(),
     pvp: false,
     on (e) {
       _(e)
@@ -728,19 +729,28 @@ this._.lib === "losand" && (() => {
     }
   })
   .define({
-    imports:  {
-      value: (...s) => _($.role).draw({
-        imported (e) {
-          e && $(e).off("load");
-          s.length === 0
-          ? (
-            _($.role.onImports).is(Function).$(f => f())._,
-            setTimeout(() => delete $.role.imported, 50)
+    imports: {
+      value: (...imports) => _($).map(
+        $ => _($.data).$(
+          d => (
+            d.imports
+            ? imports.concat(d.imports)
+            : _(d).draw({imports})
           )
-          : body.$(script(s.shift()).class("imported").on("load"));
-        }
-      })
-      ._
+        ),
+        _($.role).draw({
+          imported (e) {
+            e && $(e).off("load");
+            $.data.imports.length === 0
+            ? delete $.role.imported
+            : body.$(
+              script($.data.imports.shift())
+              .class("imported")
+              .on("load")
+            );
+          }
+        })
+      )._
       .imported()
     },
     script:   {value: s => $(document.createElement("script")).src(s)},
