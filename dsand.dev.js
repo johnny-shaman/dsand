@@ -299,7 +299,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.6",
+    version: "0.5.65",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -731,25 +731,27 @@ this._.lib === "losand" && (() => {
   .define({
     imports: {
       value: (...imports) => _($).map(
-        $ => _($.data).$(
-          d => (
-            d.imports
-            ? imports.concat(d.imports)
-            : _(d).draw({imports})
-          )
-        ),
-        _($.role).draw({
-          imported (e) {
-            e && $(e).off("load");
-            $.data.imports.length === 0
-            ? delete $.role.imported
-            : body.$(
-              script($.data.imports.shift())
-              .class("imported")
-              .on("load")
-            );
-          }
-        })
+        $ => (
+          _($.data).$(
+            d => (
+              d.imports
+              ? imports.concat(d.imports)
+              : _(d).draw({imports})
+            )
+          ),
+          _($.role).draw({
+            imported (e) {
+              e && $(e).off("load");
+              $.data.imports.length === 0
+              ? delete $.role.imported
+              : body.$(
+                script($.data.imports.shift())
+                .class("imported")
+                .on("load")
+              );
+            }
+          })
+        )
       )._
       .imported()
     },
