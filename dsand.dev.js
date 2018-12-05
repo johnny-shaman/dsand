@@ -299,7 +299,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.65",
+    version: "0.5.66",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -730,7 +730,7 @@ this._.lib === "losand" && (() => {
   })
   .define({
     imports: {
-      value: (...imports) => _($).map(
+      value: (...imports) => _($).$(
         $ => (
           _($.data).$(
             d => (
@@ -753,6 +753,7 @@ this._.lib === "losand" && (() => {
           })
         )
       )._
+      .role
       .imported()
     },
     script:   {value: s => $(document.createElement("script")).src(s)},
