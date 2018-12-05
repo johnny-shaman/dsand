@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.4.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.66/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.0/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.5.66/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.0/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -192,8 +192,8 @@ body
         },
         testgrp1: [3, 4, 5, 6, 7]
       }), br,
-      label.$(checkbox.name("tCheck1"), "test"),
-      label.$(checkbox.name("tCheck2"), "test1"),
+      check("tCheck1", "test"),
+      check("tCheck2", "test1"), br,
       ...radios("tRadio1", [1, 2, 3]), br,
       ...radios("tRadio2", { test1: 1, test2: 2 }), br,
       button.class("getData").$("Get FormData").on("click")

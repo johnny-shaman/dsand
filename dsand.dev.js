@@ -10,6 +10,7 @@
     input
     label
     radio
+    checkbox
     Event
     Element
     navigator
@@ -299,7 +300,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.5.66",
+    version: "0.6.0",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -783,13 +784,17 @@ this._.lib === "losand" && (() => {
     label:    {get: () => $(document.createElement("label"))},
     input:    {get: () => $(document.createElement("input"))},
     radio:    {get: () => input.type("radio")},
-    radios:   {value: (name, o) => _(o).keys._.map(
-      k => label.$(
-        radio.name(name).value(o[k]),
-        o.constructor === Array ? o[k] : k
+    checkbox: {get: () => input.type("checkbox")},
+    radios:   {value: (name, o) => _(o).entries._.map(
+      ([k, v]) => label.$(
+        radio.name(name).value(v),
+        o.constructor === Array ? v : k
       )
     )},
-    checkbox: {get: () => input.type("checkbox")},
+    check: {value: (name, s) => label.$(
+      checkbox.name(name),
+      (s || name)
+    )},
     range:    {get: () => input.type("range")},
     text:     {get: () => input.type("text")},
     date:     {get: () => input.type("date")},
