@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.2/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.3/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.2/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.3/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -192,11 +192,15 @@ body
         },
         testgrp1: [3, 4, 5, 6, 7]
       }), br,
-      check("tCheck1", "test"),
-      check("tCheck2", "test1"), br,
-      ...radios("tRadio1", [1, 2, 3]), br,
-      ...radios("tRadio2", { test1: 1, test2: 2 }), br,
-      button.class("getData").$("Get FormData").on("click")
+      check("tCheck1", "test").pick.class("test", "check").outer,
+      check("tCheck2", "test1").pick.class("test", "check").outer, br,
+      ...radios("tRadio1", [1, 2, 3]).map(r => r.pick.class("test", "radio").outer), br,
+      ...radios("tRadio2", { test1: 1, test2: 2 }).map(
+        r => r.pick.class("test", "radio").outer
+      ), br,
+      button.class("getData").on("click").$(
+        "Get FormData"
+      )
     )
     .set({
       tSelect1: 1,
@@ -209,10 +213,20 @@ body
     })
   )
   );
+
 //getElements
 $.id.today;
 $.class.wrapper[1]
-$.name.tRadio1[1]
+$.name.tRadio1[0]
+
+//select.firstChild
+$.id.today.pick
+
+//select.children
+$.id.today.inner[1]
+
+//select.parent
+$.name.tRadio1[0].outer
 
 //getRawElement or Node
 $.id.today.get
@@ -236,6 +250,7 @@ $.id.today.$();
 
 //formdata to js Object
 $.id.myForm.get
+
 //imports
 imports("http://sample.io/foo.js", "http://sample.io/bar.js", "http://sample.io/baz.js");
 ~~~
