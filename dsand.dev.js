@@ -70,7 +70,7 @@ this._.lib === "losand" && (() => {
           )
           .$(n => (
             n instanceof Element
-            ? n.classList.toggle(...s)
+            ? s.each(v => n.classList.toggle(v))
             : _(n).draw({
               role: (
                 n.role === undefined
@@ -300,7 +300,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.15",
+    version: "0.6.2",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
