@@ -300,7 +300,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.1",
+    version: "0.6.15",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -661,23 +661,28 @@ this._.lib === "losand" && (() => {
     "@role": {
       configurable: true,
       value (e, k) {
-        return _($.role[k]).bind(m => (
-          _(m).by._ === Object
-          ? _(m)
-          .keys
-          .map(a => a.filter(k => k.toLowerCase() === e.type))
-          .pick(m)
-          .vals
-          .get(0)
-          .map(f => f(e))
-          : _(m).map(f => f(e))
-        ))._;
+        return (
+          $.role[k]
+          ? _($.role[k]).bind(m => (
+            _(m).by._ === Object
+            ? _(m)
+            .keys
+            .map(a => a.filter(k => k.toLowerCase() === e.type))
+            .pick(m)
+            .vals
+            .get(0)
+            .map(f => f(e))
+            : _(m).map(f => f(e))
+          ))._
+          : $.role[k]
+        );
       }
     },
     "@pack": {
       configurable: true,
       value (e, k, d) {
-        _($.pack[k]).bind(m => (
+        $.pack[k]
+        ? _($.pack[k]).bind(m => (
           _(m).by._ === Object
           ? _(m)
           .keys
@@ -687,7 +692,8 @@ this._.lib === "losand" && (() => {
           .get(0)
           .map(f => f(e, d))
           : _(m).map(f => f(e, d))
-        ));
+        ))._
+        :$.pack[k];
       }
     },
     env: {
