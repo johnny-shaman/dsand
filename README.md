@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.3/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.4/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.3/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.4/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -23,7 +23,12 @@ _($.data).draw({
   })(),
   example: {
     text: "Hello losand!"
+  },
+  /* tips on async
+  async fetchTest () {
+    return await fetch("http://www.example.io/")
   }
+  */
 });
 
 //$.role reforming data structure functions that name have Elemnent.class
@@ -33,12 +38,12 @@ _($.role).draw({
     .$(v => alert(`${v} time(s) clicked!`))
     ._;
   },
-  ex1 : {
+  ex1: {
     click (e) {
       alert($(e).look.text);
     }
   },
-  ex2 : {
+  ex2: {
     click (e) {
       alert($(e).want);
     }
@@ -49,12 +54,24 @@ _($.role).draw({
   ex4 (e) {
     alert($(e).want);
   },
-// can Assign eventType's Method's as you like it;
+  // can Assign eventType's Method's as you like it;
   getData: {
     click (e) {
       alert(_($.id.myForm.get).json);
     }
+  },
+  /*
+  // can use async await
+  async asyncEx (e) {
+    return await $(e).look();
+  },
+  // also can use 
+  asyncEx : {
+    async click (e) {
+      return await $(e).look();
+    }
   }
+  */
 });
 
 //$.pack rendering functions that name have Elemnent.class
@@ -63,7 +80,7 @@ _($.pack).draw({
   sample (e, d) {
     $(e).seem(`once more! (${d})`);
   },
-  ex1 : {
+  ex1: {
     click (e) {
       $(e).seem("Thank you!");
     }
@@ -74,11 +91,23 @@ _($.pack).draw({
   ex3 (e) {
     $(e).seem("Thank you!");
   },
-  ex4 : {
+  ex4: {
     click (e) {
       $(e).seem("Thank you!");
     }
+  },
+  /*
+  // can use async await
+  async asyncEx (e, d) {
+    $(e).seem(await d);
   }
+  // also can use 
+  asyncEx : {
+    async click (e) {
+      $(e).seem(await d);
+    }
+  }
+  */
 });
 
 //start initial rendering
