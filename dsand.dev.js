@@ -123,7 +123,7 @@ this._.lib === "losand" && (() => {
           t => t.n instanceof Element
           ? s === undefined
             ? delete t.n.dataset[k]
-            : _(t.n.dataset).draw({[k]: s})
+            : _(t.n.dataset).draw({[k]: _(s).by._ === String ? s : _(s).json})
           : _(t.n).draw({[k]: s})
         )._;
       }
@@ -133,7 +133,7 @@ this._.lib === "losand" && (() => {
       value (k) {
         return _(this).map(
           t => t.n instanceof Element
-          ? t.n.dataset[k]
+          ? t.n.dataset[k] === undefined ? _(undefined) : t.n.dataset[k].json
           : t.n[k]
         )._;
       }
@@ -147,7 +147,7 @@ this._.lib === "losand" && (() => {
     want: {
       configurable: true,
       get () {
-        return _(this["@$get"]("mark")).map(
+        return this["@$get"]("mark").map(
           s => s.split(", ").reduce((p, c) => p[c], $.data)
         )._;
       }
@@ -155,7 +155,7 @@ this._.lib === "losand" && (() => {
     look: {
       configurable: true,
       get () {
-        return _(this["@$get"]("mark")).map(
+        return this["@$get"]("mark").map(
           s => $.data[s.split(", ").shift()]
         )._;
       }
@@ -172,7 +172,16 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (...a) {
         return _(this).$(
-          t => a.each(v => t.n.removeEventListener.call(t.n, v, $.on))
+          t => a.each(
+            v => (
+              _(t.n)
+              .been
+              .removeEventListener.call(t.n, v, $.on)
+              .to
+              .$(n => t.beat(...a))
+              ._
+            )
+          )
         )._;
       }
     },
@@ -181,31 +190,37 @@ this._.lib === "losand" && (() => {
       value (...a) {
         return _(this).$(
           t => a.each(
-            v => (
-              t.on(v),
-              t.n.addEventListener.call(t.n, v, $.prototype["@once"])
-            )
-          )
-        )._;
-      }
-    },
-    "@once": {
-      configurable: true,
-      value (e) {
-        return _($(e)).$(
-          t => (
-            t.off(e.type),
-            t.n.removeEventListener.call(t.n, e.type, $.prototype["@once"])
+            v => t.n.addEventListener.call(t.n, v, $.on, {once: true})
           )
         )._;
       }
     },
     beat: {
       configurable: true,
-      value (m, ...a) {
+      value (...a) {
         return _(this).$(
-          t => m && setTimeout(() => m && t.once(...a).beat(m, ...a), m)
+          t => t["@$set"](
+            "beat",
+            _(a)
+            .map(a => a.map(
+              v => (
+                t["@beat"]
+                .map(b => b.includes(v))
+                ._
+                ? false
+                : v
+              )
+            ).filter(v => v))
+            .$(b => t.once(...b))
+            ._
+          )
         )._;
+      }
+    },
+    "@beat": {
+      configurable: true,
+      get () {
+        return this["@$get"]("beat");
       }
     },
     wait: {
@@ -220,13 +235,13 @@ this._.lib === "losand" && (() => {
         return this["@$get"]("wait");
       }
     },
-    "@setTimer": {
+    timer: {
       configurable: true,
-      value (v) {
-        return this["@$set"]("timer", v);
+      value (n) {
+        return this["@$set"]("timer", n);
       }
     },
-    "@getTimer": {
+    "@timer": {
       configurable: true,
       get () {
         return this["@$get"]("timer");
@@ -300,7 +315,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.4",
+    version: "0.6.5",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -327,19 +342,33 @@ this._.lib === "losand" && (() => {
         )
       )
       .$(
-        a => $(e)["@wait"] === undefined
-        ? $.soon(e, a)
-        : $.wait(e, a)
+        a => $(e)["@wait"]._
+        ? $.wait(e, a)
+        : $.soon(e, a)
       );
     },
     soon (e, a) {
       a.each(k => $["@pack"](e, k, $["@role"](e, k)));
     },
     wait (e, a) {
-      _($(e)["@getTimer"]).$(t => clearTimeout(t.json._));
-      _($(e)["@wait"]).$(
-        m => $(e)["@setTimer"](_(setTimeout(() => $.soon(e, a), m.json._)).json)
-      );
+      _($(e))
+      .$(n => _(n["@wait"]._).$(
+        m => (
+          n["@beat"]
+          .map(
+            a => a.includes(e.type)
+          )
+          ._
+          ? (
+            n.timer(_(setTimeout(() => n.once(e.type), m))._),
+            $.soon(e, a)
+          )
+          : (
+            clearTimeout(n["@timer"]._),
+            n.timer(_(setTimeout(() => $.soon(e, a), m))._)
+          )
+        )
+      ));
     },
     TABLE: _(c).fork(function(){}).annex({
       $: {
@@ -768,6 +797,7 @@ this._.lib === "losand" && (() => {
     div:      {get: () => $(document.createElement("div"))},
     section:  {get: () => $(document.createElement("section"))},
     nav:      {get: () => $(document.createElement("nav"))},
+    main:     {get: () => $(document.createElement("main"))},
     aside:    {get: () => $(document.createElement("aside"))},
     header:   {get: () => $(document.createElement("header"))},
     footer:   {get: () => $(document.createElement("footer"))},
