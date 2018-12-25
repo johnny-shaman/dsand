@@ -5,14 +5,13 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.6/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.7/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.6/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.7/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
 Let's try on [codepen](https://codepen.io/johnny_shaman/pen/oQyGzZ)
-
 
 ~~~javascript
 //$.data is state modeling and presence on emutable data relation
@@ -63,7 +62,7 @@ _($.role).draw({
     }
   },
   getTestData (e) {
-    alert(_($.id.myForm.get).json);
+    alert(_($.id.testForm.get).json);
   }
   /*
   // can use async await
