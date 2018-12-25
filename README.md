@@ -138,13 +138,13 @@ body
     p.$(
     //link
       a.href("https://github.com/johnny-shaman/losand/").$("losand")
-    ),
+    ).css({margin: "8px"}),
     //paragraph
     p.$(
     //link
       a.href("https://github.com/johnny-shaman/dsand/").$("dsand")
-    ),
-  ),
+    ).css({margin: "8px"}),
+  ).css({display: "flex"}),
   //main
   main
   .class("wrapper")
