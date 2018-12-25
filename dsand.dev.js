@@ -2,6 +2,8 @@
   global
     _
     location
+    fieldset
+    datalist
     Option
     ul
     ol
@@ -16,6 +18,7 @@
     navigator
     script
     body
+    br
 */
 
 this._.lib === "losand" && (() => {
@@ -51,7 +54,13 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (o) {
         return _(this).$(
-          ({get}) => _(o).give((k, v) => get.setAttribute(k, v))
+          ({get}) => _(o).give(
+            (k, v) => (
+              v == null
+              ? get.removeAttribute(k)
+              : get.setAttribute(k, v)
+            )
+          )
         )._;
       }
     },
@@ -118,13 +127,19 @@ this._.lib === "losand" && (() => {
     },
     "@$set":{
       configurable: true,
-      value (k, s) {
+      value (o) {
         return _(this).$(
           t => t.n instanceof Element
-          ? s === undefined
-            ? delete t.n.dataset[k]
-            : _(t.n.dataset).draw({[k]: _(s).by._ === String ? s : _(s).json})
-          : _(t.n).draw({[k]: s})
+          ? (
+            o.constructor === String
+            ? delete t.n.dataset[o]
+            : _(t.n.dataset).draw(o)
+          )
+          : (
+            o.constructor === String
+            ? delete t.n[o]
+            : _(t.n).draw(o)
+          )
         )._;
       }
     },
@@ -141,7 +156,7 @@ this._.lib === "losand" && (() => {
     mark: {
       configurable: true,
       value (...s) {
-        return _(this).$(t => t["@$set"]("mark", s.join(", ")))._;
+        return _(this).$(t => t["@$set"]({"mark": s.join(", ")}))._;
       }
     },
     want: {
@@ -199,10 +214,8 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (...a) {
         return _(this).$(
-          t => t["@$set"](
-            "beat",
-            _(a)
-            .map(a => a.map(
+          t => t["@$set"]({
+            "beat": _(a).map(a => a.map(
               v => (
                 t["@beat"]
                 .map(b => b.includes(v))
@@ -213,7 +226,7 @@ this._.lib === "losand" && (() => {
             ).filter(v => v))
             .$(b => t.once(...b))
             ._
-          )
+          })
         )._;
       }
     },
@@ -225,8 +238,8 @@ this._.lib === "losand" && (() => {
     },
     wait: {
       configurable: true,
-      value (m) {
-        return this["@$set"]("wait", m);
+      value (wait) {
+        return this["@$set"]({wait});
       }
     },
     "@wait": {
@@ -237,8 +250,8 @@ this._.lib === "losand" && (() => {
     },
     timer: {
       configurable: true,
-      value (n) {
-        return this["@$set"]("timer", n);
+      value (timer) {
+        return this["@$set"]({timer});
       }
     },
     "@timer": {
@@ -315,7 +328,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.5",
+    version: "0.6.6",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -325,7 +338,6 @@ this._.lib === "losand" && (() => {
     role: {},
     pack: {},
     names: new Set(),
-    imports: new Set(),
     pvp: false,
     on (e) {
       _(e)
@@ -373,34 +385,68 @@ this._.lib === "losand" && (() => {
     TABLE: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
-        value (n) {
+        value (...n) {
           return _(this).$(
-            t => n.each(
-              v => $(this.n.insertRow.call(this.n)).$(v)
+            t => _(
+              t.n.rows.length === 0
+              ? t.n.createTBody.call(t.n)
+              : t.n.getElementsByTagName("tbody")[0]
+            )
+            .$(
+              t => 
+              n.each((v, r) => (
+                t.rows.length <= r
+                ? $(t.insertRow())["@$set"]({r}).$(r, ...v)
+                : $(t.rows[r])["@$set"]({r}).$(r, ...v)
+              ))
             )
           )._;
+        }
+      },
+      cHead: {
+        configurable: true,
+        value (...n) {
+          return _(this).$(
+            t => $(t.n.createTHead.call(t.n).insertRow()).head(...n)
+          )._;
+        }
+      },
+      rHead: {
+        configurable: true,
+        value (...n) {
+          return _(this).$(
+            t => _(t.n.createTBody.call(t.n)).$(
+              t => n.each(v => $(t.insertRow()).head(v))
+            )
+          )._;
+        }
+      },
+      cFoot: {
+        configurable: true,
+        value (...n) {
+          return _(this).$(
+            t => $(t.n.createTFoot.call(t.n).insertRow()).foot(...n)
+          )._;
+        }
+      },
+      rows: {
+        configurable: true,
+        get () {
+          return _(this.get.rows).list._.map(v => $(v));
         }
       },
       cell: {
         configurable: true,
         get () {
-          return new Proxy(this.n.rows, {
-            get (r, y) {
-              return new Proxy(r[y], {
-                get (c, x) {
-                  return $(c[x]);
-                }
-              });
-            }
-          });
+          return this.rows.map(v => v.cell);
         }
       },
       cols: {
         configurable: true,
         get () {
-          return new Proxy(this.n.rows, {
-            get (t, k) {
-              return t.reduce((p, c) => p.push(c.cells[k]), []);
+          return new Proxy(this.row, {
+            get (r, k) {
+              return r.map(r => r.cell[k]);
             }
           });
         }
@@ -408,30 +454,64 @@ this._.lib === "losand" && (() => {
       each: {
         configurable: true,
         value (f, ...v) {
-          return $(this.n.rows).each(f);
+          return this.row.map(v => v.each(f, ...v));
         }
       }
     })._,
     TR: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
-        value (n) {
-          n.each(v => $(this.n.insertCell.call(this.n)).$(v));
-          return this;
+        value (r, ...n) {
+          return _(this)
+          .$(t => n.each(
+            (v, c) => $(t.n.insertCell.call(t.n))["@$set"]({r, c}).$(v)
+          ))
+          ._;
+        }
+      },
+      head: {
+        configurable: true,
+        value (...n) {
+          return _(this)
+          .$(t => n.each(v => $.prototype.$.call(
+            t,
+            $(document.createElement("th")).$(v)
+          )))
+          ._;
+        }
+      },
+      foot: {
+        configurable: true,
+        value (...n) {
+          return _(this)
+          .$(t => n.each(v => $(this.n.insertCell.call(this.n)).$(v)))
+          ._;
+        }
+      },
+      cell: {
+        configurable: true,
+        get () {
+          return _(this.n.cells).list._.map(v => $(v));
         }
       },
       each: {
         configurable: true,
         value (f, ...v) {
-          return $(this.n.cells).each(f);
+          return this.cell.each(w => f(w, ...v));
         }
       }
     })._,
     TD: _(c).fork(function(){}).annex({
-      each: {
+      r: {
         configurable: true,
-        value (f, ...v) {
-          return f(this.n.children, ...v);
+        get () {
+          return this["@$get"]("r")._;
+        }
+      },
+      c: {
+        configurable: true,
+        get () {
+          return this["@$get"]("c")._;
         }
       }
     })._,
@@ -483,6 +563,12 @@ this._.lib === "losand" && (() => {
           return _(this).$(t => _(t.n).draw({value}))._;
         }
       },
+      value: {
+        configurable: true,
+        value (value) {
+          return _(this).$(t => _(t.n).draw({value}))._;
+        }
+      },
       now: {
         configurable: true,
         get () {
@@ -516,13 +602,18 @@ this._.lib === "losand" && (() => {
         }
       }
     })._,
-    INPUT: _(c).fork(function(){}).annex({
+    DATALIST: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
-        value (v) {
-          return _(this).$(o => v === undefined ? $.prototype.$.call(o.n, v) : o.now = v)._;
+        value (...n) {
+          $.prototype.$.call(this, ...n.map(
+            v => v.constructor === Option ? v : new Option(v, v)
+          ));
+          return this;
         }
-      },
+      }
+    })._,
+    INPUT: _(c).fork(function(){}).annex({
       type: {
         configurable: true,
         value (type) {
@@ -539,6 +630,32 @@ this._.lib === "losand" && (() => {
         configurable: true,
         value (checked) {
           return _(this).$(t => _(t.n).draw({checked}))._;
+        }
+      },
+      placeholder: {
+        configurable: true,
+        value (placeholder) {
+          return _(this).$(t => _(t.n).draw({placeholder}))._;
+        }
+      },
+      autocomplete: {
+        configurable: true,
+        value (autocomplete) {
+          return _(this).$(t => _(t.n).draw(
+            autocomplete.constructor === String
+            ? {autocomplete}
+            : (
+              autocomplete
+              ? {autocomplete: "on"}
+              : {autocomplete: "off"}
+            )
+          ))._;
+        }
+      },
+      list: {
+        configurable: true,
+        value (list) {
+          return this.set({list});
         }
       },
       shift: {
@@ -578,12 +695,50 @@ this._.lib === "losand" && (() => {
       }
     })._,
     FORM: _(c).fork(function(){}).annex({
+      field: {
+        configurable: true,
+        value (o) {
+          return _(this).$(t => 
+            _(o).entries._.each(([k, v]) => t.$(
+              _(fieldset)
+              .$(
+                e => e.$(
+                  v.key == null
+                  ? k
+                  : v.key, br,
+                  ..._(v.item).map(
+                    i => (
+                      i instanceof $
+                      ? [_(i).been.autocomplete(
+                        v.list === undefined
+                        ? "off"
+                        : "on"
+                      ).list(k).name(k)._]
+                      : (
+                        i.constructor === Function
+                        ? [i(k)._].flat()
+                        : i.map(e => e.name(k))
+                      )
+                    )
+                  )._,
+                )
+              )
+              .$(
+                e => _(v.list).by._ === Array && e.$(
+                  datalist.id(k).$(...v.list)
+                )
+              )
+              ._
+            ))
+          )._;
+        }
+      },
       get: {
         configurable: true,
         get () {
           return _($.names).list._
           .reduce(
-            (p, k) => p.draw({
+            (p, k) => p.draw(this.n[k] ? {
               [k]: (
                 _(this.n)
                 .map(n => (
@@ -592,7 +747,7 @@ this._.lib === "losand" && (() => {
                   : n[k].value.json._
                 ))
               )._
-            }),
+            }: undefined),
             _({})
           )
           .valid
@@ -612,6 +767,38 @@ this._.lib === "losand" && (() => {
               )
             )
           )._;
+        }
+      },
+      method: {
+        configurable: true,
+        value (method) {
+          return _(this).$(t => _(t.n).draw({method}))._;
+        }
+      },
+      action: {
+        configurable: true,
+        value (action) {
+          return _(this).$(t => _(t.n).draw({action}))._;
+        }
+      },
+      autocomplete: {
+        configurable: true,
+        value (autocomplete) {
+          return _(this).$(t => _(t.n).draw(
+            autocomplete.constructor === String
+            ? {autocomplete}
+            : (
+              autocomplete
+              ? {autocomplete: "on"}
+              : {autocomplete: "off"}
+            )
+          ))._;
+        }
+      },
+      set$: {
+        configurable: true,
+        value (o) {
+          return $.prototype.set.call(this, o);
         }
       }
     })._,
@@ -817,6 +1004,8 @@ this._.lib === "losand" && (() => {
     dt:       {get: () => $(document.createElement("dt"))},
     dd:       {get: () => $(document.createElement("dd"))},
     form:     {get: () => $(document.createElement("form"))},
+    fieldset: {get: () => $(document.createElement("fieldset"))},
+    datalist: {get: () => $(document.createElement("datalist"))},
     label:    {get: () => $(document.createElement("label"))},
     input:    {get: () => $(document.createElement("input"))},
     radio:    {get: () => input.type("radio")},

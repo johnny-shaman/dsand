@@ -5,12 +5,14 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.5/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.6/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.5/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.6/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
+Let's try on [codepen](https://codepen.io/johnny_shaman/pen/oQyGzZ)
+
 
 ~~~javascript
 //$.data is state modeling and presence on emutable data relation
@@ -60,6 +62,9 @@ _($.role).draw({
       alert(_($.id.myForm.get).json);
     }
   },
+  getTestData (e) {
+    alert(_($.id.myForm.get).json);
+  }
   /*
   // can use async await
   async asyncEx (e) {
@@ -111,10 +116,10 @@ _($.pack).draw({
 });
 
 //start initial rendering
-    //start initial rendering
 body
 .id("view")
 .class("wrapper")
+.set({myId: "myId"}) // set is setAttaribute value is null then removeAttribute.
 .$(
   header
   .id("head")
@@ -182,12 +187,20 @@ body
       // distinate other way of data and methods
       p.$(button.mark("example", "text").class("ex4").on("click").$("click please")),
       //table
-      table.$([
+      table.$(
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9]
-      ]),
-
+      ),
+      table
+      .cHead("rNum", "c1", "c2", "c3")
+      .rHead("r1", "r2", "r3")
+      .$(
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+      )
+      .cFoot("rNum", "c1", "c2", "c3"),
       //ul, ol
       ul.$([
         "総則", [
@@ -228,7 +241,7 @@ body
       form
       .id("myForm")
       .$(
-        select.name("tSelect1").$({ test: 0, test1: 1 }), br,
+        select.name("tSelect1").$({test: 0, test1: 1}), br,
         select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
         select.name("tSelect3").$({
           testgrp: {
@@ -251,6 +264,33 @@ body
         tCheck2: true,
         tRadio1: 3,
         tRadio2: 1
+      }),
+      
+      form
+      .id("testForm")
+      .field(
+        {
+          f1: {
+            item: text,
+            list: ["about", "bout", "count", "doubt"]
+          },
+          f2: {
+            item: _(radios).part(null, [1, 2, 3])
+          },
+          f3: {
+            item: _(check).part(null, "test2")
+          },
+          f4: {
+            item: select.$({test: 0, test1: 1})
+          }
+        }
+      )
+      .$(
+        button.class("getTestData").$("Get FormData").on("click")
+      )
+      .set({
+        f2: 2,
+        f4: 1
       })
     )
   )
@@ -273,8 +313,10 @@ $.name.tRadio1[0].outer
 //getRawElement or Node
 $.id.today.get
 
-//setRawElement's Attribute or Node
-$.id.today.set("test", true);
+//setAttribute on Element or Node
+$.id.today.set({test: true});
+//form's setAttribute
+$.id.myForm.set$({test: false});
 
 //class is every togglable
 $.class.wrapper[0].class("wrapper", "warp", "foooooYah");
