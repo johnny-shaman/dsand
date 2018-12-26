@@ -192,8 +192,6 @@ this._.lib === "losand" && (() => {
               _(t.n)
               .been
               .removeEventListener.call(t.n, v, $.on)
-              .to
-              .$(n => t.beat(...a))
               ._
             )
           )
@@ -328,7 +326,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.7",
+    version: "0.6.8",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -400,6 +398,14 @@ this._.lib === "losand" && (() => {
                 : $(t.rows[r])["@$set"]({r}).$(r, ...v)
               ))
             )
+          )._;
+        }
+      },
+      caption: {
+        configurable: true,
+        value (...v) {
+          return _(this).$(
+            t => $(t.n.createCaption.call(t.n)).$(...v)
           )._;
         }
       },

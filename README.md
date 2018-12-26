@@ -5,16 +5,16 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.7/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.8/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.7/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.8/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
 Let's try on [codepen](https://codepen.io/johnny_shaman/pen/oQyGzZ)
 
 ~~~javascript
-//$.data is state modeling and presence on emutable data relation
+//$.data is state and IO modeling and presence on emutable data relation
 _($.data).draw({
   countUp: (function*() {
     let y = 0;
@@ -169,11 +169,12 @@ body
       // button & clicks
       // $.mark like QueryKeyword for $.data
       // $.role[$.class](e)
-      // $.pack[$.class](e)
+      // $.pack[$.class](e, d: $.role's return data)
+      // $.off can removeListener
       p.$(button.mark("countUp").class("sample").on("click").$("click me")),
       // once is only one time handling
       p.$(button.mark("countUp").class("sample").once("click").$("It's can click")),
-      // beat can handle on each time
+      // beat can handle on each time and beat can toggle beat on off
       p.$(button.mark("countUp").class("sample").wait(3000).beat("click").$("click me")),
       // lazy handle the event wait on it last time
       p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
@@ -192,6 +193,7 @@ body
         [7, 8, 9]
       ),
       table
+      .caption("Test Table")
       .cHead("rNum", "c1", "c2", "c3")
       .rHead("r1", "r2", "r3")
       .$(
@@ -277,7 +279,7 @@ body
             item: _(radios).part(null, [1, 2, 3])
           },
           f3: {
-            item: _(check).part(null, "test2")
+            item: _(check).part(null, "test")
           },
           f4: {
             item: select.$({test: 0, test1: 1})
