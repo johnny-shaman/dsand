@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.8/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.9/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.8/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.9/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -25,6 +25,8 @@ _($.data).draw({
   example: {
     text: "Hello losand!"
   },
+  drag: false,
+  drop: false,
   /* tips on async
   async fetchTest () {
     return await fetch("http://www.example.io/")
@@ -63,7 +65,28 @@ _($.role).draw({
   },
   getTestData (e) {
     alert(_($.id.testForm.get).json);
-  }
+  },
+  dandTest: {
+    dragstart (e) {
+      _($.data).draw({drag: {
+        data: $(e).now,
+        node: $(e).get
+      }});
+    },
+    drop (e) {
+      _($.data).draw({drop: {
+        data: $(e).now,
+        node: $(e).get
+      }});
+      return $.data;
+    },
+    dragend (e) {
+      _($.data).draw({
+        drag: false,
+        drop: false
+      });
+    }
+  },
   /*
   // can use async await
   async asyncEx (e) {
@@ -100,6 +123,20 @@ _($.pack).draw({
       $(e).seem("Thank you!");
     }
   },
+  dandTest: {
+    dragstart (e) {
+      $(e).css({opacity: ".4"});
+    },
+    drop (e, {drag, drop}) {
+      $(drag.node)
+      .seem(drop.data);
+      $(drop.node)
+      .seem(drag.data);
+    },
+    dragend (e) {
+      $(e).css({opacity: "1"});
+    }
+  }
   /*
   // can use async await
   async asyncEx (e, d) {
@@ -187,10 +224,33 @@ body
       // distinate other way of data and methods
       p.$(button.mark("example", "text").class("ex4").on("click").$("click please")),
       //table
-      table.$(
+      table
+      .caption("drag and drop Test")
+      .$(
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9]
+      )
+      .each(
+        e => (
+          e
+          .class("dandTest")
+          .drag(true)
+          .css({
+            fontSize: "16px",
+            minWidth: "32px",
+            minheight: "32px",
+            textAlign: "center",
+            verticalAlign: "middle",
+            border: "1px solid #000000"
+          })
+          .on(
+            "dragstart",
+            "dragover",
+            "dragend",
+            "drop"
+          )
+        )
       ),
       table
       .caption("Test Table")
@@ -202,6 +262,7 @@ body
         [7, 8, 9]
       )
       .cFoot("rNum", "c1", "c2", "c3"),
+      //drag and drop test
       //ul, ol
       ul.$([
         "総則", [
@@ -313,6 +374,9 @@ $.name.tRadio1[0].outer
 
 //getRawElement or Node
 $.id.today.get
+
+//getComputedStyle
+$.id.today.real
 
 //setAttribute on Element or Node
 $.id.today.set({test: true});

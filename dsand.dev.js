@@ -70,6 +70,12 @@ this._.lib === "losand" && (() => {
         return _(this).$(t => _(t.n).draw({id}))._;
       }
     },
+    title: {
+      configurable: true,
+      value (title) {
+        return _(this).$(t => _(t.n).draw({title}))._;
+      }
+    },
     "class": {
       configurable: true,
       value (...s) {
@@ -175,11 +181,26 @@ this._.lib === "losand" && (() => {
         )._;
       }
     },
+    drag: {
+      configurable: true,
+      value (draggable) {
+        return this.set({draggable});
+      }
+    },
+    drop: {
+      configurable: true,
+      value (dropzone) {
+        return this.set({dropzone});
+      }
+    },
     on: {
       configurable: true,
       value (...a) {
         return _(this).$(
-          t => a.each(v => t.n.addEventListener.call(t.n, v, $.on))
+          t => (
+            a.includes("dragstart") && t.drag(true),
+            a.each(v => t.n.addEventListener.call(t.n, v, $.on))
+          )
         )._;
       }
     },
@@ -187,13 +208,9 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (...a) {
         return _(this).$(
-          t => a.each(
-            v => (
-              _(t.n)
-              .been
-              .removeEventListener.call(t.n, v, $.on)
-              ._
-            )
+          t => (
+            a.includes("dragstart") && t.drag(false),
+            a.each(v => t.n.removeEventListener.call(t.n, v, $.on))
           )
         )._;
       }
@@ -202,8 +219,14 @@ this._.lib === "losand" && (() => {
       configurable: true,
       value (...a) {
         return _(this).$(
-          t => a.each(
-            v => t.n.addEventListener.call(t.n, v, $.on, {once: true})
+          t => (
+            a.includes("drop") && t.n.addEventListener.call(
+              t.n,
+              "dragover",
+              $.prevent,
+            ),
+            a.join(" ").includes("drag") && t.drag(true),
+            a.each(v => t.n.addEventListener.call(t.n, v, $.on, {once: true}))
           )
         )._;
       }
@@ -308,6 +331,12 @@ this._.lib === "losand" && (() => {
         return this;
       }
     },
+    real: {
+      configurable: true,
+      get () {
+        return document.getComputedStyle(this.n);
+      }
+    },
     role: {
       configurable: true,
       get () {
@@ -326,7 +355,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.8",
+    version: "0.6.9",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -339,10 +368,10 @@ this._.lib === "losand" && (() => {
     pvp: false,
     on (e) {
       _(e)
-      .been
-      .preventDefault()
-      .stopPropagation()
-      .to
+      .$(e => (
+        e.type === "dragstart" || e.preventDefault(),
+        e.stopPropagation()
+      ))
       .get("target")
       .bind(
         t => (
@@ -435,7 +464,7 @@ this._.lib === "losand" && (() => {
           )._;
         }
       },
-      rows: {
+      row: {
         configurable: true,
         get () {
           return _(this.get.rows).list._.map(v => $(v));
@@ -444,7 +473,7 @@ this._.lib === "losand" && (() => {
       cell: {
         configurable: true,
         get () {
-          return this.rows.map(v => v.cell);
+          return this.row.map(v => v.cell);
         }
       },
       cols: {
@@ -460,7 +489,7 @@ this._.lib === "losand" && (() => {
       each: {
         configurable: true,
         value (f, ...v) {
-          return this.row.map(v => v.each(f, ...v));
+          return _(this).$(t => t.row.each(r => r.each(f, ...v)))._;
         }
       }
     })._,
@@ -497,13 +526,13 @@ this._.lib === "losand" && (() => {
       cell: {
         configurable: true,
         get () {
-          return _(this.n.cells).list._.map(v => $(v));
+          return _(this.get.cells).list._.map(v => $(v));
         }
       },
       each: {
         configurable: true,
         value (f, ...v) {
-          return this.cell.each(w => f(w, ...v));
+          return _(this).$(t => t.cell.each(c => f(c, ...v)))._;
         }
       }
     })._,
@@ -620,6 +649,13 @@ this._.lib === "losand" && (() => {
       }
     })._,
     INPUT: _(c).fork(function(){}).annex({
+      $: {
+        configurable: true,
+        value (v) {
+          v === undefined ? $.prototype.$.call(this, v) : this.now = v;
+          return this;
+        }
+      },
       type: {
         configurable: true,
         value (type) {
@@ -658,6 +694,60 @@ this._.lib === "losand" && (() => {
           ))._;
         }
       },
+      min: {
+        configurable: true,
+        value (min) {
+          return _(this).$(t => _(t.n).draw({min}))._;
+        }
+      },
+      max: {
+        configurable: true,
+        value (max) {
+          return _(this).$(t => _(t.n).draw({max}))._;
+        }
+      },
+      step: {
+        configurable: true,
+        value (step) {
+          return _(this).$(t => _(t.n).draw({step}))._;
+        }
+      },
+      form: {
+        configurable: true,
+        value (form) {
+          return _(this).$(t => _(t.n).draw({form}))._;
+        }
+      },
+      disable: {
+        configurable: true,
+        get () {
+          return _(this).$(t => _(t.n).draw({disabled: true}))._;
+        }
+      },
+      enable: {
+        configurable: true,
+        get () {
+          return _(this).$(t => _(t.n).draw({disabled: false}))._;
+        }
+      },
+      focus: {
+        configurable: true,
+        get () {
+          return _(this).$(t => _(t.n).draw({autofocus: true}))._;
+        }
+      },
+      writable: {
+        configurable: true,
+        get () {
+          return _(this).$(t => _(t.n).draw({readonly: false}))._;
+        }
+      },
+      readOnly: {
+        configurable: true,
+        get () {
+          return _(this).$(t => _(t.n).draw({readonly: true}))._;
+        }
+      },
       list: {
         configurable: true,
         value (list) {
@@ -674,29 +764,17 @@ this._.lib === "losand" && (() => {
         configurable: true,
         get () {
           return _(this).map(o => (
-            (o.n.type === "checkbox" || o.n.type === "radio") ? o.n.checked : o.n.value
+            (o.n.type === "checkbox" || o.n.type === "radio")
+            ? o.n.checked
+            : o.n.value
           ))._;
-        }
-      }
-    })._,
-    TEXTAREA: _(c).fork(function(){}).annex({
-      $: {
-        configurable: true,
-        value (v) {
-          v === undefined ? $.prototype.$.call(this, v) : this.now = v;
-          return this;
-        }
-      },
-      value: {
-        configurable: true,
-        value (value) {
-          return _(this).$(t => _(t.n).draw({value}))._;
-        }
-      },
-      now: {
-        configurable: true,
-        get () {
-          return this.n.value;
+        },
+        set (v) {
+          return _(this).map(o => (
+            (o.n.type === "checkbox" || o.n.type === "radio")
+            ? o.n.checked = v
+            : o.n.value = v
+          ))._;
         }
       }
     })._,
@@ -844,7 +922,8 @@ this._.lib === "losand" && (() => {
       }
     })._
   }))
-  .$(c => _([
+  .$(c => (
+    _([
       "IMG",
       "VIDEO",
       "AUDIO",
@@ -853,7 +932,8 @@ this._.lib === "losand" && (() => {
     ]).$(a => a.reduce(
       (p, k) => p.draw({[k]: _(c.media).fork(function () {})._}),
       _(c)
-    )
+    )),
+    _(c).draw({"TEXTAREA": _(c.INPUT).fork(function () {})._})
   ))
   .define({
     id: {
@@ -880,6 +960,7 @@ this._.lib === "losand" && (() => {
         }
       })
     },
+    
     "@role": {
       configurable: true,
       value (e, k) {
@@ -1029,6 +1110,13 @@ this._.lib === "losand" && (() => {
     range:    {get: () => input.type("range")},
     text:     {get: () => input.type("text")},
     date:     {get: () => input.type("date")},
+    month:    {get: () => input.type("month")},
+    week:     {get: () => input.type("week")},
+    time:     {get: () => input.type("time")},
+    datetime: {get: () => input.type("datetime-local")},
+    mail:     {get: () => input.type("email")},
+    url:      {get: () => input.type("url")},
+    tel:      {get: () => input.type("tel")},
     number:   {get: () => input.type("namber")},
     file:     {get: () => input.type("file")},
     password: {get: () => input.type("password")},
