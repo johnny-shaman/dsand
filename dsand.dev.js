@@ -286,8 +286,13 @@ this._.lib === "losand" && (() => {
       value (...n) {
         n[0] !== undefined
         ? this.n.append.call(
-          this.n, ...n.map(
-            v => v instanceof $ ? v.n : v
+          this.n,
+          ...n.map(
+            (v, k) => (
+              v instanceof $
+              ? v["@$set"]("order", k).n
+              : v
+            )
           )
         )
         : this.n.remove.call(this.n);
@@ -355,7 +360,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.11",
+    version: "0.6.12",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -369,7 +374,9 @@ this._.lib === "losand" && (() => {
     on (e) {
       _(e)
       .$(e => (
-        e.type === "dragstart" || e.preventDefault(),
+        e.type === "dragstart"
+        ? e.dataTransfer.setData("text", $(e)["@$get"]("order").toString())
+        : e.preventDefault(),
         e.stopPropagation()
       ))
       .get("target")

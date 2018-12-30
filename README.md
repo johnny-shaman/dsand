@@ -5,13 +5,18 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.11/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.12/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.11/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.12/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
+
 Let's try on [codepen](https://codepen.io/johnny_shaman/pen/oQyGzZ)
+
+Support Drag and Drop on HTML5
+
+If 'dragstart' handling then e.dataTransfer have e.target's number at parentNode's it.
 
 ~~~javascript
 //$.data is state and IO modeling and presence on emutable data relation
