@@ -355,7 +355,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.9",
+    version: "0.6.11",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -385,6 +385,7 @@ this._.lib === "losand" && (() => {
         ? $.wait(e, a)
         : $.soon(e, a)
       );
+      return false;
     },
     soon (e, a) {
       a.each(k => $["@pack"](e, k, $["@role"](e, k)));
