@@ -353,7 +353,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.13",
+    version: "0.6.14",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -929,7 +929,7 @@ this._.lib === "losand" && (() => {
         value (...a) {
           $.prototype.$.call(
             this,
-            ...a.map(v => v.constructor === String ? li.$(v) : v)
+            ...a.map(v => v instanceof Object ? v : li.$(v))
           );
           return this;
         }
@@ -941,7 +941,7 @@ this._.lib === "losand" && (() => {
         value (...a) {
           $.prototype.$.call(
             this,
-            ...a.map(v => v.constructor === String ? li.$(v) : v)
+            ...a.map(v => v instanceof Object ? v : li.$(v))
           );
           return this;
         }
