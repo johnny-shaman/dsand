@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.12/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.13/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.12/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.13/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
@@ -269,40 +269,52 @@ body
       .cFoot("rNum", "c1", "c2", "c3"),
       //drag and drop test
       //ul, ol
-      ul.$([
-        "総則", [
-          "本会の目的は、…", [
+      ul.$(
+        "総則",
+        ul.$(
+          "本会の目的は、…",
+          ul.$(
             "この…",
             "この…"
-          ],
-          "総則は以下の…", [
+          ),
+          "総則は以下の…",
+          ul.$(
             "この総則は…",
             "この総則の…"
-          ]
-        ],
-        "分則１", [
+          )
+        ),
+        "分則１",
+        ul.$(
           "本会は、…",
-          "本会にて…は以下に定める", [
+          li.class("intermediater").$(
+            "本会にて…は以下に定める"
+          ),
+          ul.$(
             "この…",
             "この…"
-          ],
-          "本会は、以下の…", [
+          ),
+          "本会は、以下の…",
+          ul.$(
             "この総則は…",
             "この総則の…"
-          ]
-        ],
-        "分則２", [
-          "本会にて…は以下に定める", [
+          )
+        ),
+        "分則２",
+        ul.$(
+          "本会にて…は以下に定める",
+          ul.$(
             "この…",
             "この…"
-          ],
+          ),
           "本会は、…",
-          "本会は、以下の…", [
+          "本会は、以下の…",
+          ul.$(
             "この総則は…",
             "この総則の…"
-          ]
-        ],
-      ]),
+          )
+        ),
+      )
+      .each(i => i.class("test")),
 
       //input
       form

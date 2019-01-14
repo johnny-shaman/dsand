@@ -5,8 +5,6 @@
     fieldset
     datalist
     Option
-    ul
-    ol
     li
     optgroup
     input
@@ -220,12 +218,7 @@ this._.lib === "losand" && (() => {
       value (...a) {
         return _(this).$(
           t => (
-            a.includes("drop") && t.n.addEventListener.call(
-              t.n,
-              "dragover",
-              $.prevent,
-            ),
-            a.join(" ").includes("drag") && t.drag(true),
+            a.includes("dragstart") && t.drag(false),
             a.each(v => t.n.addEventListener.call(t.n, v, $.on, {once: true}))
           )
         )._;
@@ -360,7 +353,7 @@ this._.lib === "losand" && (() => {
     }
   })
   .$(c => _(c).draw({
-    version: "0.6.12",
+    version: "0.6.13",
     lib: "dsand",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
@@ -555,28 +548,6 @@ this._.lib === "losand" && (() => {
         configurable: true,
         get () {
           return this["@$get"]("c")._;
-        }
-      }
-    })._,
-    UL: _(c).fork(function(){}).annex({
-      $: {
-        configurable: true,
-        value (a) {
-          $.prototype.$.call(this, ...a.map(
-            v => v.constructor === Array ? ul.$(v) : li.$(v)
-          ));
-          return this;
-        }
-      }
-    })._,
-    OL: _(c).fork(function(){}).annex({
-      $: {
-        configurable: true,
-        value (a) {
-          $.prototype.$.call(this, ...a.map(
-            v => v.constructor === Array ? ol.$(v) : li.$(v)
-          ));
-          return this;
         }
       }
     })._,
@@ -902,6 +873,16 @@ this._.lib === "losand" && (() => {
         }
       }
     })._,
+    list: _(c).fork(function(){}).annex({
+      each: {
+        configurable: true,
+        value (f) {
+          return _(this).$(
+            t => t.inner.each(e => e instanceof c.list ? e.each(f) : f(e))
+          )._;
+        }
+      }
+    })._,
     media: _(c).fork(function(){}).annex({
       $: {
         configurable: true,
@@ -941,7 +922,31 @@ this._.lib === "losand" && (() => {
       (p, k) => p.draw({[k]: _(c.media).fork(function () {})._}),
       _(c)
     )),
-    _(c).draw({"TEXTAREA": _(c.INPUT).fork(function () {})._})
+    _(c).draw({"TEXTAREA": _(c.INPUT).fork(function () {})._}),
+    _(c).draw({"UL": _(c.list).fork(function () {}).annex({
+      $: {
+        configurable: true,
+        value (...a) {
+          $.prototype.$.call(
+            this,
+            ...a.map(v => v.constructor === String ? li.$(v) : v)
+          );
+          return this;
+        }
+      }
+    })._}),
+    _(c).draw({"OL": _(c.list).fork(function () {}).annex({
+      $: {
+        configurable: true,
+        value (...a) {
+          $.prototype.$.call(
+            this,
+            ...a.map(v => v.constructor === String ? li.$(v) : v)
+          );
+          return this;
+        }
+      }
+    })._})
   ))
   .define({
     id: {
