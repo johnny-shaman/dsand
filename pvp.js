@@ -10,13 +10,13 @@
 */
 
 const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
-  _($.role).draw({
+  _($.role).put({
     pvpLoadFrame (e) {
-      _($.data).draw({
+      _($.data).put({
         pvpMsg: (
           $(
             _(uri.split("/"))
-            .map(
+            .endo(
               ([p, ...s]) => new WebSocket(_(s).$(s => s.unshift(
                 p === "https:"
                 ? "wss:"
@@ -54,19 +54,19 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
     },
     pvpMsg (e) {
       _(e.data.json._)
-      .$(
+      .use(
         d => (
           d
           ? _($(e).look)
           .been
           .setRemoteDescription(new RTCSessionDescription(d))
           .to
-          .$(async p => p.localDescription || _(await p.createAnswer()).$(
+          .use(async p => p.localDescription || _(await p.createAnswer()).use(
               v => p.setLocalDescription(new RTCSessionDescription(v))
             )
           )
           : _($(e).look)
-          .$(p => _($).draw({
+          .use(p => _($).put({
             pvp: (
               $(p.createDataChannel("pvp"))
               .class("pvpDCE")
@@ -74,14 +74,14 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
               .n
             )
           }))
-          .$(async p => p.localDescription || _(await p.createOffer()).$(
+          .use(async p => p.localDescription || _(await p.createOffer()).use(
             v => p.setLocalDescription(new RTCSessionDescription(v))
           ))
         )
       );
     },
     pvpICE (e) {
-      e.candidate && $(e).look.send(_($(e).n.localDescription).draw(term).json);
+      e.candidate && $(e).look.send(_($(e).n.localDescription).put(term).json._);
     },
     pvpDCE (e) {
       _(
@@ -93,24 +93,24 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
           : e.target
         )
       )
-      .$(pvp => (
+      .use(pvp => (
         $(pvp).class("pvpDCE").off("open"),
         _($.role.pvpCE)
-        .$(p => _(p).by._ === Function ? p(pvp) : pvp),
-        _($).draw({pvp}),
+        .use(p => _.is_(p) === Function ? p(pvp) : pvp),
+        _($).put({pvp}),
         _($.data)
-        .$(d => (
+        .use(d => (
           $(d.pvpMsg)
           .off("message"),
           delete d.pvpMsg
         ))
-        .$(d => (
+        .use(d => (
           $(d.rtc)
           .off("icecandidate", "datachannel"),
           delete d.rtc
         )),
         _($.role)
-        .$(r => (
+        .use(r => (
           delete r.pvpMsg,
           delete r.pvpICE,
           delete r.pvpLoadFrame,
@@ -122,7 +122,7 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
 
   uri !== env.uri
   ? (
-    _($.pack).$(p => _(p).draw({
+    _($.pack).use(p => _(p).put({
       pvpLoadFrame (t) {
         t.$();
         delete p.pvpLoadFrame;

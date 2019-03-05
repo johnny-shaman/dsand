@@ -6,11 +6,11 @@
 </head>
 
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-  <script type="text/javascript" src="../dsand.dev.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cte@1.1.0/cte.js"></script>
+  <script type="text/javascript" src="../dsand.js"></script>
   <script type="text/javascript">
 //$.data is state and IO modeling and presence on emutable data relation
-_($.data).draw({
+_($.data).put({
   countUp: (function*() {
     let y = 0;
     while (true) {
@@ -30,10 +30,10 @@ _($.data).draw({
 });
 
 //$.role reforming data structure functions that name have Elemnent.class
-_($.role).draw({
+_($.role).put({
   sample (e) {
     return _($(e).look.next().value)
-    .$(v => alert(`${v} time(s) clicked!`))
+    .use(v => alert(`${v} time(s) clicked!`))
     ._;
   },
   ex1: {
@@ -55,28 +55,28 @@ _($.role).draw({
   // can Assign eventType's Method's as you like it;
   getData: {
     click (e) {
-      alert(_($.id.myForm.get).json);
+      alert(_($.id.myForm.get).json._);
     }
   },
   getTestData (e) {
-    alert(_($.id.testForm.get).json);
+    alert(_($.id.testForm.get).json._);
   },
   dandTest: {
     dragstart (e) {
-      _($.data).draw({drag: {
+      _($.data).put({drag: {
         data: $(e).now,
         node: $(e).get
       }});
     },
     drop (e) {
-      _($.data).draw({drop: {
+      _($.data).put({drop: {
         data: $(e).now,
         node: $(e).get
       }});
       return $.data;
     },
     dragend (e) {
-      _($.data).draw({
+      _($.data).put({
         drag: false,
         drop: false
       });
@@ -98,7 +98,7 @@ _($.role).draw({
 
 //$.pack rendering functions that name have Elemnent.class
 //e = event, d = $.role's return value
-_($.pack).draw({
+_($.pack).put({
   sample (e, d) {
     $(e).seem(`once more! (${d})`);
   },
@@ -169,7 +169,7 @@ body
     //paragraph
     p.$(
     //link
-      a.href("https://github.com/johnny-shaman/losand/").$("losand")
+      a.href("https://github.com/johnny-shaman/Category_Theory_Environment").$("cte")
     ).css({margin: "8px"}),
     //paragraph
     p.$(

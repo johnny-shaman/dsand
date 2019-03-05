@@ -1,18 +1,18 @@
 # $(dsand).$()
-## $(dsand).$() is a pure javascript Render with [\_(losand).\_](https://www.npmjs.com/package/losand)
+## $(dsand).$() is a pure javascript Render with [Category_Theory_Environment](https://www.npmjs.com/package/cte)
 ## Usage
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/losand@1.5.0/losand.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.14/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cte@1.1.0/cte.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.0/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.6.14/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.0/pvp.js"></script>
 ~~~
 
-If You use WebRTC PvP get's [\_(losand.pvp).\_](https://www.npmjs.com/package/losand.pvp)
+If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
 
-Let's try on [codepen](https://codepen.io/johnny_shaman/pen/oQyGzZ)
+Let's try on [codepen](https://codepen.io/johnny_shaman/pen/EMNRKQ)
 
 Support Drag and Drop on HTML5
 
@@ -20,7 +20,7 @@ If 'dragstart' handling then e.dataTransfer have e.target's number at parentNode
 
 ~~~javascript
 //$.data is state and IO modeling and presence on emutable data relation
-_($.data).draw({
+_($.data).put({
   countUp: (function*() {
     let y = 0;
     while (true) {
@@ -40,10 +40,10 @@ _($.data).draw({
 });
 
 //$.role reforming data structure functions that name have Elemnent.class
-_($.role).draw({
+_($.role).put({
   sample (e) {
     return _($(e).look.next().value)
-    .$(v => alert(`${v} time(s) clicked!`))
+    .use(v => alert(`${v} time(s) clicked!`))
     ._;
   },
   ex1: {
@@ -65,28 +65,28 @@ _($.role).draw({
   // can Assign eventType's Method's as you like it;
   getData: {
     click (e) {
-      alert(_($.id.myForm.get).json);
+      alert(_($.id.myForm.get).json._);
     }
   },
   getTestData (e) {
-    alert(_($.id.testForm.get).json);
+    alert(_($.id.testForm.get).json._);
   },
   dandTest: {
     dragstart (e) {
-      _($.data).draw({drag: {
+      _($.data).put({drag: {
         data: $(e).now,
         node: $(e).get
       }});
     },
     drop (e) {
-      _($.data).draw({drop: {
+      _($.data).put({drop: {
         data: $(e).now,
         node: $(e).get
       }});
       return $.data;
     },
     dragend (e) {
-      _($.data).draw({
+      _($.data).put({
         drag: false,
         drop: false
       });
@@ -108,7 +108,7 @@ _($.role).draw({
 
 //$.pack rendering functions that name have Elemnent.class
 //e = event, d = $.role's return value
-_($.pack).draw({
+_($.pack).put({
   sample (e, d) {
     $(e).seem(`once more! (${d})`);
   },
@@ -179,7 +179,7 @@ body
     //paragraph
     p.$(
     //link
-      a.href("https://github.com/johnny-shaman/losand/").$("losand")
+      a.href("https://github.com/johnny-shaman/Category_Theory_Environment").$("cte")
     ).css({margin: "8px"}),
     //paragraph
     p.$(
@@ -303,8 +303,8 @@ body
         ul.$(
           "本会にて…は以下に定める",
           ul.$(
-            "この…",
-            "この…"
+            1234567,
+            false
           ),
           "本会は、…",
           "本会は、以下の…",
