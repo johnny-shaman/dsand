@@ -17,7 +17,7 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
           $(
             _(uri.split("/"))
             .endo(
-              ([p, ...s]) => new WebSocket(_(s).$(s => s.unshift(
+              ([p, ...s]) => new WebSocket(_(s).use(s => s.unshift(
                 p === "https:"
                 ? "wss:"
                 : "ws:"
@@ -33,7 +33,7 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
           $(new RTCPeerConnection({
             iceServers: (
               ice.length === 0
-              ? _(ice).$(a => a.push(
+              ? _(ice).use(a => a.push(
                 {url: "stun:stun.l.google.com:19302"},
                 {url: "stun:stun3.l.google.com:19302"}
               ))._
@@ -53,7 +53,8 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
       });
     },
     pvpMsg (e) {
-      _(e.data.json._)
+      _(e.data)
+      .json
       .use(
         d => (
           d

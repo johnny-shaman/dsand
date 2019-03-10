@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/cte@1.1.0/cte.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.0/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.1/dsand.js"></script>
 <!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.1/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
