@@ -33,11 +33,11 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
           $(new RTCPeerConnection({
             iceServers: (
               ice.length === 0
-              ? _(ice).use(a => a.push(
+              ? ice.push(
                 {url: "stun:stun.l.google.com:19302"},
                 {url: "stun:stun3.l.google.com:19302"}
-              ))._
-              : ice.map(url => _(url).by._ === String ? {url} : url)
+              )
+              : ice.map(url => _.is_(url) === String ? {url} : url)
             )
           }))
           .class(
