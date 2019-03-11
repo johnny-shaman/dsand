@@ -86,7 +86,7 @@
               role: (
                 n.role == null
                 ? s
-                : _(n.role).toggle(s)._
+                : _(n.role).toggle(...s)._
               )
             })
           ))
