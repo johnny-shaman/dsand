@@ -341,7 +341,6 @@
   })
   .base
   .affix(c => c.put({
-    version: "0.7.0",
     _: s => $(document.createElement(s)),
     $: (...s) => $(
       _(document.querySelectorAll(...s)).map(l => l.length === 1 ? l[0] : l)

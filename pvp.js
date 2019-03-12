@@ -37,7 +37,7 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
                 {url: "stun:stun.l.google.com:19302"},
                 {url: "stun:stun3.l.google.com:19302"}
               )
-              : ice.map(url => _.is_(url) === String ? {url} : url)
+              : ice
             )
           }))
           .class(
