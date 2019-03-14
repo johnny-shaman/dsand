@@ -5,9 +5,9 @@
 ### html
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/cte@1.1.12/cte.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.6/dsand.js"></script>
-<!--If you use about webRTC on losand.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.6/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.7/dsand.js"></script>
+<!--If you use about webRTC on cte.pvp-->
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.7/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
@@ -28,7 +28,7 @@ _($.data).put({
     }
   })(),
   example: {
-    text: "Hello losand!"
+    text: "Hello Category_Theory_Environment!"
   },
   drag: false,
   drop: false,
@@ -166,7 +166,7 @@ body
   .id("head")
   .class("wrapper")
   .$(
-    h1.$("Hello _(losand)._").css({ margin: "16px" }),
+    h1.$("Hello Category_Theory_Environment").css({ margin: "16px" }),
     h2.$("Untouchable Any Directly").css({ margin: "16px" })
   )
   .css({
@@ -197,14 +197,14 @@ body
     .$(
 
       //h1
-      h1.$("_(losand)._ wrapping a value").css({
+      h1.$("Category_Theory_Environment wrapping a value").css({
         margin: "8px",
         padding: "8px",
         borderBottom: "1px solid #888888"
       }),
 
       //paragraph
-      p.$("losand wrapping a value on monad and like to Usage here"),
+      p.$("Category_Theory_Environment wrapping a value on monad and like to Usage here"),
       //img
       p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
