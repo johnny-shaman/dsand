@@ -27,17 +27,14 @@ const PvP = (term = {}) => (uri) => (...ice) => {
       .n
     ),
     rtc: (
-      _({iceServers: (
-        ice.length === 0
-        ? ice.push(
-          {url: "stun:stun.l.google.com:19302"},
-          {url: "stun:stun3.l.google.com:19302"}
-        )
-        : ice
-      )})
-      .endo(o => new RTCPeerConnection(o))
-      .endo($)
-      .been
+      $(new RTCPeerConnection({
+        iceServers: _(ice).pushR(
+          {urls: [
+            "stun:stun.l.google.com:19302",
+            "stun:stun3.l.google.com:19302"
+          ]}
+        )._
+      }))
       .class(
         "pvpICE",
         "pvpDCE"
@@ -46,9 +43,7 @@ const PvP = (term = {}) => (uri) => (...ice) => {
       .on(
         "icecandidate",
         "datachannel"
-      )
-      ._
-      .n
+      ).n
     )
   });
   _($.role).put({
