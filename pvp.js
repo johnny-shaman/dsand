@@ -9,49 +9,46 @@
     env
 */
 
-const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
-  _($.role).put({
-    pvpLoadFrame (e) {
-      _($.data).put({
-        pvpMsg: (
-          $(
-            _(uri.split("/"))
-            .endo(
-              ([p, ...s]) => new WebSocket(_(s).use(s => s.unshift(
-                p === "https:"
-                ? "wss:"
-                : "ws:"
-              )
-            )._.join("/")))._
+const PvP = (term = {}) => (uri) => (...ice) => {
+  _($.data).put({
+    pvpMsg: (
+      $(new WebSocket(
+        uri
+        ? uri
+        : _(env.uri.sprit("/")).lift(a => 
+          a.popL === "https:"
+          ? a.pushL("wss:")
+          : a.pushL("ws:")
+        )._.join("/"))
+      )
+      .class("pvpMsg")
+      .mark("rtc")
+      .on("message")
+      .n
+    ),
+    rtc: (
+      $(new RTCPeerConnection({
+        iceServers: (
+          ice.length === 0
+          ? ice.push(
+            {url: "stun:stun.l.google.com:19302"},
+            {url: "stun:stun3.l.google.com:19302"}
           )
-          .class("pvpMsg")
-          .mark("rtc")
-          .on("message")
-          .n
-        ),
-        rtc: (
-          $(new RTCPeerConnection({
-            iceServers: (
-              ice.length === 0
-              ? ice.push(
-                {url: "stun:stun.l.google.com:19302"},
-                {url: "stun:stun3.l.google.com:19302"}
-              )
-              : ice
-            )
-          }))
-          .class(
-            "pvpICE",
-            "pvpDCE"
-          )
-          .mark("pvpMsg")
-          .on(
-            "icecandidate",
-            "datachannel"
-          ).n
+          : ice
         )
-      });
-    },
+      }))
+      .class(
+        "pvpICE",
+        "pvpDCE"
+      )
+      .mark("pvpMsg")
+      .on(
+        "icecandidate",
+        "datachannel"
+      ).n
+    )
+  });
+  _($.role).put({
     pvpMsg (e) {
       _(e.data)
       .json
@@ -96,27 +93,13 @@ const PvP = (term = {}) => (uri = env.uri) => (...ice) => {
       )
       .use(pvp => (
         $(pvp).class("pvpDCE").off("open"),
-        _($.role.pvpCE)
-        .use(p => _.is_(p) === Function ? p(pvp) : pvp),
+        _($.role.pvpCE).use(p => _.is_(p) === Function ? p(pvp) : pvp),
         _($).put({pvp}),
-        _($.data)
-        .use(d => (
-          $(d.pvpMsg)
-          .off("message"),
-          delete d.pvpMsg
-        ))
-        .use(d => (
-          $(d.rtc)
-          .off("icecandidate", "datachannel"),
-          delete d.rtc
-        )),
-        _($.role)
-        .use(r => (
-          delete r.pvpMsg,
-          delete r.pvpICE,
-          delete r.pvpLoadFrame,
-          delete r.pvpDCE
-        ))
+        _($.data).use(d => (
+          $(d.pvpMsg).off("message"),
+          $(d.rtc).off("icecandidate", "datachannel")
+        )).delete("pvpMsg", "rtc"),
+        _($.role).delete("pvpMsg", "pvpICE", "pvpLoadFrame", "pvpDCE")
       ));
     }
   });
