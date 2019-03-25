@@ -101,27 +101,4 @@ const PvP = (term = {}) => (uri) => (...ice) => {
       ));
     }
   });
-
-  uri !== env.uri
-  ? (
-    _($.pack).use(p => _(p).put({
-      pvpLoadFrame (t) {
-        t.$();
-        delete p.pvpLoadFrame;
-      }
-    })),
-    body.$(
-      iframe
-      .$(uri)
-      .css({
-        width: "1px",
-        height: "1px",
-        display: "block",
-        border: "none"
-      })
-      .class("pvpLoadFrame")
-      .on("load")
-    )
-  )
-  : $.role.pvpLoadFrame();
 };

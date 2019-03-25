@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.7.10",
+  "version": "0.7.11",
   "description": "$(dsand).$ is client side render framework on Category Theory Environment",
   "main": "dsand.js",
   "dependencies": {
