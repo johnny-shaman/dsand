@@ -15,7 +15,7 @@ const PvP = (term = {}) => (uri) => (...ice) => {
       $(new WebSocket(
         uri
         ? uri
-        : _(env.uri.sprit("/")).lift(a => 
+        : _(env.uri.split("/")).lift(a => 
           a.popL === "https:"
           ? a.pushL("wss:")
           : a.pushL("ws:")
