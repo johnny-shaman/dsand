@@ -18,7 +18,7 @@ const PvP = (term = {}) => (uri) => (...ice) => {
         uri
         ? uri
         : _(env.uri.split("/")).lift(a => 
-          a.popL === "https:"
+          a.popL._ === "https:"
           ? a.pushL("wss:")
           : a.pushL("ws:")
         )._.join("/"))
