@@ -352,7 +352,7 @@
     names: new Set(),
     pvp: false,
     on (e) {
-      return _(e)
+      _(e)
       .use(e => (
         e.type === "dragstart"
         ? e.dataTransfer.setData("text", $(e)["@$get"]("order").toString())
@@ -374,7 +374,6 @@
     },
     soon (e, a) {
       _(a).each(k => $["@pack"](e, k, $["@role"](e, k)));
-      return false;
     },
     wait (e, a) {
       _($(e))
@@ -391,7 +390,6 @@
           )
         )
       ));
-      return false;
     },
     TABLE: c.by.make({
       $: {
