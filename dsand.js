@@ -359,11 +359,11 @@
         : (e.preventDefault(), e.stopPropagation())
       ))
       .get("target")
-      .flat(
+      .lift(
         t => (
-          _(t).get("role")._ == null
-          ? _(t).get("classList").list
-          : _(t).get("role")
+          t.get("role")._ == null
+          ? t.get("classList").list
+          : t.get("role")
         )
       )
       .flat(
@@ -397,7 +397,7 @@
         value (...n) {
           return _(this).use(
             t => _(
-              t.n.rows.length === 0
+              t.n.getElementsByTagName("tbody").length === 0
               ? t.n.createTBody.call(t.n)
               : t.n.getElementsByTagName("tbody")[0]
             )
