@@ -299,6 +299,18 @@
         return _(this.n.children).list.map(c => $(c))._;
       }
     },
+    back: {
+      configurable: true,
+      get () {
+        return $(this.n.previousSibling);
+      }
+    },
+    next: {
+      configurable: true,
+      get () {
+        return $(this.n.previousSibling);
+      }
+    },
     now: {
       configurable: true,
       get () {

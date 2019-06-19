@@ -4,10 +4,10 @@
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/cte@1.1.12/cte.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.13/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cte@1.2.2/cte.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.21/dsand.js"></script>
 <!--If you use about webRTC on cte.pvp-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.13/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.21/pvp.js"></script>
 ~~~
 
 If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
@@ -397,6 +397,13 @@ $.id.today.real
 
 //setAttribute on Element or Node
 $.id.today.set({test: true});
+
+//get nextElement
+$.id.myForm.next;
+
+//get previous Element
+$.id.myForm.back;
+
 //form's setAttribute
 $.id.myForm.set$({test: false});
 
