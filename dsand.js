@@ -299,16 +299,16 @@
         return _(this.n.children).list.map(c => $(c))._;
       }
     },
-    back: {
-      configurable: true,
-      get () {
-        return $(this.n.previousSibling);
-      }
-    },
     next: {
       configurable: true,
       get () {
-        return $(this.n.previousSibling);
+        return this.n.nextSibling ? $(this.n.nextSibling) : null;
+      }
+    },
+    back: {
+      configurable: true,
+      get () {
+        return this.n.previousSibling ? $(this.n.previousSibling) : null;
       }
     },
     now: {
