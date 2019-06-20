@@ -282,9 +282,7 @@
     pick: {
       configurable: true,
       get () {
-        return this.n.children.length > 1
-        ? $(this.n.children)
-        : $(this.n.children[0]);
+        return $(this.n.children[0]);
       }
     },
     outer: {
