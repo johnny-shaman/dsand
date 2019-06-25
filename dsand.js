@@ -24,9 +24,9 @@
 
   const $ = _(function (n) {
     return _(
-      (n.tagName !== undefined && $[n.tagName] !== undefined)
-      ? $[n.tagName]
-      : $.prototype
+      n instanceof Event
+      ? $[n.target.tagName || "prototype"] || $.prototype
+      : $[n.tagName || "prototype"] || $.prototype
     )
     .create({
       n: {
@@ -37,8 +37,7 @@
           : n;
         }
       }
-    })
-    ._;
+    })._;
   })
   .fork
   .by
