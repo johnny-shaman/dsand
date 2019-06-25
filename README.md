@@ -398,7 +398,7 @@ $.id.today.real
 //setAttribute on Element or Node
 $.id.today.set({test: true});
 
-//get nextElement
+//get next Element
 $.id.myForm.next;
 
 //get previous Element
