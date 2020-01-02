@@ -6,8 +6,8 @@
 </head>
 
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/cte@1.1.0/cte.js"></script>
-  <script type="text/javascript" src="../dsand.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.15/cat.js"></script>
+  <script type="text/javascript" src="../dsand.w.js"></script>
   <script type="text/javascript">
 //$.data is state and IO modeling and presence on emutable data relation
 _($.data).put({
@@ -18,7 +18,7 @@ _($.data).put({
     }
   })(),
   example: {
-    text: "Hello losand!"
+    text: "Hello White_Cats!"
   },
   drag: false,
   drop: false,
@@ -32,9 +32,9 @@ _($.data).put({
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).put({
   sample (e) {
-    return _($(e).look.next().value)
-    .use(v => alert(`${v} time(s) clicked!`))
-    ._;
+    return _($(e).look.next().value).loop(
+      v => alert(`${v} time(s) clicked!`)
+    )._;
   },
   ex1: {
     click (e) {
@@ -43,35 +43,33 @@ _($.role).put({
   },
   ex2: {
     click (e) {
-      alert($(e).want);
+      alert($(e).gaze);
     }
   },
   ex3 (e) {
     alert($(e).look.text);
   },
   ex4 (e) {
-    alert($(e).want);
+    alert($(e).gaze);
   },
   // can Assign eventType's Method's as you like it;
   getData: {
     click (e) {
-      alert(_($.id.myForm.get).json._);
+      $(e).strict;
+      alert(_($.byId('myForm').take).toJSON._);
     }
-  },
-  getTestData (e) {
-    alert(_($.id.testForm.get).json._);
   },
   dandTest: {
     dragstart (e) {
       _($.data).put({drag: {
-        data: $(e).now,
-        node: $(e).get
+        data: $(e).inner,
+        node: $(e).it
       }});
     },
     drop (e) {
       _($.data).put({drop: {
-        data: $(e).now,
-        node: $(e).get
+        data: $(e).inner,
+        node: $(e).it
       }});
       return $.data;
     },
@@ -100,22 +98,22 @@ _($.role).put({
 //e = event, d = $.role's return value
 _($.pack).put({
   sample (e, d) {
-    $(e).seem(`once more! (${d})`);
+    $(e).$(`once more! (${d})`);
   },
   ex1: {
     click (e) {
-      $(e).seem("Thank you!");
+      $(e).$("Thank you!");
     }
   },
   ex2 (e) {
-    $(e).seem("Thank you!");
+    $(e).$("Thank you!");
   },
   ex3 (e) {
-    $(e).seem("Thank you!");
+    $(e).$("Thank you!");
   },
   ex4: {
     click (e) {
-      $(e).seem("Thank you!");
+      $(e).$("Thank you!");
     }
   },
   dandTest: {
@@ -124,9 +122,9 @@ _($.pack).put({
     },
     drop (e, {drag, drop}) {
       $(drag.node)
-      .seem(drop.data);
+      .$(drop.data);
       $(drop.node)
-      .seem(drag.data);
+      .$(drag.data);
     },
     dragend (e) {
       $(e).css({opacity: "1"});
@@ -135,22 +133,22 @@ _($.pack).put({
   /*
   // can use async await
   async asyncEx (e, d) {
-    $(e).seem(await d);
+    $(e).$(await d);
   }
   // also can use 
   asyncEx : {
     async click (e) {
-      $(e).seem(await d);
+      $(e).$(await d);
     }
   }
   */
 });
 
 //start initial rendering
-body
+$body
 .id("view")
 .class("wrapper")
-.set({myId: "myId"}) // set is setAttaribute value is null then removeAttribute.
+.set("myId")("myId") // set is setAttaribute value is null then removeAttribute.
 .$(
   header
   .id("head")
@@ -169,7 +167,7 @@ body
     //paragraph
     p.$(
     //link
-      a.href("https://github.com/johnny-shaman/Category_Theory_Environment").$("cte")
+      a.href("https://github.com/johnny-shaman/white_cats/").$("White Cats")
     ).css({margin: "8px"}),
     //paragraph
     p.$(
@@ -183,7 +181,7 @@ body
   .$(
     article
     .id("today")
-    .class("wrapper", "article")
+    .class("wrapper article")
     .$(
 
       //h1
@@ -211,13 +209,13 @@ body
       // lazy handle the event wait on it last time
       p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
       // distinate other way of data and methods
-      p.$(button.mark("example, text").class("ex1").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex1").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example", "text").class("ex2").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex2").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example, text").class("ex3").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex3").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example", "text").class("ex4").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex4").on("click").$("click please")),
       //table
       table
       .caption("drag and drop Test")
@@ -230,7 +228,6 @@ body
         e => (
           e
           .class("dandTest")
-          .drag(true)
           .css({
             fontSize: "16px",
             minWidth: "32px",
@@ -239,12 +236,7 @@ body
             verticalAlign: "middle",
             border: "1px solid #000000"
           })
-          .on(
-            "dragstart",
-            "dragover",
-            "dragend",
-            "drop"
-          )
+          .on("dragstart, dragover, dragend, drop")
         )
       ),
       table
@@ -302,7 +294,7 @@ body
             "この総則は…",
             "この総則の…"
           )
-        ),
+        )
       )
       .each(i => i.class("test")),
 
@@ -310,22 +302,27 @@ body
       form
       .id("myForm")
       .$(
-        select.name("tSelect1").$({test: 0, test1: 1}), br,
-        select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
-        select.name("tSelect3").$({
-          testgrp: {
-            test: 0,
-            test1: 1
-          },
-          testgrp1: [3, 4, 5, 6, 7]
-        }), br,
-        check("tCheck1", "test"),
-        check("tCheck2", "test1"),
-        ...radios("tRadio1", [1, 2, 3]), br,
-        ...radios("tRadio2", { test1: 1, test2: 2 }), br,
-        button.class("getData").$("Get FormData").on("click")
+        field('t1')(
+          select.name("tSelect1").$({test: 0, test1: 1}), br,
+          select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
+          select.name("tSelect3").$({
+            testgrp: {
+              test: 0,
+              test1: 1
+            },
+            testgrp1: [3, 4, 5, 6, 7]
+          }), br,
+          ...autoText('tText1')('icecream', 'soda', 'cola', 'coffee', 'tea'), br,
+          text.name('tText2')
+        ),
+        field('t2')(
+          check("tCheck1", "test"), check("tCheck2", "test1"), br,
+          ...radios("tRadio1")([1, 2, 3]), br,
+          ...radios("tRadio2")({ test1: 1, test2: 2 }), br,
+          button.class("getData").$("Get FormData").on("click")
+        )
       )
-      .set({
+      .give({
         tSelect1: 1,
         tSelect2: 7,
         tSelect3: 5,
@@ -333,33 +330,6 @@ body
         tCheck2: true,
         tRadio1: 3,
         tRadio2: 1
-      }),
-      
-      form
-      .id("testForm")
-      .field(
-        {
-          f1: {
-            item: text,
-            list: ["about", "bout", "count", "doubt"]
-          },
-          f2: {
-            item: _(radios).part(null, [1, 2, 3])
-          },
-          f3: {
-            item: _(check).part(null, "test")
-          },
-          f4: {
-            item: select.$({test: 0, test1: 1})
-          }
-        }
-      )
-      .$(
-        button.class("getTestData").$("Get FormData").on("click")
-      )
-      .set({
-        f2: 2,
-        f4: 1
       })
     )
   )

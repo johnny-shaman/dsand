@@ -1,0 +1,24 @@
+{
+  TABLE: {},
+  TR: {},
+  TD: {},
+  SELECT: {},
+  OPTGROUP: {},
+  DATALIST: {},
+  INPUT: {},
+  FORM: {},
+  UL: {},
+  OL: {}
+}
+{
+  IMG: {},
+  VIDEO: {},
+  AUDIO: {},
+  IFRAME: {},
+  SCRIPT: {},
+}
+_.put($['#'], {
+  Element: _.upto($.prototype, {
+
+  })
+});
