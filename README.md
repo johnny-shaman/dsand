@@ -1,13 +1,14 @@
 # $(dsand).$()
-## $(dsand).$() is a pure javascript Render with [Category_Theory_Environment](https://www.npmjs.com/package/cte)
+## $(dsand).$() is a pure javascript Render with [white_cats](https://www.npmjs.com/package/white_cats)
 ## Usage
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/cte@1.3.2/cte.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.31/dsand.js"></script>
-<!--If you use about webRTC on cte.pvp-->
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.15/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.51/dsand.js"></script>
+<!--If you use about webRTC on cte.pvp
 <script src="https://cdn.jsdelivr.net/npm/dsand@0.7.31/pvp.js"></script>
+-->
 ~~~
 
 If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
@@ -28,7 +29,7 @@ _($.data).put({
     }
   })(),
   example: {
-    text: "Hello Category_Theory_Environment!"
+    text: "Hello White_Cats!"
   },
   drag: false,
   drop: false,
@@ -42,9 +43,9 @@ _($.data).put({
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).put({
   sample (e) {
-    return _($(e).look.next().value)
-    .use(v => alert(`${v} time(s) clicked!`))
-    ._;
+    return _($(e).look.next().value).loop(
+      v => alert(`${v} time(s) clicked!`)
+    )._;
   },
   ex1: {
     click (e) {
@@ -53,35 +54,33 @@ _($.role).put({
   },
   ex2: {
     click (e) {
-      alert($(e).want);
+      alert($(e).gaze);
     }
   },
   ex3 (e) {
     alert($(e).look.text);
   },
   ex4 (e) {
-    alert($(e).want);
+    alert($(e).gaze);
   },
   // can Assign eventType's Method's as you like it;
   getData: {
     click (e) {
-      alert(_($.id.myForm.get).json._);
+      $(e).strict;
+      alert(_($.byId('myForm').take).toJSON._);
     }
-  },
-  getTestData (e) {
-    alert(_($.id.testForm.get).json._);
   },
   dandTest: {
     dragstart (e) {
       _($.data).put({drag: {
-        data: $(e).now,
-        node: $(e).get
+        data: $(e).inner,
+        node: $(e).it
       }});
     },
     drop (e) {
       _($.data).put({drop: {
-        data: $(e).now,
-        node: $(e).get
+        data: $(e).inner,
+        node: $(e).it
       }});
       return $.data;
     },
@@ -110,22 +109,22 @@ _($.role).put({
 //e = event, d = $.role's return value
 _($.pack).put({
   sample (e, d) {
-    $(e).seem(`once more! (${d})`);
+    $(e).$(`once more! (${d})`);
   },
   ex1: {
     click (e) {
-      $(e).seem("Thank you!");
+      $(e).$("Thank you!");
     }
   },
   ex2 (e) {
-    $(e).seem("Thank you!");
+    $(e).$("Thank you!");
   },
   ex3 (e) {
-    $(e).seem("Thank you!");
+    $(e).$("Thank you!");
   },
   ex4: {
     click (e) {
-      $(e).seem("Thank you!");
+      $(e).$("Thank you!");
     }
   },
   dandTest: {
@@ -134,9 +133,9 @@ _($.pack).put({
     },
     drop (e, {drag, drop}) {
       $(drag.node)
-      .seem(drop.data);
+      .$(drop.data);
       $(drop.node)
-      .seem(drag.data);
+      .$(drag.data);
     },
     dragend (e) {
       $(e).css({opacity: "1"});
@@ -145,28 +144,28 @@ _($.pack).put({
   /*
   // can use async await
   async asyncEx (e, d) {
-    $(e).seem(await d);
+    $(e).$(await d);
   }
   // also can use 
   asyncEx : {
     async click (e) {
-      $(e).seem(await d);
+      $(e).$(await d);
     }
   }
   */
 });
 
 //start initial rendering
-body
+$body
 .id("view")
 .class("wrapper")
-.set({myId: "myId"}) // set is setAttaribute value is null then removeAttribute.
+.set("myId")("myId") // set is setAttaribute value is null then removeAttribute.
 .$(
   header
   .id("head")
   .class("wrapper")
   .$(
-    h1.$("Hello Category_Theory_Environment").css({ margin: "16px" }),
+    h1.$("Hello _(losand)._").css({ margin: "16px" }),
     h2.$("Untouchable Any Directly").css({ margin: "16px" })
   )
   .css({
@@ -179,7 +178,7 @@ body
     //paragraph
     p.$(
     //link
-      a.href("https://github.com/johnny-shaman/Category_Theory_Environment").$("cte")
+      a.href("https://github.com/johnny-shaman/white_cats/").$("White Cats")
     ).css({margin: "8px"}),
     //paragraph
     p.$(
@@ -193,18 +192,18 @@ body
   .$(
     article
     .id("today")
-    .class("wrapper", "article")
+    .class("wrapper article")
     .$(
 
       //h1
-      h1.$("Category_Theory_Environment wrapping a value").css({
+      h1.$("_(losand)._ wrapping a value").css({
         margin: "8px",
         padding: "8px",
         borderBottom: "1px solid #888888"
       }),
 
       //paragraph
-      p.$("Category_Theory_Environment wrapping a value on monad and like to Usage here"),
+      p.$("losand wrapping a value on monad and like to Usage here"),
       //img
       p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
@@ -221,13 +220,13 @@ body
       // lazy handle the event wait on it last time
       p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
       // distinate other way of data and methods
-      p.$(button.mark("example, text").class("ex1").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex1").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example", "text").class("ex2").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex2").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example, text").class("ex3").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex3").on("click").$("click please")),
       // distinate other way of data and methods
-      p.$(button.mark("example", "text").class("ex4").on("click").$("click please")),
+      p.$(button.mark("example.text").class("ex4").on("click").$("click please")),
       //table
       table
       .caption("drag and drop Test")
@@ -240,7 +239,6 @@ body
         e => (
           e
           .class("dandTest")
-          .drag(true)
           .css({
             fontSize: "16px",
             minWidth: "32px",
@@ -249,12 +247,7 @@ body
             verticalAlign: "middle",
             border: "1px solid #000000"
           })
-          .on(
-            "dragstart",
-            "dragover",
-            "dragend",
-            "drop"
-          )
+          .on("dragstart, dragover, dragend, drop")
         )
       ),
       table
@@ -312,7 +305,7 @@ body
             "この総則は…",
             "この総則の…"
           )
-        ),
+        )
       )
       .each(i => i.class("test")),
 
@@ -320,22 +313,27 @@ body
       form
       .id("myForm")
       .$(
-        select.name("tSelect1").$({test: 0, test1: 1}), br,
-        select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
-        select.name("tSelect3").$({
-          testgrp: {
-            test: 0,
-            test1: 1
-          },
-          testgrp1: [3, 4, 5, 6, 7]
-        }), br,
-        check("tCheck1", "test"),
-        check("tCheck2", "test1"),
-        ...radios("tRadio1", [1, 2, 3]), br,
-        ...radios("tRadio2", { test1: 1, test2: 2 }), br,
-        button.class("getData").$("Get FormData").on("click")
+        field('t1')(
+          select.name("tSelect1").$({test: 0, test1: 1}), br,
+          select.name("tSelect2").$([3, 4, 5, 6, 7]), br,
+          select.name("tSelect3").$({
+            testgrp: {
+              test: 0,
+              test1: 1
+            },
+            testgrp1: [3, 4, 5, 6, 7]
+          }), br,
+          ...autoText('tText1')('icecream', 'soda', 'cola', 'coffee', 'tea'), br,
+          text.name('tText2')
+        ),
+        field('t2')(
+          check("tCheck1", "test"), check("tCheck2", "test1"), br,
+          ...radios("tRadio1")([1, 2, 3]), br,
+          ...radios("tRadio2")({ test1: 1, test2: 2 }), br,
+          button.class("getData").$("Get FormData").on("click")
+        )
       )
-      .set({
+      .give({
         tSelect1: 1,
         tSelect2: 7,
         tSelect3: 5,
@@ -343,75 +341,45 @@ body
         tCheck2: true,
         tRadio1: 3,
         tRadio2: 1
-      }),
-      
-      form
-      .id("testForm")
-      .field(
-        {
-          f1: {
-            item: text,
-            list: ["about", "bout", "count", "doubt"]
-          },
-          f2: {
-            item: _(radios).part(null, [1, 2, 3])
-          },
-          f3: {
-            item: _(check).part(null, "test")
-          },
-          f4: {
-            item: select.$({test: 0, test1: 1})
-          }
-        }
-      )
-      .$(
-        button.class("getTestData").$("Get FormData").on("click")
-      )
-      .set({
-        f2: 2,
-        f4: 1
       })
     )
   )
 );
 
 //getElements
-$.id.today;
-$.class.wrapper[1]
-$.name.tRadio1[0]
+$.byId('today');
+$.byClass('wrapper')[1]
+$.byName('tRadio1')[0]
 
 //select.firstChild
-$.id.today.pick
+$.byId('today').pick
 
 //select.children
-$.id.today.inner[1]
+$.byId('today').inner[1]
 
 //select.parent
-$.name.tRadio1[0].outer
+$.byName('tRadio1')[0].outer
 
 //getRawElement or Node
-$.id.today.get
+$.byId('today').it
 
 //getComputedStyle
-$.id.today.real
+$.byId('today').real
 
 //setAttribute on Element or Node
-$.id.today.set({test: true});
+$.byId('today').set('test')(true);
 
 //get next Element
-$.id.myForm.next;
+$.byId('myForm').next;
 
 //get previous Element
-$.id.myForm.back;
-
-//form's setAttribute
-$.id.myForm.set$({test: false});
+$.byId('myForm').back;
 
 //class is every togglable
-$.class.wrapper[0].class("wrapper", "warp", "foooooYah");
+$.byClass('wrapper')[0].class("wrapper", "warp", "foooooYah");
 
 //append
-$.id.today.$(
+$.byId('today').append(
   p.$("appended")
 )
 
@@ -419,10 +387,10 @@ $.id.today.$(
 $(new WebSocket("http://sample.io/")).class("test").on("message");
 
 //remove Selected Query
-$.id.today.$();
+$.byId('myForm').$();
 
 //formdata to js Object
-$.id.myForm.get
+$.byId('myForm').take
 
 //imports
 imports("http://sample.io/foo.js", "http://sample.io/bar.js", "http://sample.io/baz.js");
