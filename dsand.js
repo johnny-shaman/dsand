@@ -1,1098 +1,1275 @@
-/*
-  global
-    _
-    location
-    fieldset
-    datalist
-    Option
-    li
-    optgroup
-    input
-    label
-    radio
-    checkbox
-    Event
-    Element
-    navigator
-    script
-    body
-    br
-*/
-
-(() => {
-  "use strict";
-
+((apex) => {
   const $ = _(function (n) {
-    return _(
-      n instanceof Event
-      ? $[n.target.tagName || "prototype"] || $.prototype
-      : $[n.tagName || "prototype"] || $.prototype
-    )
-    .create({
-      n: {
-        configurable: true,
-        get () {
-          return n instanceof Event
-          ? n.target
-          : n;
+    return _.upto(
+      _(n).pipe($['@Event'], $['@Inherit'])._,
+      {
+        n: {
+          configurable: true,
+          get () {
+            return n instanceof Event
+            ? n.target
+            : n;
+          }
+        },
+        raw: {
+          configurable: true,
+          get () {
+            return n;
+          }
         }
       }
-    })._;
+    );
   })
-  .fork
-  .by
   .define({
-    get: {
+    $: {
       configurable: true,
-      get () {
-        return this.n;
+      value (s) {
+        return $(document.createElement(s));
       }
     },
-    set: {
-      configurable: true,
-      value (o) {
-        return _(this).use(
-          ({get}) => _(o).each(
-            (k, v) => (
-              v == null
-              ? get.removeAttribute(k)
-              : get.setAttribute(k, v)
-            )
-          )
-        )._;
-      }
-    },
-    id: {
-      configurable: true,
-      value (id) {
-        return _(this).use(t => _(t.n).put({id}))._;
-      }
-    },
-    title: {
-      configurable: true,
-      value (title) {
-        return _(this).use(t => _(t.n).put({title}))._;
-      }
-    },
-    "class": {
+    _: {
       configurable: true,
       value (...s) {
-        return _(this).use(
-          t => _(t.n).use(n => (
-            n instanceof Element
-            ? _(s).each(v => n.classList.toggle(v))
-            : _(n).put({
-              role: (
-                n.role == null
-                ? s
-                : _(n.role).toggle(...s)._
-              )
-            })
-          ))
-        )._;
-      }
-    },
-    name: {
-      configurable: true,
-      value (name) {
-        return _(this).use(t => _(t.n).put({name}), $.names.add(name))._;
-      }
-    },
-    css: {
-      configurable: true,
-      value (o) {
-        return _(this).use(t => _(t.n.style).put(o))._;
-      }
-    },
-    style: {
-      configurable: true,
-      value (o) {
-        return _(this).use(t => _(t.n.style).put(o))._;
-      }
-    },
-    item: {
-      configurable: true,
-      value (o) {
-        return _(this).use(
-          ({get}) => _(o).reduce(
-            (p, k, v) => p(`item${k}`, v),
-            get.setAttribute
-          )
-        )._;
-      }
-    },
-    "@$set": {
-      configurable: true,
-      value (o) {
-        return _(this).use(
-          t => t.n instanceof Element
-          ? (
-            o.constructor === String
-            ? delete t.n.dataset[o]
-            : _(t.n.dataset).put(o)
-          )
-          : (
-            o.constructor === String
-            ? delete t.n[o]
-            : _(t.n).put(o)
-          )
-        )._;
-      }
-    },
-    "@$get": {
-      configurable: true,
-      value (k) {
-        return _(this).flat(
-          t => t.n instanceof Element
-          ? _(t.n.dataset[k]).json
-          : _(t.n[k])
+        return _(document.querySelectorAll(...s))
+        .pipe(
+          l => l.length === 1
+          ? $(l[0])
+          : _.sure(l).map($)
         );
       }
     },
-    mark: {
+    data: {
       configurable: true,
-      value (...s) {
-        return _(this).use(t => t["@$set"]({mark: s.join(", ")}))._;
-      }
+      value: {}
     },
-    want: {
+    role: {
       configurable: true,
-      get () {
-        return this["@$get"]("mark").flat(
-          s => _($.data).get(...s.split(", "))
-        )._;
-      }
+      value: {}
     },
-    look: {
+    pack: {
       configurable: true,
-      get () {
-        return this["@$get"]("mark").endo(
-          s => $.data[s.split(", ").shift()]
-        )._;
-      }
+      value: {}
     },
-    drag: {
+    names: {
       configurable: true,
-      value (draggable) {
-        return this.set({draggable});
-      }
-    },
-    drop: {
-      configurable: true,
-      value (dropzone) {
-        return this.set({dropzone});
-      }
+      value: new Set()
     },
     on: {
       configurable: true,
-      value (...a) {
-        return _(this).use(
+      value (e) {
+        $(e)
+        .loop(
           t => (
-            a.includes("dragstart") && t.drag(true),
-            _(a).each(v => t.n.addEventListener.call(t.n, v, $.on))
+            t.raw.type === 'dragstart' && t.raw.dataTransfer.setData(
+              'text',
+              JSON.stringify(_.put(t.get('name, value'), {text: t.inner}))
+            ),
+            t.raw.type === 'dragover' && t.drop(v => v && t.strict),
+            t.wait(
+              w => w == null
+              ? $.soon(e, _.sure(t.n.classList))
+              : $.wait(e, w, _.sure(t.n.classList))
+            )
           )
-        )._;
+        );
       }
     },
-    off: {
+    soon: {
       configurable: true,
-      value (...a) {
-        return _(this).use(
-          t => (
-            a.includes("dragstart") && t.drag(false),
-            _(a).each(v => t.n.removeEventListener.call(t.n, v, $.on))
-          )
-        )._;
-      }
-    },
-    once: {
-      configurable: true,
-      value (...a) {
-        return _(this).use(
-          t => (
-            a.includes("dragstart") && t.drag(false),
-            _(a).each(v => t.n.addEventListener.call(t.n, v, $.on, {once: true}))
-          )
-        )._;
-      }
-    },
-    beat: {
-      configurable: true,
-      value (...a) {
-        return _(this).use(
-          t => t["@$set"]({
-            beat: _(a).flat(a => (
-              t["@beat"]._ == null
-              ? _(a)
-              : t["@beat"].endo(s => s.split(", ")).toggle(...a)
-            )).use(b => t.once(...b))._.join(", ")
-          })
-        )._;
-      }
-    },
-    "@beat": {
-      configurable: true,
-      get () {
-        return this["@$get"]("beat");
+      value (e, a) {
+        a.forEach(k => $['@pack'](e, k, $['@role'](e, k)));
       }
     },
     wait: {
       configurable: true,
-      value (wait) {
-        return this["@$set"]({wait});
-      }
-    },
-    "@wait": {
-      configurable: true,
-      get () {
-        return this["@$get"]("wait");
-      }
-    },
-    timer: {
-      configurable: true,
-      value (timer) {
-        return this["@$set"]({timer});
-      }
-    },
-    "@timer": {
-      configurable: true,
-      get () {
-        return this["@$get"]("timer");
-      }
-    },
-    $: {
-      configurable: true,
-      value (...n) {
-        n[0] !== undefined
-        ? this.n.append.call(
-          this.n,
-          ...n.map(
-            (v, k) => (
-              v instanceof $
-              ? v["@$set"]("order", k).n
-              : v
-            )
-          )
-        )
-        : this.n.remove.call(this.n);
-        return this;
-      }
-    },
-    pick: {
-      configurable: true,
-      get () {
-        return $(this.n.children[0]);
-      }
-    },
-    outer: {
-      configurable: true,
-      get () {
-        return $(this.n.parentNode);
-      }
-    },
-    inner: {
-      configurable: true,
-      get () {
-        return _(this.n.children).list.map(c => $(c))._;
-      }
-    },
-    next: {
-      configurable: true,
-      get () {
-        return this.n.nextSibling ? $(this.n.nextSibling) : null;
-      }
-    },
-    back: {
-      configurable: true,
-      get () {
-        return this.n.previousSibling ? $(this.n.previousSibling) : null;
-      }
-    },
-    now: {
-      configurable: true,
-      get () {
-        return this.n.innerText;
-      },
-      set (v) {
-        this.n.innerText = v;
-        return true;
-      }
-    },
-    seem: {
-      configurable: true,
-      value (v) {
-        this.now = v;
-        return this;
-      }
-    },
-    real: {
-      configurable: true,
-      get () {
-        return document.getComputedStyle(this.n);
-      }
-    },
-    role: {
-      configurable: true,
-      get () {
-        return _(this).bind(
-          t => _(t.n.classList).list.map(a => a.map(k => $.role[k]))._
-        )._;
-      }
-    },
-    pack: {
-      configurable: true,
-      get () {
-        return _(this).bind(
-          t => _(t.n.classList).list.map(a => a.map(k => $.pack[k]))._
-        )._;
-      }
-    }
-  })
-  .base
-  .affix(c => c.put({
-    _: s => $(document.createElement(s)),
-    $: (...s) => $(
-      _(document.querySelectorAll(...s)).map(l => l.length === 1 ? l[0] : l)
-    ),
-    data: {},
-    role: {},
-    pack: {},
-    part: {},
-    names: new Set(),
-    pvp: false,
-    on (e) {
-      _(e)
-      .use(e => (
-        e.type === "dragstart"
-        ? e.dataTransfer.setData("text", $(e)["@$get"]("order").toString())
-        : (e.preventDefault(), e.stopPropagation())
-      ))
-      .get("target")
-      .lift(
-        t => (
-          t.get("role")._ == null
-          ? t.get("classList").list
-          : t.get("role")
-        )
-      )
-      .flat(
-        a => $(e)["@wait"]._ == null
-        ? $.soon(e, a)
-        : $.wait(e, a)
-      );
-    },
-    soon (e, a) {
-      _(a).each(k => $["@pack"](e, k, $["@role"](e, k)));
-    },
-    wait (e, a) {
-      _($(e))
-      .use(n => _(n["@wait"]._).use(
-        m => (
-          n["@beat"].endo(a => a.includes(e.type))._
+      value (e, w, a) {
+        $(e).loop(
+          t => t.get('beat') && _(t.get('beat')).toObject._.includes(e.type)
           ? (
-            n.timer(setTimeout(() => n.once(e.type), m)),
+            t.timer(setTimeout(() => t.once(e.type), w)),
             $.soon(e, a)
           )
           : (
-            clearTimeout(n["@timer"]._),
-            n.timer(_(setTimeout(() => $.soon(e, a), m))._)
+            t.timer(clearTimeout),
+            t.timer(setTimeout(() => $.soon(e, a), w))
           )
-        )
-      ));
+        );
+      }
     },
-    TABLE: c.by.make({
-      $: {
-        configurable: true,
-        value (...n) {
-          return _(this).use(
-            t => _(
-              t.n.getElementsByTagName("tbody").length === 0
-              ? t.n.createTBody.call(t.n)
-              : t.n.getElementsByTagName("tbody")[0]
-            )
-            .use(
-              t => 
-              _(n).each((v, r) => (
-                t.rows.length <= r
-                ? $(t.insertRow())["@$set"]({r}).$(r, ...v)
-                : $(t.rows[r])["@$set"]({r}).$(r, ...v)
-              ))
-            )
-          )._;
-        }
-      },
-      caption: {
-        configurable: true,
-        value (...v) {
-          return _(this).use(
-            t => $(t.n.createCaption.call(t.n)).$(...v)
-          )._;
-        }
-      },
-      cHead: {
-        configurable: true,
-        value (...n) {
-          return _(this).use(
-            t => $(t.n.createTHead.call(t.n).insertRow()).head(...n)
-          )._;
-        }
-      },
-      rHead: {
-        configurable: true,
-        value (...n) {
-          return _(this).use(
-            t => _(t.n.createTBody.call(t.n)).use(
-              t => _(n).each(v => $(t.insertRow()).head(v))
-            )
-          )._;
-        }
-      },
-      cFoot: {
-        configurable: true,
-        value (...n) {
-          return _(this).use(
-            t => $(t.n.createTFoot.call(t.n).insertRow()).foot(...n)
-          )._;
-        }
-      },
-      row: {
-        configurable: true,
-        get () {
-          return _(this.get.rows).list.map(v => $(v))._;
-        }
-      },
-      cell: {
-        configurable: true,
-        get () {
-          return this.row.map(v => v.cell);
-        }
-      },
-      cols: {
-        configurable: true,
-        get () {
-          return new Proxy(this.row, {
-            get (r, k) {
-              return r.map(r => r.cell[k]);
+    byId: {
+      configurable: true,
+      value (...k) {
+        return k.flatMap(k => k.split(_.xCs)).length === 1
+        ? $(document.getElementById(k.pop()))
+        : _(k)
+        .fMap(k => k.split(_.xCs))
+        .map(
+          document.getElementById,
+          $
+        )._;
+      }
+    },
+    byClass: {
+      configurable: true,
+      value (...k) {
+        return k.flatMap(k => k.split(_.xCs)).length === 1
+        ? _.sure(document.getElementsByClassName(k.pop())).map($)
+        : _(k)
+        .fMap(
+          k => k.split(_.xCs),
+          k => _.sure(document.getElementsByClassName(k)),
+          $
+        )._;
+      }
+    },
+    byName: {
+      configurable: true,
+      value (...k) {
+        return k.flatMap(k => k.split(_.xCs)).length === 1
+        ? _.sure(document.getElementsByName(k.pop())).map($)
+        : _(k)
+        .fMap(
+          k => k.split(_.xCs),
+          k => _.sure(document.getElementsByName(k)),
+          $
+        )._;
+      }
+    },
+    '@Event': {
+      configurable: true,
+      value (n) {
+        return n instanceof Event ? n.target : n
+      }
+    },
+    '@Inherit': {
+      configurable: true,
+      value (n) {
+        switch (true) {
+          default : {
+            return $.prototype
+          }
+          case n instanceof NodeList: {
+            return $['#'].Inputs;
+          }
+          case n instanceof Element:
+          switch (n.type) {
+            case 'radio': case 'checkbox': {
+              return $['#'].Checker;
             }
-          });
-        }
-      },
-      each: {
-        configurable: true,
-        value (f, ...v) {
-          return _(this).use(t => _(t.row).each(r => r.each(f, ...v)))._;
-        }
-      }
-    })._,
-    TR: c.by.make({
-      $: {
-        configurable: true,
-        value (r, ...n) {
-          return _(this)
-          .use(t => _(n).each(
-            (v, c) => $(t.n.insertCell.call(t.n))["@$set"]({r, c}).$(v)
-          ))
-          ._;
-        }
-      },
-      head: {
-        configurable: true,
-        value (...n) {
-          return _(this)
-          .use(t => _(n).each(v => $.prototype.$.call(
-            t,
-            $(document.createElement("th")).$(v)
-          )))
-          ._;
-        }
-      },
-      foot: {
-        configurable: true,
-        value (...n) {
-          return _(this)
-          .use(t => _(n).each(v => $(this.n.insertCell.call(this.n)).$(v)))
-          ._;
-        }
-      },
-      cell: {
-        configurable: true,
-        get () {
-          return _(this.get.cells).list.map(v => $(v))._;
-        }
-      },
-      each: {
-        configurable: true,
-        value (f, ...v) {
-          return _(this).use(t => _(t.cell).each(c => f(c, ...v)))._;
+            default: switch (n.tagName) {
+              case 'IMG': case 'VIDEO': case 'AUDIO': case 'IFRAME': case 'SCRIPT': {
+                return $['#'].Media;
+              }
+              case 'UL': case 'OL': {
+                return $['#'].List;
+              }
+              case 'TEXTAREA': {
+                return $['#'].INPUT;
+              }
+              default: switch (true) {
+                case $['#'][n.tagName] == null: {
+                  return $['#'].Element;
+                }
+                default: {
+                  return $['#'][n.tagName];
+                }
+              }
+            }
+          }
         }
       }
-    })._,
-    TD: c.by.make({
-      r: {
-        configurable: true,
-        get () {
-          return this["@$get"]("r")._;
-        }
-      },
-      c: {
-        configurable: true,
-        get () {
-          return this["@$get"]("c")._;
-        }
-      }
-    })._,
-    SELECT: c.by.make({
-      $: {
-        configurable: true,
-        value (n) {
-          _(
-            n.constructor === Object
-            ? _(n).keys.map(k => (
-              n[k].constructor === Array || n[k].constructor === Object
-              ? optgroup.label(k).$(n[k])
-              : new Option(k, n[k]))
-            )._
-            : (
-              n.constructor === Array
-              ? n.map(v => v.constructor === Option ? v : new Option(v, v))
-              : _(n).$(v => this.now = v).map(v => v === undefined && [])._
-            )
-          ).use(v => v.constructor === Array && $.prototype.$.call(this, ...v));
-          return this;
-        }
-      },
-      select: {
-        configurable: true,
-        value (value) {
-          return _(this).use(t => _(t.n).put({value}))._;
-        }
-      },
-      value: {
-        configurable: true,
-        value (value) {
-          return _(this).use(t => _(t.n).put({value}))._;
-        }
-      },
-      now: {
-        configurable: true,
-        get () {
-          return _(this.n.value).json._;
-        },
-        set (v) {
-          this.n.value = v;
-          v = undefined;
-          return true;
-        }
-      }
-    })._,
-    OPTGROUP: c.by.make({
-      $: {
-        configurable: true,
-        value (n) {
-          $.prototype.$.call(this, ...(
-            n.constructor === Object
-            ? _(n).keys._.map(k => new Option(k, n[k]))
-            : n.map(
-              v => v.constructor === Option ? v : new Option(v, v)
-            )
-          ));
-          return this;
-        }
-      },
-      label: {
-        configurable: true,
-        value (label) {
-          return _(this).use(t => _(t.n).put({label}))._;
-        }
-      }
-    })._,
-    DATALIST: c.by.make({
-      $: {
-        configurable: true,
-        value (...n) {
-          $.prototype.$.call(this, ...n.map(
-            v => v.constructor === Option ? v : new Option(v, v)
-          ));
-          return this;
-        }
-      }
-    })._,
-    INPUT: c.by.make({
-      $: {
-        configurable: true,
-        value (v) {
-          v === undefined ? $.prototype.$.call(this, v) : this.now = v;
-          return this;
-        }
-      },
-      type: {
-        configurable: true,
-        value (type) {
-          return _(this).use(t => _(t.n).put({type}))._;
-        }
-      },
-      value: {
-        configurable: true,
-        value (value) {
-          return _(this).use(t => _(t.n).put({value}))._;
-        }
-      },
-      check: {
-        configurable: true,
-        value (checked) {
-          return _(this).use(t => _(t.n).put({checked}))._;
-        }
-      },
-      placeholder: {
-        configurable: true,
-        value (placeholder) {
-          return _(this).use(t => _(t.n).put({placeholder}))._;
-        }
-      },
-      autocomplete: {
-        configurable: true,
-        value (autocomplete) {
-          return _(this).use(t => _(t.n).put(
-            autocomplete.constructor === String
-            ? {autocomplete}
-            : (
-              autocomplete
-              ? {autocomplete: "on"}
-              : {autocomplete: "off"}
-            )
-          ))._;
-        }
-      },
-      min: {
-        configurable: true,
-        value (min) {
-          return _(this).use(t => _(t.n).put({min}))._;
-        }
-      },
-      max: {
-        configurable: true,
-        value (max) {
-          return _(this).use(t => _(t.n).put({max}))._;
-        }
-      },
-      step: {
-        configurable: true,
-        value (step) {
-          return _(this).use(t => _(t.n).put({step}))._;
-        }
-      },
-      form: {
-        configurable: true,
-        value (form) {
-          return _(this).use(t => _(t.n).put({form}))._;
-        }
-      },
-      disable: {
-        configurable: true,
-        get () {
-          return _(this).use(t => _(t.n).put({disabled: true}))._;
-        }
-      },
-      enable: {
-        configurable: true,
-        get () {
-          return _(this).use(t => _(t.n).put({disabled: false}))._;
-        }
-      },
-      focus: {
-        configurable: true,
-        get () {
-          return _(this).use(t => _(t.n).put({autofocus: true}))._;
-        }
-      },
-      writable: {
-        configurable: true,
-        get () {
-          return _(this).use(t => _(t.n).put({readonly: false}))._;
-        }
-      },
-      readOnly: {
-        configurable: true,
-        get () {
-          return _(this).use(t => _(t.n).put({readonly: true}))._;
-        }
-      },
-      list: {
-        configurable: true,
-        value (list) {
-          return this.set({list});
-        }
-      },
-      shift: {
-        configurable: true,
-        value () {
-          return this.check(!this.n.checked);
-        }
-      },
-      now: {
-        configurable: true,
-        get () {
-          return _(this).endo(o => (
-            (o.n.type === "checkbox" || o.n.type === "radio")
-            ? o.n.checked
-            : o.n.value
-          ))._;
-        },
-        set (v) {
-          return _(this).endo(o => (
-            (o.n.type === "checkbox" || o.n.type === "radio")
-            ? o.n.checked = v
-            : o.n.value = v
-          ))._;
-        }
-      }
-    })._,
-    FORM: c.by.make({
-      field: {
-        configurable: true,
-        value (o) {
-          return _(this).use(t => 
-            _(o).each((k, v) => t.$(
-              _(fieldset)
-              .use(
-                e => e.$(
-                  v.key == null
-                  ? k
-                  : v.key, br,
-                  ..._(v.item).endo(
-                    i => (
-                      i instanceof $
-                      ? [_(i).been.autocomplete(
-                        v.list === undefined
-                        ? "off"
-                        : "on"
-                      ).list(k).name(k)._]
-                      : (
-                        i.constructor === Function
-                        ? [i(k)._].flat()
-                        : i.map(e => e.name(k))
-                      )
-                    )
-                  )._,
-                )
-              )
-              .use(
-                e => _.is_(v.list) === Array && e.$(
-                  datalist.id(k).$(...v.list)
-                )
-              )
-              ._
-            ))
-          )._;
-        }
-      },
-      get: {
-        configurable: true,
-        get () {
-          return _($.names).list.reduce(
-            (p, k) => this.n[k]
-            ? p.put({
-              [k]: _(this.n).endo(n => (
-                  n[k].type === "checkbox"
-                  ? n[k].checked
-                  : _(n[k].value).json._
-                )
-              )._
-            })
-            : p,
-            _({})
-          )._._;
-        }
-      },
-      set: {
-        configurable: true,
-        value (o) {
-          return _(this).use(
-            t => _(o).sets.each(
-              ([k, v]) => (
-                t.n[k].type === "checkbox"
-                ? t.n[k].checked = o[k]
-                : t.n[k].value = o[k]
-              )
-            )
-          )._;
-        }
-      },
-      method: {
-        configurable: true,
-        value (method) {
-          return _(this).use(t => _(t.n).put({method}))._;
-        }
-      },
-      action: {
-        configurable: true,
-        value (action) {
-          return _(this).use(t => _(t.n).put({action}))._;
-        }
-      },
-      autocomplete: {
-        configurable: true,
-        value (autocomplete) {
-          return _(this).use(t => _(t.n).put(
-            autocomplete.constructor === String
-            ? {autocomplete}
-            : (
-              autocomplete
-              ? {autocomplete: "on"}
-              : {autocomplete: "off"}
-            )
-          ))._;
-        }
-      },
-      set$: {
-        configurable: true,
-        value (o) {
-          return $.prototype.set.call(this, o);
-        }
-      }
-    })._,
-    A: c.by.make({
-      href: {
-        configurable: true,
-        value (href) {
-          return _(this).use(t => _(t.n).put({href}))._;
-        }
-      }
-    })._,
-    list: c.by.make({
-      each: {
-        configurable: true,
-        value (f) {
-          return _(this).use(t => _(t.inner).each(f))._;
-        }
-      },
-      $: {
-        configurable: true,
-        value (...a) {
-          $.prototype.$.call(
-            this,
-            ...a.map(v => v instanceof Object ? v : li.$(v))
-          );
-          return this;
-        }
-      }
-    })._,
-    media: c.by.make({
-      $: {
-        configurable: true,
-        value (v) {
-          v === undefined ? $.prototype.$.call(this, v) : this.src(v);
-          return this;
-        }
-      },
-      src: {
-        configurable: true,
-        value (src) {
-          return _(this).use(t => _(t.n).put({src}))._;
-        }
-      },
-      alt: {
-        configurable: true,
-        value (alt) {
-          return _(this).use(t => _(t.n).put({alt}))._;
-        }
-      },
-      now: {
-        configurable: true,
-        get () {
-          return this.n.src;
-        }
-      }
-    })._,
-  }))
-  .base
-  .affix(c => (
-    _(["IMG", "VIDEO", "AUDIO", "IFRAME", "SCRIPT"])
-    .reduce((p, k) => p.put({[k]: c._.media}), c),
-    _(["UL", "OL"]).reduce((p, k) => p.put({[k]: c._.list}), c),
-    c.put({"TEXTAREA": c.INPUT})
-  ))
-  .define({
-    id: {
-      configurable: true,
-      value: new Proxy (document, {
-        get (t, k) {
-          return $(t.getElementById(k));
-        }
-      })
     },
-    "class": {
-      configurable: true,
-      value: new Proxy (document, {
-        get (t, k) {
-          return _(t.getElementsByClassName(k)).list.map(n => $(n))._;
-        }
-      })
-    },
-    name: {
-      configurable: true,
-      value: new Proxy (document, {
-        get (t, k) {
-          return _(t.getElementsByName(k)).list.map(n => $(n)._);
-        }
-      })
-    },
-    "@role": {
+    '@role': {
       configurable: true,
       value (e, k) {
-        return _($.role[k]).lift(m => (
-          m.is._ === Object
-          ? m.get(e.type).endo(f => f(e))
-          : m.endo(f => f(e))
-        ))._;
+        return _($)
+        .get(`role.${k}`)
+        .pipe(
+          m => typeof m === 'function'
+          ? m(e)
+          : _(m).call(e.type)(e)._
+        )._;
       }
     },
-    "@pack": {
+    '@pack': {
       configurable: true,
       value (e, k, d) {
-        return _($.pack[k]).lift(m => (
-          m.is._ === Object
-          ? m.get(e.type).endo(f => f(e, d))
-          : m.endo(f => f(e, d))
-        ))._;
+        return _($)
+        .get(`pack.${k}`)
+        .pipe(
+          m => typeof m === 'function'
+          ? m(e, d)
+          : _(m).call(e.type)(e, d)._
+        )._;
+      }
+    },
+    '@@': {
+      configurable: true,
+      value (n, s) {
+        return n[s] == null
+        ? `dataset.${s}`
+        : s
       }
     },
     env: {
       configurable: true,
       value: {
-        ssl: location.protocol === "https:",
-        get "ws:" () {
-          return location.protocol === "https:" ? "wss:" : "ws";
+        ssl: location.protocol === 'https:',
+        get 'ws:' () {
+          return location.protocol === 'https:' ? 'wss:' : 'ws';
         },
         protocol: location.protocol,
         here: location.hostname,
-        PORT: location.port === "" ? 80 : _(location.port).json._,
+        PORT: location.port === '' ? 80 : _(location.port).toObject._,
         get port () {
           return $.env.PORT;
         },
         path: location.pathname,
-        uri : [location.protocol, "//", location.hostname, "/"].join(""),
+        uri : [location.protocol, '//', location.hostname, '/'].join(''),
         get  wsuri () {
-          return [$.env["ws:"], "//", location.hostname, "/"].join("");
+          return [$.env['ws:'], '//', location.hostname, '/'].join('');
         },
         language : navigator.language
       }
     }
   })
-  .$;
-
-  _(window)
-  .put({
-    get html () {
-      return document.documentElement;
+  .implements({
+    it: {
+      configurable: true,
+      get () {
+        return this.n
+      }
     },
-    get head () {
-      return $(document.head);
+    loop: {
+      configurable: true,
+      value (...f) {
+        return _(this).loop(...f)._;
+      }
     },
-    get body () {
-      return $(document.body);
+    pipe: {
+      configurable: true,
+      value (...f) {
+        return _(this).pipe(...f)._;
+      }
     },
-    get env () {
-      return $.env;
+    get: {
+      configurable: true,
+      value (s) {
+        return _(this.n).get(s)._;
+      }
+    },
+    set: {
+      configurable: true,
+      value (k) {
+        return v => this.loop(
+          ({n}) => v == null
+          ? _(n).cut(k)
+          : _(n).set(k)(v)
+        );
+      }
+    },
+    put: {
+      configurable: true,
+      value (o) {
+        return this.loop(
+          ({n}) => _(n).take(o)._
+        );
+      }
+    },
+    mend: {
+      configurable: true,
+      value (...s) {
+        return (...f) => this.loop(
+          ({n}) => _(n).mend(...s)(...f)
+        );
+      }
+    },
+    refer: {
+      configurable: true,
+      value (...s) {
+        return (...f) => this.loop(
+          t => _.pipe(...f)(t.get(...s))
+        );
+      }
+    },
+    RorS: {
+      configurable: true,
+      value (s) {
+        return (
+          o => typeof o === 'function'
+          ? this.refer(s)(o)
+          : this.set(s)(o)
+        );
+      }
+    },
+    mark: {
+      configurable: true,
+      get () {
+        return this.RorS('mark');
+      }
+    },
+    gaze: {
+      configurable: true,
+      get () {
+        return _($.data).get(this.get('mark'))._;
+      }
+    },
+    look: {
+      configurable: true,
+      get () {
+        return _($.data).get(this.get('mark').split('.').shift())._;
+      }
+    },
+    class: {
+      configurable: true,
+      value (...s) {
+        return this.mend('classList')(
+          v => v == null
+          ? s.flatMap(s => s.split(_.xCs))
+          : _(v).toggle(...s.flatMap(s => s.split(_.xCs)))._
+        );
+      }
+    },
+    on: {
+      configurable: true,
+      value (...s) {
+        return this.loop(
+          ({n}) => s
+          .flatMap(s => s.split(_.xCs))
+          .forEach(
+            v => n.addEventListener.call(n, v, $.on)
+          )
+        );
+      }
+    },
+    off: {
+      configurable: true,
+      value (...s) {
+        return this.loop(
+          ({n}) => s
+          .flatMap(s => s.split(_.xCs))
+          .forEach(
+            v => n.removeEventListener.call(n, v, $.on)
+          )
+        );
+      }
+    },
+    once: {
+      configurable: true,
+      value (...s) {
+        return this.loop(
+          ({n}) => s
+          .flatMap(s => s.split(_.xCs))
+          .forEach(
+            v => n.addEventListener.call(n, v, $.on, {once: true})
+          )
+        );
+      }
+    },
+    beat: {
+      configurable: true,
+      value (...s) {
+        return this.mend('beat')(
+          v => v == null
+          ? s.flatMap(s => s.split(_.xCs))
+          : _(v).toObject.toggle(...s.flatMap(s => s.split(_.xCs)))._
+        )
+        .once(...s);
+      }
+    },
+    strict: {
+      configurable: true,
+      get () {
+        return this.loop(t => t.raw.preventDefault());
+      }
+    },
+    silent: {
+      configurable: true,
+      get () {
+        return this.loop(t => t.raw.stopPropagation());
+      }
+    },
+    specialize: {
+      configurable: true,
+      get () {
+        return this.loop(t => t.strict.silent);
+      }
     }
   })
-  .define({
-    imports: {
-      value: (...imports) => _($).use(
-        $ => (
-          _($.data).use(
-            d => d.imports
-            ? imports.concat(d.imports)
-            : _(d).put({imports})
-          ),
-          _($.role).put({
-            imported (e) {
-              e && $(e).off("load");
-              $.data.imports.length === 0
-              ? delete $.role.imported
-              : body.$(
-                script($.data.imports.shift())
-                .class("imported")
-                .on("load")
-              );
-            }
-          })
-        )
-      )._
-      .role
-      .imported()
+  ._;
+
+  _.put($, {'#': {
+    Element: _.upto($.prototype, {
+      get: {
+        configurable: true,
+        value (...s) {
+          return this.pipe(
+            ({n}) => _(s.flatMap(s => s.split(_.xCs))).pipe(
+              a => a.length === 1
+              ? _(n).get($['@@'](n, a[0])).toObject._
+              : a.reduce((p, s) => _.put(p, {[s]: _(n).get($['@@'](n, a[0])).toObject._}), {})
+            )._
+          );
+        }
+      },
+      set: {
+        configurable: true,
+        value (k) {
+          return v => this.loop(
+            ({n}) => v == null
+            ? (n.removeAttribute(k), n.removeAttribute(`data-${k}`))
+            : _(n).set($['@@'](n, k))(v)
+          );
+        }
+      },
+      put: {
+        configurable: true,
+        value (o) {
+          return this.loop(
+            t => _(o)
+            .each(
+              (k, v) => t.set(k)(v)
+            )
+          );
+        }
+      },
+      mend: {
+        configurable: true,
+        value (s) {
+          return (...f) => this.set(s)(_.pipe(...f)(this.get(s)));
+        }
+      },
+      id: {
+        configurable: true,
+        get () {
+          return this.RorS('id');
+        }
+      },
+      class: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+            ({n}) => s.flatMap(s => s.split(_.xCs)).forEach(v => n.classList.toggle(v))
+          );
+        }
+      },
+      name: {
+        configurable: true,
+        value (v) {
+          return ($.names.add(v), this.RorS('name')(v));
+        }
+      },
+      title: {
+        configurable: true,
+        get () {
+          return this.RorS('title');
+        }
+      },
+      type: {
+        configurable: true,
+        get () {
+          return this.RorS('type');
+        }
+      },
+      wait: {
+        configurable: true,
+        get () {
+          return this.RorS('wait');
+        }
+      },
+      timer: {
+        configurable: true,
+        get () {
+          return this.RorS('timer');
+        }
+      },
+      drag: {
+        configurable: true,
+        get () {
+          return this.RorS('draggable');
+        }
+      },
+      drop: {
+        configurable: true,
+        get () {
+          return this.RorS('dropzone');
+        }
+      },
+      on: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+            t => (
+              _(s.flatMap(s => s.split(_.xCs)))
+              .Been
+              .includes('dragstart')(v => v && this.drag(true))
+              .includes('drop')(v => v && this.drop(true)),
+              $.prototype.on.call(t, ...s)
+            )
+          );
+        }
+      },
+      off: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+            t => (
+              _(s.flatMap(s => s.split(_.xCs)))
+              .Been
+              .includes('dragstart')(v => v && this.drag())
+              .includes('drop')(v => v && this.drop()),
+              $.prototype.off.call(t, ...s)
+            )
+          );
+        }
+      },
+      once: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+              t => (
+                _(s.flatMap(s => s.split(_.xCs)))
+                .Been
+                .includes('dragstart')(v => v && this.drag(v))
+                .includes('drop')(v => v && this.drop(v)),
+                $.prototype.once.call(t, ...s)
+              )
+          );
+        }
+      },
+      css: {
+        configurable: true,
+        value (o) {
+          return this.loop(({n}) => _(n.style).put(o));
+        }
+      },
+      style: {
+        configurable: true,
+        get () {
+          return this.css;
+        }
+      },
+      morph: {
+        configurable: true,
+        value (s) {
+          return (...f) => this.loop(({n}) => _(n.style).mend(s)(...f));
+        }
+      },
+      real: {
+        configurable: true,
+        get () {
+          return document.getComputedStyle(this.n);
+        }
+      },
+      $: {
+        configurable: true,
+        value (...c) {
+          return this.loop(
+            ({n}) => c[0] == null
+            ? n.remove()
+            : (
+              n => _.sure(n.children).forEach(e => e.remove()),
+              n.innerText = '',
+              n.append(...c.map(v => v instanceof $ ? v.n : v))
+            )
+          );
+        }
+      },
+      append: {
+        configurable: true,
+        value (...c) {
+          return this.loop(
+            ({n}) => c[0] == null
+            ? n.remove()
+            : n.append(...c.map(v => v instanceof $ ? v.n : v))
+          );
+        }
+      },
+      pick: {
+        get () {
+          return $(this.n.children[0]);
+        }
+      },
+      inner: {
+        configurable: true,
+        get () {
+          return this.n.childElementCount > 1
+          ? _.sure(this.n.children).map($)
+          : this.n.innerText;
+        }
+      },
+      outer: {
+        configurable: true,
+        get () {
+          return $(this.n.parentNode);
+        }
+      },
+      now: {
+        configurable: true,
+        value (s) {
+          return this.loop(
+            ({n}) => typeof s === 'function'
+            ? _(n).mend('innerText')(s)
+            : _(n).set('innerText')(s)
+          );
+        }
+      },
+      next: {
+        configurable: true,
+        get () {
+          return this.n.nextSibling ? $(this.n.nextSibling) : null;
+        }
+      },
+      back: {
+        configurable: true,
+        get () {
+          return this.n.previousSibling ? $(this.n.previousSibling) : null;
+        }
+      }
+    }),
+    Inputs: _.upto($.prototype, {
+      each: {
+        configurable: true,
+        value (...f) {
+          return this.loop(({raw}) => raw.forEach(n => _.pipe(f)($(n))));
+        }
+      },
+      get: {
+        configurable: true,
+        get () {
+          return this.pipe(
+            t => _.sure(t.raw)
+            .filter(n => n.checked)
+            .map(n => _(n.value).toObject._),
+            a => a.length === 1 ? a.pop() : a
+          );
+        }
+      },
+      set: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+            t => t.raw.forEach(
+              n => $(n).set('checked')(
+                s.flatMap(
+                  s => typeof s === 'string' ? s.split(_.xCs) : _(s).toJSON._
+                )
+                .includes(n.value)
+              )
+            )
+          );
+        }
+      },
+      refer: {
+        configurable: true,
+        value (...f) {
+          return this.loop(
+            t => _.pipe(...f)(t.get)
+          );
+        }
+      },
+      now: {
+        configurable: true,
+        value (...s) {
+          return this.loop(
+            t => typeof s[0] === 'function'
+            ? t.refer(...s)
+            : t.set(...s)
+          );
+        }
+      }
+    })
+  }});
+
+  _.put($['#'], {TABLE: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (...e) {
+        return this.loop(
+          ({n}) => _(
+            n.getElementsByTagName('tbody').length === 0
+            ? n.createTBody.call(n)
+            : n.getElementsByTagName('tbody')[0]
+          )
+          .loop(
+            t => e.forEach(
+              (v, r) => t.rows.length <= r
+              ? $(t.insertRow()).put({r}).$(r, ...v)
+              : $(t.rows[r]).put({r}).$(r, ...v)
+            )
+          )
+        );
+      }
     },
-    script:   {value: s => $(document.createElement("script")).src(s)},
-    article:  {get: () => $(document.createElement("article"))},
-    div:      {get: () => $(document.createElement("div"))},
-    section:  {get: () => $(document.createElement("section"))},
-    nav:      {get: () => $(document.createElement("nav"))},
-    main:     {get: () => $(document.createElement("main"))},
-    aside:    {get: () => $(document.createElement("aside"))},
-    header:   {get: () => $(document.createElement("header"))},
-    footer:   {get: () => $(document.createElement("footer"))},
-    h1:       {get: () => $(document.createElement("h1"))},
-    h2:       {get: () => $(document.createElement("h2"))},
-    h3:       {get: () => $(document.createElement("h3"))},
-    h4:       {get: () => $(document.createElement("h4"))},
-    h5:       {get: () => $(document.createElement("h5"))},
-    h6:       {get: () => $(document.createElement("h6"))},
-    p:        {get: () => $(document.createElement("p"))},
-    br:       {get: () => $(document.createElement("br"))},
-    table:    {get: () => $(document.createElement("table"))},
-    ul:       {get: () => $(document.createElement("ul"))},
-    ol:       {get: () => $(document.createElement("ol"))},
-    li:       {get: () => $(document.createElement("li"))},
-    dl:       {get: () => $(document.createElement("dl"))},
-    dt:       {get: () => $(document.createElement("dt"))},
-    dd:       {get: () => $(document.createElement("dd"))},
-    form:     {get: () => $(document.createElement("form"))},
-    fieldset: {get: () => $(document.createElement("fieldset"))},
-    datalist: {get: () => $(document.createElement("datalist"))},
-    label:    {get: () => $(document.createElement("label"))},
-    input:    {get: () => $(document.createElement("input"))},
-    radio:    {get: () => input.type("radio")},
-    checkbox: {get: () => input.type("checkbox")},
-    radios:   {value: (name, o) => _(o).sets.map(
-      ([k, v]) => label.$(
-        radio.name(name).value(v),
-        _.is_(o) === Array ? v : k
+    caption: {
+      configurable: true,
+      value (...v) {
+        return this.loop(
+          ({n}) => $(n.createCaption.call(n)).$(...v)
+        );
+      }
+    },
+    cHead: {
+      configurable: true,
+      value (...v) {
+        return this.loop(
+          ({n}) => $(n.createTHead().insertRow()).head(...v)
+        );
+      }
+    },
+    rHead: {
+      configurable: true,
+      value (...v) {
+        return this.loop(
+          ({n}) => _(n.getElementsByTagName('tbody')[0] || n.createTBody.call(n)).loop(
+            t => v.forEach(v => $(t.insertRow()).head(v))
+          )
+        );
+      }
+    },
+    cFoot: {
+      configurable: true,
+      value (...v) {
+        return this.loop(
+          ({n}) => $(n.createTFoot.call(n).insertRow()).foot(...v)
+        );
+      }
+    },
+    row: {
+      configurable: true,
+      get () {
+        return _.sure(this.n.rows).map($);
+      }
+    },
+    cell: {
+      configurable: true,
+      get () {
+        return this.row.map(v => v.cell);
+      }
+    },
+    cols: {
+      configurable: true,
+      get () {
+        return _(this.cell).rotate._;
+      }
+    },
+    each: {
+      configurable: true,
+      value (f, ...v) {
+        return this.loop(t => _(t.row).each(r => r.each(f, ...v)));
+      }
+    }
+  })});
+
+  _.put($['#'], {TR: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (r, ...a) {
+        return this.loop(({n}) => a.forEach(
+          (v, c) => $(n.insertCell.call(n)).put({r, c}).$(v)
+        ));
+      }
+    },
+    head: {
+      configurable: true,
+      value (...a) {
+        return this.loop(
+          t => a.forEach(
+            v => $['#'].Element.append.call(t, $(document.createElement('th')).$(v))
+          )
+        );
+      }
+    },
+    foot: {
+      configurable: true,
+      value (...a) {
+        return this.loop(
+          ({n}) => a.forEach(v => $(n.insertCell.call(n)).$(v))
+        );
+      }
+    },
+    cell: {
+      configurable: true,
+      get () {
+        return _.sure(this.n.cells).map($);
+      }
+    },
+    each: {
+      configurable: true,
+      value (f, ...v) {
+        return this.loop(t => _(t.cell).each(c => f(c, ...v)));
+      }
+    }
+  })});
+
+  _.put($['#'], {TD: _.upto($['#'].Element, {
+    r: {
+      configurable: true,
+      get () {
+        return this.get('r');
+      }
+    },
+    c: {
+      configurable: true,
+      get () {
+        return this.get('c');
+      }
+    },
+    rSpan: {
+      configurable: true,
+      get () {
+        return this.RorS('rowspan');
+      }
+    },
+    cSpan: {
+      configurable: true,
+      get () {
+        return this.RorS('colspan');
+      }
+    }
+  })});
+
+  _.put($['#'], {List: _.upto($['#'].Element, {
+    each: {
+      configurable: true,
+      value (f) {
+        return this.loop(t => _(t.inner).each(f));
+      }
+    },
+    $: {
+      configurable: true,
+      value (...a) {
+        return this.loop(t => $['#'].Element.$.call(
+          t,
+          ...a.map(v => v instanceof Object ? v : li.$(v))
+        ));
+      }
+    }
+  })});
+
+  _.put($['#'], {A: _.upto($['#'].Element, {
+    href: {
+      configurable: true,
+      get () {
+        return this.RorS('href');
+      }
+    }
+  })});
+
+  _.put($['#'], {Media: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (v) {
+        return this.loop(
+          t => v == null ? $['#'].Element.$.call(t, v) : t.src(v)
+        );
+      }
+    },
+    src: {
+      configurable: true,
+      get () {
+        return this.RorS('src');
+      }
+    },
+    alt: {
+      configurable: true,
+      get () {
+        return this.RorS('alt');
+      }
+    },
+    async: {
+      configurable: true,
+      get () {
+        return this.set('async');
+      }
+    },
+    defer: {
+      configurable: true,
+      get () {
+        return this.set('defer');
+      }
+    },
+    now: {
+      configurable: true,
+      get () {
+        return this.src;
+      }
+    }
+  })});
+
+  _.put($['#'], {INPUT: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (v) {
+        return this.loop(
+          t => v === undefined
+          ? $['#'].Element.$.call(t, v)
+          : t.now(v)
+        );
+      }
+    },
+    value: {
+      configurable: true,
+      get () {
+        return this.RorS('value');
+      }
+    },
+    placeholder: {
+      configurable: true,
+      get () {
+        return this.RorS('placeholder');
+      }
+    },
+    autocomplete: {
+      configurable: true,
+      value (v) {
+        return this.RorS('autocomplete')(
+          typeof v === 'string'
+          ? v
+          : (
+            v
+            ? 'on'
+            : 'off'
+          )
+        );
+      }
+    },
+    min: {
+      configurable: true,
+      get () {
+        return this.RorS('min');
+      }
+    },
+    max: {
+      configurable: true,
+      get () {
+        return this.RorS('max');
+      }
+    },
+    step: {
+      configurable: true,
+      get () {
+        return this.RorS('step');
+      }
+    },
+    form: {
+      configurable: true,
+      get () {
+        return this.RorS('form');
+      }
+    },
+    list: {
+      configurable: true,
+      value (v) {
+        return this.loop(t => t.n.setAttribute('list', v));
+      }
+    },
+    disable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')('');
+      }
+    },
+    enable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')();
+      }
+    },
+    autofocus: {
+      configurable: true,
+      get () {
+        return this.set('autofocus')('');
+      }
+    },
+    writable: {
+      configurable: true,
+      value (b) {
+        return this.RorS('readonly')(b ? undefined : '');
+      }
+    },
+    now: {
+      configurable: true,
+      get () {
+        return this.value;
+      }
+    }
+  })});
+
+  _.put($['#'], {Checker: _.upto($['#'].INPUT, {
+    check: {
+      configurable: true,
+      get () {
+        return this.RorS('checked');
+      }
+    },
+    now: {
+      configurable: true,
+      get () {
+        return this.check;
+      }
+    }
+  })});
+
+  _.put($['#'], {SELECT: _.upto($['#'].INPUT, {
+    $: {
+      configurable: true,
+      value (o) {
+        return _(o).pipe(
+          o => _.isArray(o)
+          ? o.map(
+            v => v.constructor === Option ? v : new Option(v, v)
+          )
+          : _.entries(o).map(
+            ([k, v]) => _.isObject(v)
+            ? optgroup.label(k).$(v)
+            : new Option(k, v)
+          ),
+          a => $['#'].Element.$.call(this, ...a)
+        )._;
+      }
+    },
+    select: {
+      configurable: true,
+      get () {
+        return this.value;
+      }
+    },
+    multiple: {
+      configurable: true,
+      get () {
+        return this.RorS('multiple');
+      }
+    },
+    size: {
+      configurable: true,
+      get () {
+        return this.RorS('size');
+      }
+    },
+    now: {
+      configurable: true,
+      get () {
+        return this.value;
+      }
+    }
+  })});
+
+  _.put($['#'], {OPTGROUP: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (o) {
+        return _(o).pipe(
+          o => _.isArray(o)
+          ? o.map(
+            v => v.constructor === Option ? v : new Option(v, v)
+          )
+          : _.entries(o).map(
+            ([k, v]) => new Option(k, v)
+          ),
+          a => $['#'].Element.$.call(this, ...a)
+        )._;
+      }
+    },
+    label: {
+      configurable: true,
+      get () {
+        return this.RorS('label');
+      }
+    },
+    disable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')('');
+      }
+    },
+    enable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')();
+      }
+    }
+  })});
+
+  _.put($['#'], {DATALIST: _.upto($['#'].Element, {
+    $: {
+      configurable: true,
+      value (...n) {
+        return $['#'].Element.$.call(this, ...n.map(
+          v => v.constructor === Option ? v : new Option(v, v)
+        ));
+      }
+    }
+  })});
+
+  _.put($['#'], {FIELDSET: _.upto($['#'].Element, {
+    form: {
+      configurable: true,
+      get () {
+        return this.RorS('form');
+      }
+    },
+    disable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')('');
+      }
+    },
+    enable: {
+      configurable: true,
+      get () {
+        return this.RorS('disabled')();
+      }
+    }
+  })});
+
+  _.put($['#'], {FORM: _.upto($['#'].Element, {
+    take: {
+      configurable: true,
+      get () {
+        return _.sure($.names)
+        .reduce(
+          (p, k) => (this.pipe(
+            ({n}) => n[k] == null || $(n[k]).now(v => _.put(p, {[k]: v}))
+          ), p),
+          {}
+        );
+      }
+    },
+    give: {
+      configurable: true,
+      value (o) {
+        return this.loop(
+          ({n}) => _(o).each(
+            (k, v) => $(n[k]).now(v)
+          )
+        );
+      }
+    },
+    method: {
+      configurable: true,
+      get () {
+        return this.RorS('method');
+      }
+    },
+    action: {
+      configurable: true,
+      get () {
+        return this.RorS('action');
+      }
+    }
+  })});
+
+  _.defines(apex, {
+    $html: {
+      configurable: true,
+      get () {
+        return $(document.documentElement);
+      }
+    },
+    $head: {
+      configurable: true,
+      get () {
+        return $(document.head);
+      }
+    },
+    $body: {
+      configurable: true,
+      get () {
+        return $(document.body);
+      }
+    },
+    env: {
+      configurable: true,
+      get () {
+        return $.env;
+      }
+    },
+    imports: {
+      configurable: true,
+      value: (...imports) => this.loop(
+        () => imports.forEach(
+          v => body.$(script.$(v).async(true).defer(true))
+        )
       )
-    )._},
-    check: {value: (name, s) => label.$(
-      checkbox.name(name),
-      (s || name)
+    },
+    script:   {value: s => $(document.createElement('script')).src(s)},
+    article:  {get: () => $(document.createElement('article'))},
+    div:      {get: () => $(document.createElement('div'))},
+    section:  {get: () => $(document.createElement('section'))},
+    nav:      {get: () => $(document.createElement('nav'))},
+    main:     {get: () => $(document.createElement('main'))},
+    aside:    {get: () => $(document.createElement('aside'))},
+    header:   {get: () => $(document.createElement('header'))},
+    footer:   {get: () => $(document.createElement('footer'))},
+    h1:       {get: () => $(document.createElement('h1'))},
+    h2:       {get: () => $(document.createElement('h2'))},
+    h3:       {get: () => $(document.createElement('h3'))},
+    h4:       {get: () => $(document.createElement('h4'))},
+    h5:       {get: () => $(document.createElement('h5'))},
+    h6:       {get: () => $(document.createElement('h6'))},
+    p:        {get: () => $(document.createElement('p'))},
+    br:       {get: () => $(document.createElement('br'))},
+    table:    {get: () => $(document.createElement('table'))},
+    ul:       {get: () => $(document.createElement('ul'))},
+    ol:       {get: () => $(document.createElement('ol'))},
+    li:       {get: () => $(document.createElement('li'))},
+    dl:       {get: () => $(document.createElement('dl'))},
+    dt:       {get: () => $(document.createElement('dt'))},
+    dd:       {get: () => $(document.createElement('dd'))},
+    form:     {get: () => $(document.createElement('form'))},
+    fieldset: {get: () => $(document.createElement('fieldset'))},
+    legend:   {get: () => $(document.createElement('legend'))},
+    datalist: {get: () => $(document.createElement('datalist'))},
+    label:    {get: () => $(document.createElement('label'))},
+    input:    {get: () => $(document.createElement('input'))},
+    radio:    {get: () => input.type('radio')},
+    checkbox: {get: () => input.type('checkbox')},
+    radios:   {value: n => o => _.entries(o).map(([k, v]) => label.$(
+      radio.name(n).value(v),
+      _.isArray(o) ? v : k
+    ))},
+    checks:   {value: n => o => _.entries(o).map(([k, v]) => label.$(
+      checkbox.name(n).value(v),
+      _.isArray(o) ? v : k
+    ))},
+    check:    {value: (n, s) => label.$(
+      checkbox.name(n),
+      (s || n)
     )},
-    range:    {get: () => input.type("range")},
-    text:     {get: () => input.type("text")},
-    date:     {get: () => input.type("date")},
-    month:    {get: () => input.type("month")},
-    week:     {get: () => input.type("week")},
-    time:     {get: () => input.type("time")},
-    datetime: {get: () => input.type("datetime-local")},
-    mail:     {get: () => input.type("email")},
-    url:      {get: () => input.type("url")},
-    tel:      {get: () => input.type("tel")},
-    number:   {get: () => input.type("namber")},
-    file:     {get: () => input.type("file")},
-    password: {get: () => input.type("password")},
-    textarea: {get: () => $(document.createElement("textarea"))},
-    select:   {get: () => $(document.createElement("select"))},
-    button:   {get: () => $(document.createElement("button"))},
-    img:      {get: () => $(document.createElement("img"))},
-    video:    {get: () => $(document.createElement("video"))},
-    audio:    {get: () => $(document.createElement("audio"))},
-    area:     {get: () => $(document.createElement("area"))},
-    map:      {get: () => $(document.createElement("map"))},
-    canvas:   {get: () => $(document.createElement("canvas"))},
-    iframe:   {get: () => $(document.createElement("iframe"))},
-    option:   {get: () => $(document.createElement("option"))},
-    optgroup: {get: () => $(document.createElement("optgroup"))},
-    a:        {get: () => $(document.createElement("a"))},
-    em:       {get: () => $(document.createElement("em"))},
-    strong:   {get: () => $(document.createElement("strong"))},
-    span:     {get: () => $(document.createElement("span"))}
+    field:    {value: l => (...e) => fieldset.$(legend.$(l), ...e)},
+    autoText: {value: s => (...l) => [text.autocomplete(true).name(s).list(s), datalist.id(s).$(...l.flat())]},
+    range:    {get: () => input.type('range')},
+    text:     {get: () => input.type('text')},
+    date:     {get: () => input.type('date')},
+    month:    {get: () => input.type('month')},
+    week:     {get: () => input.type('week')},
+    time:     {get: () => input.type('time')},
+    datetime: {get: () => input.type('datetime-local')},
+    mail:     {get: () => input.type('email')},
+    url:      {get: () => input.type('url')},
+    tel:      {get: () => input.type('tel')},
+    number:   {get: () => input.type('namber')},
+    file:     {get: () => input.type('file')},
+    password: {get: () => input.type('password')},
+    search:   {get: () => input.type('search')},
+    textarea: {get: () => $(document.createElement('textarea'))},
+    select:   {get: () => $(document.createElement('select'))},
+    button:   {get: () => $(document.createElement('button'))},
+    img:      {get: () => $(document.createElement('img'))},
+    video:    {get: () => $(document.createElement('video'))},
+    audio:    {get: () => $(document.createElement('audio'))},
+    area:     {get: () => $(document.createElement('area'))},
+    map:      {get: () => $(document.createElement('map'))},
+    canvas:   {get: () => $(document.createElement('canvas'))},
+    iframe:   {get: () => $(document.createElement('iframe'))},
+    option:   {get: () => $(document.createElement('option'))},
+    optgroup: {get: () => $(document.createElement('optgroup'))},
+    a:        {get: () => $(document.createElement('a'))},
+    em:       {get: () => $(document.createElement('em'))},
+    strong:   {get: () => $(document.createElement('strong'))},
+    span:     {get: () => $(document.createElement('span'))}
   });
 
-  this.$ = $;
-})();
+  apex.$ = $;
+})(window);
