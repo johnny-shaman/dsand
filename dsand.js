@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.7.50'
+      value: '0.7.52'
     },
     $: {
       configurable: true,
@@ -334,6 +334,18 @@
         );
       }
     },
+    wait: {
+      configurable: true,
+      get () {
+        return this.RorS('wait');
+      }
+    },
+    timer: {
+      configurable: true,
+      get () {
+        return this.RorS('timer');
+      }
+    },
     on: {
       configurable: true,
       value (...s) {
@@ -473,18 +485,6 @@
         configurable: true,
         get () {
           return this.RorS('type');
-        }
-      },
-      wait: {
-        configurable: true,
-        get () {
-          return this.RorS('wait');
-        }
-      },
-      timer: {
-        configurable: true,
-        get () {
-          return this.RorS('timer');
         }
       },
       drag: {

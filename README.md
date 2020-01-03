@@ -4,8 +4,8 @@
 
 ### html
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.15/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.51/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.20/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.52/dsand.js"></script>
 <!--If you use about webRTC on cte.pvp
 <script src="https://cdn.jsdelivr.net/npm/dsand@0.7.31/pvp.js"></script>
 -->
