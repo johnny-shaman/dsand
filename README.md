@@ -2,16 +2,12 @@
 ## $(dsand).$() is a pure javascript Render with [white_cats](https://www.npmjs.com/package/white_cats)
 ## Usage
 
-### html
-~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.26/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.53/dsand.js"></script>
-<!--If you use about webRTC on cte.pvp
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.31/pvp.js"></script>
--->
-~~~
+### html : white_cats@0.1.27 or later
 
-If You use WebRTC PvP get's [cte.pvp](https://www.npmjs.com/package/cte.pvp)
+~~~html
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.27/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.54/dsand.js"></script>
+~~~
 
 Let's try on [codepen](https://codepen.io/johnny_shaman/pen/EMNRKQ)
 

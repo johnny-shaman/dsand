@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.7.53",
+  "version": "0.7.54",
   "description": "$(dsand).$ is client side render framework on white_cats",
   "main": "dsand.js",
   "dependencies": {
