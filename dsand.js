@@ -843,10 +843,12 @@
     $: {
       configurable: true,
       value (...a) {
-        return this.loop(t => $['#'].Element.$.call(
-          t,
-          ...a.map(v => v instanceof Object ? v : li.$(v))
-        ));
+        return this.loop(t => $['#'].Element.$.call(t, ...a.map(v => {
+          switch(v.it ? v.it.tagName : v.tagName) {
+            case 'UL': case 'OL': case 'LI': return v;
+            default: return li.$(v);
+          }
+        })));
       }
     }
   })});

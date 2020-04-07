@@ -9,7 +9,7 @@
     env
 */
 
-const PvP = (term = {}) => uri => (...ice) => _($).loop(
+const PvP = (term = {}) => uri => (...iceServers) => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
       s => s == null ? env.uri : s,
@@ -26,18 +26,7 @@ const PvP = (term = {}) => uri => (...ice) => _($).loop(
     .on('message')
     .it,
 
-    rtc: $(new RTCPeerConnection({
-      iceServers: _([
-        'stun:stun.l.google.com:19302',
-        'stun:stun3.l.google.com:19302'
-      ])
-      .map(
-        s => {urls: s}
-      )
-      .pushR(
-        ice
-      )._
-    }))
+    rtc: $(new RTCPeerConnection({iceServers}))
     .class('rtc')
     .mark('sock')
     .on(
