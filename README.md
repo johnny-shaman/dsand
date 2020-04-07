@@ -6,7 +6,7 @@
 
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.27/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.54/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.55/dsand.js"></script>
 ~~~
 
 Let's try on [codepen](https://codepen.io/johnny_shaman/pen/EMNRKQ)
