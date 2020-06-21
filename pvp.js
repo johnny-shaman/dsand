@@ -9,7 +9,7 @@
     env
 */
 
-const PvP = (term = {}) => uri => (...iceServers) => _($).loop(
+const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
       s => s == null ? env.uri : s,
@@ -19,14 +19,14 @@ const PvP = (term = {}) => uri => (...iceServers) => _($).loop(
         case 'http'  : return _(a).omitL.pushL('ws:')._;
         default: return a;
       }},
-      a => new WebSocket(a.join())
+      a => new WebSocket(a.join(''))
     )._)
     .class('rtc')
     .mark('rtc')
     .on('message')
     .it,
 
-    rtc: $(new RTCPeerConnection({iceServers}))
+    rtc: $(new RTCPeerConnection(option))
     .class('rtc')
     .mark('sock')
     .on(

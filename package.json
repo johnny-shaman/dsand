@@ -1,7 +1,7 @@
 {
   "name": "dsand",
-  "version": "0.7.55",
-  "description": "$(dsand).$ is client side render framework on white_cats",
+  "version": "0.7.56",
+  "description": "$(dsand).$ is front-end framework on white_cats",
   "main": "dsand.js",
   "dependencies": {
     "white_cats": "0.1.27"
@@ -19,6 +19,7 @@
     "algebraic",
     "white_cats",
     "client",
+    "front-end",
     "framework"
   ],
   "author": "Noboru Okazaki",
