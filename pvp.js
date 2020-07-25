@@ -16,7 +16,7 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       s => s.split('/'),
       a => {switch (a[0]) {
         case 'https:': return _(a).omitL.pushL('wss:')._;
-        case 'http'  : return _(a).omitL.pushL('ws:')._;
+        case 'http:'  : return _(a).omitL.pushL('ws:')._;
         default: return a;
       }},
       a => new WebSocket(a.join(''))
@@ -43,31 +43,31 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
           ? _($(e).look).loop(
             o => o.setRemoteDescription(new RTCSessionDescription(d)),
             async o => o.localDescription || o.setLocalDescription(
-              new RTCSessionDescription(await p.createAnswer())
+              new RTCSessionDescription(await o.createAnswer())
             )
           )
           : _($(e).look).loop(
-            o => $(p.createDataChannel('pvp')).class('pvp').once('open'),
+            o => $(o.createDataChannel('pvp')).class('pvp').once('open'),
             async o => o.localDescription || o.setLocalDescription(
-              new RTCSessionDescription(await p.createOffer())
+              new RTCSessionDescription(await o.createOffer())
             )
           )
         ));
       },
       icecandidate (e) {
-        e.candidate && $(e).look.send(_($(e).it.localDescription).put(term).toJson._);
+        e.candidate && $(e).look.send(_($(e).it.localDescription).put(term).toJSON._);
       },
       datachannel (e) {
-        $(e.channel).class('pvp').once('open');
+        _($).put({pvp: $(e.channel).class('hear').on('message').it})
       }
     },
-    pvp (pvp) {
-      _($).put({pvp});
+    pvp (e) {
+      _($).put({pvp: $(e.target).class('pvp hear').on('message').off('open').it});
       _($.data).loop(d => (
         $(d.sock).off('message'),
         $(d.rtc).off('icecandidate', 'datachannel')
-      )).delete('sock', 'rtc');
-      _($.role).delete('rtc', 'pvp');
+      )).drop('sock', 'rtc');
+      _($.role).drop('rtc', 'pvp');
     }
   })
 );
