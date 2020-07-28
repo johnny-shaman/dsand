@@ -72,7 +72,7 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
         $.role.pvp({target: $(channel).class('pvp').on('open').it});
       }
     },
-    pvp (target) {
+    pvp ({target}) {
       _($).put({pvp: $(target).class('pvp hear').on('message').off('open').it});
       _($.data)
       .loop(d => (
