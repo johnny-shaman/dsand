@@ -15,7 +15,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
+coverage/
 
 # nyc test coverage
 .nyc_output
@@ -60,6 +60,11 @@ typings/
 # next.js build output
 .next
 
-.c9
-.git
+#directory entry
 .directory
+
+#misc
+.eslintrc.js
+package-lock.json
+spec/index.html
+jsconfig.json

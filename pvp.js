@@ -12,7 +12,18 @@
 const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
-      s => s == null ? env.uri : s,
+      s => s == null ? env.uri : (
+        $body.append(
+          iframe
+          .src(s)
+          .style({
+            display: 'fixed',
+            width: '1px',
+            height:'1px',
+            margin: '-100px -100px 0 0'
+          })
+          .$()),
+        s),
       s => s.split('/'),
       a => {switch (a[0]) {
         case 'https:': return _(a).omitL.pushL('wss:')._;
@@ -66,8 +77,8 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       _($.data).loop(d => (
         $(d.sock).off('message'),
         $(d.rtc).off('icecandidate', 'datachannel')
-      )).drop('sock', 'rtc');
-      _($.role).drop('rtc', 'pvp');
+      )).cut('sock', 'rtc');
+      _($.role).cut('rtc', 'pvp');
     }
   })
 );
