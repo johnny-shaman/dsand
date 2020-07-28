@@ -58,7 +58,7 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
             )
           )
           : _($(e).look).loop(
-            o => $(o.createDataChannel('pvp')).class('pvp').once('open'),
+            o => $(o.createDataChannel('pvp')).class('pvp').on('open'),
             async o => o.localDescription || o.setLocalDescription(
               new RTCSessionDescription(await o.createOffer())
             )
@@ -68,17 +68,22 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       icecandidate (e) {
         e.candidate && $(e).look.send(_($(e).it.localDescription).put(term).toJSON._);
       },
-      datachannel (e) {
-        _($).put({pvp: $(e.channel).class('hear').on('message').it})
+      datachannel ({channel}) {
+        $.role.pvp({target: $(channel).class('pvp').on('open').it});
       }
     },
-    pvp (e) {
-      _($).put({pvp: $(e.target).class('pvp hear').on('message').off('open').it});
-      _($.data).loop(d => (
+    pvp (target) {
+      _($).put({pvp: $(target).class('pvp hear').on('message').off('open').it});
+      _($.data)
+      .loop(d => (
         $(d.sock).off('message'),
         $(d.rtc).off('icecandidate', 'datachannel')
-      )).cut('sock', 'rtc');
-      _($.role).cut('rtc', 'pvp');
+      ))
+      .cut('sock')
+      .cut('rtc');
+      _($.role)
+      .cut('rtc')
+      .cut('pvp');
     }
   })
 );
