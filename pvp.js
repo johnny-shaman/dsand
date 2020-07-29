@@ -69,21 +69,31 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
         e.candidate && $(e).look.send(_($(e).it.localDescription).put(term).toJSON._);
       },
       datachannel ({channel}) {
-        $.role.pvp({target: $(channel).class('pvp').on('open').it});
+        $(channel).class('pvp').on('open');
       }
     },
     pvp ({target}) {
-      _($).put({pvp: $(target).class('pvp hear').on('message').off('open').it});
-      _($.data)
+      _($)
+      .put({
+        pvp: (
+          $(target)
+          .class('pvp hear')
+          .on('message')
+          .off('open')
+          .it
+        )
+      })
       .loop(d => (
-        $(d.sock).off('message'),
-        $(d.rtc).off('icecandidate', 'datachannel')
+        $(d.data.sock).off('message'),
+        $(d.data.rtc).off(
+          'icecandidate',
+          'datachannel'
+        )
       ))
-      .cut('sock')
-      .cut('rtc');
-      _($.role)
-      .cut('rtc')
-      .cut('pvp');
+      .cut('data.sock')
+      .cut('data.rtc')
+      .cut('role.rtc')
+      .cut('role.pvp');
     }
   })
 );
