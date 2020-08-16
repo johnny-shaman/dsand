@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.7.64'
+      value: '0.7.70'
     },
     $: {
       configurable: true,
@@ -843,12 +843,9 @@
     $: {
       configurable: true,
       value (...a) {
-        return this.loop(t => $['#'].Element.$.call(t, ...a.map(v => {
-          switch(v.it ? v.it.tagName : v.tagName) {
-            case 'UL': case 'OL': case 'LI': return v;
-            default: return li.$(v);
-          }
-        })));
+        return this.loop(t => $['#'].Element.$.call(t, ...a.map(
+          v => (v.it ? v.it.tagName : v.tagName) === 'LI' ? v : li.$(v)
+        )));
       }
     }
   })});
