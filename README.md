@@ -6,9 +6,9 @@
 
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.27/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.70/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.71/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.70/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.71/pvp.js"></script>
 ~~~
 
 Let's try on
