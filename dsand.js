@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.7.71'
+      value: '0.7.72'
     },
     $: {
       configurable: true,
@@ -845,7 +845,7 @@
       value (...a) {
         return this.loop(t => $['#'].Element.$.call(t, ..._(a).fold(
           (p, c) => {
-            switch (v.it ? v.it.tagName : v.tagName) {
+            switch (c.it ? c.it.tagName : c.tagName) {
               case 'UL': case 'OL': return p.pushR(li.$(p.popR._, c));
               case 'LI': return p.pushR(c)
               default: return p.pushR(li.$(c))
