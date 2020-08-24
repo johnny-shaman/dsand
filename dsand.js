@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.7.70'
+      value: '0.7.71'
     },
     $: {
       configurable: true,
@@ -843,9 +843,16 @@
     $: {
       configurable: true,
       value (...a) {
-        return this.loop(t => $['#'].Element.$.call(t, ...a.map(
-          v => (v.it ? v.it.tagName : v.tagName) === 'LI' ? v : li.$(v)
-        )));
+        return this.loop(t => $['#'].Element.$.call(t, ..._(a).fold(
+          (p, c) => {
+            switch (v.it ? v.it.tagName : v.tagName) {
+              case 'UL': case 'OL': return p.pushR(li.$(p.popR._, c));
+              case 'LI': return p.pushR(c)
+              default: return p.pushR(li.$(c))
+            }
+          },
+          _([])
+        )._._));
       }
     }
   })});
