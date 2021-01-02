@@ -12,7 +12,7 @@
 const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
-      s => s == null ? env.uri : (
+      s => s == null ? `${env.uri.slice(0, env.uri.length - 1)}:${env.port}` : (
         $body.append(
           iframe
           .src(s)

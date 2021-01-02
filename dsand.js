@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.7.72'
+      value: '0.8.0'
     },
     $: {
       configurable: true,
@@ -190,8 +190,8 @@
         .get(`role.${k}`)
         .pipe(
           m => typeof m === 'function'
-          ? m(e)
-          : _(m).call(e.type)(e)._
+          ? m(e, $(e)['@look'])
+          : _(m).call(e.type)(e, $(e)['@look'])._
         )._;
       }
     },
@@ -218,22 +218,36 @@
     env: {
       configurable: true,
       value: {
-        ssl: location.protocol === 'https:',
-        get 'ws:' () {
-          return location.protocol === 'https:' ? 'wss:' : 'ws';
+        get ssl () {
+          return location.protocol === 'https:'
         },
-        protocol: location.protocol,
-        here: location.hostname,
-        PORT: location.port === '' ? 80 : _(location.port).toObject._,
+        get protocol () {
+          return location.protocol
+        },
+        get here () {
+          return location.hostname
+        },
+        get host () {
+          return location.host;
+        },
+        get PORT () {
+          return location.port === '' ? 80 : _(location.port).toObject._
+        },
         get port () {
           return $.env.PORT;
         },
-        path: location.pathname,
-        uri : [location.protocol, '//', location.hostname, '/'].join(''),
-        get  wsuri () {
-          return [$.env['ws:'], '//', location.hostname, '/'].join('');
+        get path () {
+          return location.pathname;
         },
-        language : navigator.language
+        get uri () {
+          return location.href;
+        },
+        get wsuri () {
+          return `${env.ssl ? 'wss' : 'ws'}://${location.host}/`
+        },
+        get language () {
+          return navigator.language
+        }
       }
     }
   })
@@ -306,22 +320,16 @@
         );
       }
     },
-    mark: {
+    data: {
       configurable: true,
       get () {
-        return this.RorS('mark');
+        return this.RorS('bind');
       }
     },
-    gaze: {
+    '@look': {
       configurable: true,
       get () {
-        return _($.data).get(this.get('mark'))._;
-      }
-    },
-    look: {
-      configurable: true,
-      get () {
-        return _($.data).get(this.get('mark').split('.').shift())._;
+        return _($.data).get(this.get('bind'))._;
       }
     },
     class: {
