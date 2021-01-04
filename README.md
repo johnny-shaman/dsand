@@ -5,10 +5,10 @@
 ### html : white_cats@0.1.27 or later
 
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.27/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.72/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.50/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.0/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.7.72/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.0/pvp.js"></script>
 ~~~
 
 Let's try on
@@ -31,6 +31,7 @@ _($.data).put({
   example: {
     text: "Hello White_Cats!"
   },
+  formData: {}
   drag: false,
   drop: false,
   /* tips on async
@@ -42,32 +43,16 @@ _($.data).put({
 
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).put({
-  sample (e) {
-    return _($(e).look.next().value).loop(
+  sample (e, d) {
+    return _(d.next().value).loop(
       v => alert(`${v} time(s) clicked!`)
     )._;
   },
-  ex1: {
-    click (e) {
-      alert($(e).look.text);
-    }
-  },
-  ex2: {
-    click (e) {
-      alert($(e).gaze);
-    }
-  },
-  ex3 (e) {
-    alert($(e).look.text);
-  },
-  ex4 (e) {
-    alert($(e).gaze);
-  },
   // can Assign eventType's Method's as you like it;
   getData: {
-    click (e) {
+    click (e, d) {
       $(e).strict;
-      alert(_($.byId('myForm').take).toJSON._);
+      alert(_($.byId('myForm').take).give(d).toJSON._);
     }
   },
   dandTest: {
@@ -110,22 +95,6 @@ _($.role).put({
 _($.pack).put({
   sample (e, d) {
     $(e).$(`once more! (${d})`);
-  },
-  ex1: {
-    click (e) {
-      $(e).$("Thank you!");
-    }
-  },
-  ex2 (e) {
-    $(e).$("Thank you!");
-  },
-  ex3 (e) {
-    $(e).$("Thank you!");
-  },
-  ex4: {
-    click (e) {
-      $(e).$("Thank you!");
-    }
   },
   dandTest: {
     dragstart (e) {
@@ -208,25 +177,17 @@ $body
       p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
       // button & clicks
-      // $.mark like QueryKeyword for $.data
+      // $.data like QueryKeyword for $.data : data-bindings
       // $.role[$.class](e)
       // $.pack[$.class](e, d: $.role's return data)
       // $.off can removeListener
-      p.$(button.mark("countUp").class("sample").on("click").$("click me")),
+      p.$(button.data("countUp").class("sample").on("click").$("click me")),
       // once is only one time handling
-      p.$(button.mark("countUp").class("sample").once("click").$("It's can click")),
+      p.$(button.data("countUp").class("sample").once("click").$("It's can click")),
       // beat can handle on each time and beat can toggle beat on off
-      p.$(button.mark("countUp").class("sample").wait(3000).beat("click").$("click me")),
+      p.$(button.data("countUp").class("sample").wait(3000).beat("click").$("click me")),
       // lazy handle the event wait on it last time
-      p.$(button.mark("countUp").class("sample").wait(3000).on("click").$("click me")),
-      // distinate other way of data and methods
-      p.$(button.mark("example.text").class("ex1").on("click").$("click please")),
-      // distinate other way of data and methods
-      p.$(button.mark("example.text").class("ex2").on("click").$("click please")),
-      // distinate other way of data and methods
-      p.$(button.mark("example.text").class("ex3").on("click").$("click please")),
-      // distinate other way of data and methods
-      p.$(button.mark("example.text").class("ex4").on("click").$("click please")),
+      p.$(button.data("countUp").class("sample").wait(3000).on("click").$("click me")),
       //table
       table
       .caption("drag and drop Test")
@@ -312,6 +273,7 @@ $body
       //input
       form
       .id("myForm")
+      .data('formData')
       .$(
         field('t1')(
           select.name("tSelect1").$({test: 0, test1: 1}), br,
