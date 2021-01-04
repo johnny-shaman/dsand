@@ -6,13 +6,14 @@
 
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.50/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.0/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.1/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.0/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.1/pvp.js"></script>
 ~~~
 
 Let's try on
-[codepen](https://codepen.io/johnny_shaman/pen/EMNRKQ)
+[forAll](https://codepen.io/johnny_shaman/pen/EMNRKQ)
+[pickup](https://codepen.io/johnny_shaman/pen/rNMpdXX)
 [Glitch](https://glitch.com/~dsand-chat)
 
 Support Drag and Drop on HTML5
@@ -28,10 +29,7 @@ _($.data).put({
       yield ++y;
     }
   })(),
-  example: {
-    text: "Hello White_Cats!"
-  },
-  formData: {}
+  formData: {},
   drag: false,
   drop: false,
   /* tips on async
@@ -134,7 +132,7 @@ $body
   .id("head")
   .class("wrapper")
   .$(
-    h1.$("Hello _(losand)._").css({ margin: "16px" }),
+    h1.$("Hello _(white_cats)._").css({ margin: "16px" }),
     h2.$("Untouchable Any Directly").css({ margin: "16px" })
   )
   .css({
@@ -273,7 +271,6 @@ $body
       //input
       form
       .id("myForm")
-      .data('formData')
       .$(
         field('t1')(
           select.name("tSelect1").$({test: 0, test1: 1}), br,
@@ -292,7 +289,7 @@ $body
           check("tCheck1", "test"), check("tCheck2", "test1"), br,
           ...radios("tRadio1")([1, 2, 3]), br,
           ...radios("tRadio2")({ test1: 1, test2: 2 }), br,
-          button.class("getData").$("Get FormData").on("click")
+          button.data("formData").class("getData").$("Get FormData").on("click")
         )
       )
       .give({
@@ -357,4 +354,3 @@ $.byId('myForm').take
 //imports
 imports("http://sample.io/foo.js", "http://sample.io/bar.js", "http://sample.io/baz.js");
 ~~~
-
