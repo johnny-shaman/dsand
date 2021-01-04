@@ -58,11 +58,10 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
         e.candidate && sock.send(_($(e).it.localDescription).put(term).toJSON._);
       },
       datachannel ({channel}) {
-        $(channel).data('sock').class('pvp').on('open');
+        $(channel).class('pvp').on('open');
       }
     },
-    pvp ({target}, sock) {
-      sock.close();
+    pvp ({target}) {
       _($)
       .put({
         pvp: (

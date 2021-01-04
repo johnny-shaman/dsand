@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.4'
+      value: '0.8.5'
     },
     $: {
       configurable: true,
@@ -326,7 +326,7 @@
     '@look': {
       configurable: true,
       get () {
-        return _($.data).get(this.get('bind'))._;
+        return this.get('bind') && _($.data).get(this.get('bind'))._;
       }
     },
     class: {
