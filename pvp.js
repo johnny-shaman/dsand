@@ -1,18 +1,7 @@
-/*
-  global
-    _
-    $
-    RTCSessionDescription
-    RTCPeerConnection
-    body
-    iframe
-    env
-*/
-
 const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
-      s => s == null ? `${env.uri.slice(0, env.uri.length - 1)}:${env.port}` : (
+      s => s == null ? $.env.uri : (
         $body.append(
           iframe
           .src(s)
@@ -26,11 +15,11 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
         s),
       s => s.split('/'),
       a => {switch (a[0]) {
-        case 'https:': return _(a).omitL.pushL('wss:')._;
-        case 'http:'  : return _(a).omitL.pushL('ws:')._;
+        case 'https:': return _(a).omitL.pushL('wss:/')._;
+        case 'http:'  : return _(a).omitL.pushL('ws:/')._;
         default: return a;
       }},
-      a => new WebSocket(a.join(''))
+      a => new WebSocket(a.join('/'))
     )._)
     .class('rtc')
     .mark('rtc')

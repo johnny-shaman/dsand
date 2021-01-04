@@ -242,9 +242,6 @@
         get uri () {
           return location.href;
         },
-        get wsuri () {
-          return `${env.ssl ? 'wss' : 'ws'}://${location.host}/`
-        },
         get language () {
           return navigator.language
         }
