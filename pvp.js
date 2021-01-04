@@ -22,13 +22,13 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       a => new WebSocket(a.join('/'))
     )._)
     .class('rtc')
-    .mark('rtc')
+    .data('rtc')
     .on('message')
     .it,
 
     rtc: $(new RTCPeerConnection(option))
     .class('rtc')
-    .mark('sock')
+    .data('sock')
     .on(
       'icecandidate',
       'datachannel'
@@ -37,16 +37,16 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
   }),
   $ => _($.role).put({
     rtc: {
-      message (e) {
-        _(e.data).toObject.pipe(d => (
-          d
-          ? _($(e).look).loop(
-            o => o.setRemoteDescription(new RTCSessionDescription(d)),
+      message (e, o) {
+        _(e.data).toObject.pipe(p => (
+          p
+          ? _(o).loop(
+            o => o.setRemoteDescription(new RTCSessionDescription(p)),
             async o => o.localDescription || o.setLocalDescription(
               new RTCSessionDescription(await o.createAnswer())
             )
           )
-          : _($(e).look).loop(
+          : _(o).loop(
             o => $(o.createDataChannel('pvp')).class('pvp').on('open'),
             async o => o.localDescription || o.setLocalDescription(
               new RTCSessionDescription(await o.createOffer())
