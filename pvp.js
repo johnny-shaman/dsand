@@ -1,4 +1,4 @@
-const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => new Promise((res, rej) => _($).loop(
+const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]}) => new Promise(res => _($).loop(
   $ => _($.data).put({
     sock: $(_(uri).pipe(
       s => s == null ? $.env.uri : (
@@ -36,26 +36,22 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
     .it
   }),
   $ => _($.role).put({
-    async sock (e, rtc) {
-      _(e.data).toObject.pipe(async d => {
-        try {
-          d
-          ? _(rtc).loop(
-            async o => await o.setRemoteDescription(new RTCSessionDescription(d)),
-            async o => o.localDescription || await o.setLocalDescription(
-              new RTCSessionDescription(await o.createAnswer())
-            )
+    async sock (e, o) {
+      _(e.data).toObject.pipe(
+        async d => d
+        ? (
+          await o.setRemoteDescription(new RTCSessionDescription(d)),
+          o.localDescription || await o.setLocalDescription(
+            new RTCSessionDescription(await o.createAnswer())
           )
-          : _(rtc).loop(
-            o => $(o.createDataChannel('pvp')).class('pvp').on('open'),
-            async o => o.localDescription || await o.setLocalDescription(
-              new RTCSessionDescription(await o.createOffer())
-            )
+        )
+        : (
+          $(o.createDataChannel('pvp')).class('pvp').on('open'),
+          o.localDescription || await o.setLocalDescription(
+            new RTCSessionDescription(await o.createOffer())
           )
-        } catch (err) {
-          rej(err);
-        }
-      });
+        )
+      );
     },
     rtc: {
       icecandidate (e, sock) {
