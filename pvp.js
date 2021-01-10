@@ -36,18 +36,18 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
     .it
   }),
   async $ => _($.role).put({
-    async sock (e, rtc) {
+    async sock (e, o) {
       _(e.data).toObject.pipe(
         async d => d
-        ? _(rtc).loop(
-          o => o.setRemoteDescription(new RTCSessionDescription(d)),
-          async o => o.localDescription || o.setLocalDescription(
+        ? (
+          await o.setRemoteDescription(new RTCSessionDescription(d)),
+          o.localDescription || await o.setLocalDescription(
             new RTCSessionDescription(await o.createAnswer())
           )
         )
-        : _(rtc).loop(
-          o => $(o.createDataChannel('pvp')).class('pvp').on('open'),
-          async o => o.localDescription || o.setLocalDescription(
+        : (
+          $(o.createDataChannel('pvp')).class('pvp').on('open'),
+          o.localDescription || await o.setLocalDescription(
             new RTCSessionDescription(await o.createOffer())
           )
         )
@@ -55,7 +55,7 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
     },
     rtc: {
       icecandidate (e, sock) {
-        e.candidate && sock.send(_(e.localDescription).put(term).toJSON._);
+        e.candidate && sock.send(_($(e).it.localDescription).put(term).toJSON._);
       },
       datachannel ({channel}) {
         $(channel).class('pvp').on('open');
@@ -84,7 +84,7 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       .cut('role.sock')
       .cut('role.rtc')
       .cut('role.pvp');
-      res(pvp);
+      res(target);
     }
   })
 ));
