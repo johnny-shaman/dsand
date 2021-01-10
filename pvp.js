@@ -40,14 +40,14 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       _(e.data).toObject.pipe(
         async d => d
         ? (
-          await o.setRemoteDescription(new RTCSessionDescription(d)),
-          o.localDescription || await o.setLocalDescription(
+          o.setRemoteDescription(new RTCSessionDescription(d)),
+          o.localDescription || o.setLocalDescription(
             new RTCSessionDescription(await o.createAnswer())
           )
         )
         : (
           $(o.createDataChannel('pvp')).class('pvp').on('open'),
-          o.localDescription || await o.setLocalDescription(
+          o.localDescription || o.setLocalDescription(
             new RTCSessionDescription(await o.createOffer())
           )
         )
