@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.10'
+      value: '0.8.11'
     },
     $: {
       configurable: true,
