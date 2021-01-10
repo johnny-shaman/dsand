@@ -35,10 +35,10 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
     )
     .it
   }),
-  $ => _($.role).put({
-    sock (e, rtc) {
+  async $ => _($.role).put({
+    async sock (e, rtc) {
       _(e.data).toObject.pipe(
-        d => d
+        async d => d
         ? _(rtc).loop(
           o => o.setRemoteDescription(new RTCSessionDescription(d)),
           async o => o.localDescription || o.setLocalDescription(
