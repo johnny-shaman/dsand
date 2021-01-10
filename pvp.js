@@ -36,22 +36,22 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
     .it
   }),
   $ => _($.role).put({
-    async sock (e, o) {
+    async sock (e, rtc) {
       _(e.data).toObject.pipe(async d => {
         try {
-        d
-        ? (
-          await o.setRemoteDescription(new RTCSessionDescription(d)),
-          o.localDescription || await o.setLocalDescription(
-            new RTCSessionDescription(await o.createAnswer())
+          d
+          ? _(rtc).loop(
+            async o => await o.setRemoteDescription(new RTCSessionDescription(d)),
+            async o => o.localDescription || await o.setLocalDescription(
+              new RTCSessionDescription(await o.createAnswer())
+            )
           )
-        )
-        : (
-          $(o.createDataChannel('pvp')).class('pvp').on('open'),
-          o.localDescription || await o.setLocalDescription(
-            new RTCSessionDescription(await o.createOffer())
+          : _(rtc).loop(
+            o => $(o.createDataChannel('pvp')).class('pvp').on('open'),
+            async o => o.localDescription || await o.setLocalDescription(
+              new RTCSessionDescription(await o.createOffer())
+            )
           )
-        )
         } catch (err) {
           rej(err);
         }
