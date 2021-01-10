@@ -12,11 +12,12 @@
 ~~~
 
 Let's try on
-[forAll](https://codepen.io/johnny_shaman/pen/EMNRKQ)
 
-[pickup](https://codepen.io/johnny_shaman/pen/rNMpdXX)
+[forAll on codepen](https://codepen.io/johnny_shaman/pen/EMNRKQ)
 
-[Glitch](https://glitch.com/~dsand-chat)
+[pickup on codepen](https://codepen.io/johnny_shaman/pen/rNMpdXX)
+
+[PvP chat on Glitch](https://glitch.com/~dsand-chat)
 
 Support Drag and Drop on HTML5
 
