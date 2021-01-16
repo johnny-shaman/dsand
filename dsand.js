@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.14'
+      value: '0.8.15'
     },
     $: {
       configurable: true,
@@ -604,7 +604,7 @@
       inner: {
         configurable: true,
         get () {
-          return this.n.childElementCount > 1
+          return this.n.childElementCount > 0
           ? _.sure(this.n.children).map($)
           : this.n.innerText;
         }
