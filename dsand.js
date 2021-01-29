@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.15'
+      value: '0.8.16'
     },
     $: {
       configurable: true,
@@ -81,7 +81,11 @@
     soon: {
       configurable: true,
       value (e, a) {
-        a.forEach(k => $['@pack'](e, k, $['@role'](e, k)));
+        a.forEach(
+          k => _($['@role'](e, k)).pipe(
+            o => $['@pack'](e, k, o)
+          )._
+        );
       }
     },
     wait: {
