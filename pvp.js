@@ -74,10 +74,10 @@ const PvP = (term = {}) => uri => (option = {iceServers: [{urls: 'stun:stun.l.go
       })
       .loop(d => (
         $(d.data.sock).off('message'),
-        $(d.data.rtc).off(
+        _(d.pvp).put({type: $(d.data.rtc).off(
           'icecandidate',
           'datachannel'
-        )
+        ).it.localDescription.type})
       ))
       .cut('data.sock')
       .cut('data.rtc')

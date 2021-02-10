@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.17'
+      value: '0.8.18'
     },
     $: {
       configurable: true,
@@ -1006,7 +1006,7 @@
     writable: {
       configurable: true,
       value (b) {
-        return this.RorS('readOnly')(b ? undefined : '');
+        return this.set('readOnly')(!b);
       }
     },
     now: {
