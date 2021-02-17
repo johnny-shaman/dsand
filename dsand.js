@@ -988,13 +988,13 @@
     disable: {
       configurable: true,
       get () {
-        return this.RorS('disabled')('');
+        return this.set('disabled')(true);
       }
     },
     enable: {
       configurable: true,
       get () {
-        return this.RorS('disabled')();
+        return this.set('disabled')(false);
       }
     },
     autofocus: {
