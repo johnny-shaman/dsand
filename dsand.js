@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.30'
+      value: '0.8.31'
     },
     $: {
       configurable: true,
@@ -1230,6 +1230,7 @@
     h5:       {get: () => $(document.createElement('h5'))},
     h6:       {get: () => $(document.createElement('h6'))},
     p:        {get: () => $(document.createElement('p'))},
+    pre:        {get: () => $(document.createElement('pre'))},
     br:       {get: () => $(document.createElement('br'))},
     table:    {get: () => $(document.createElement('table'))},
     ul:       {get: () => $(document.createElement('ul'))},
