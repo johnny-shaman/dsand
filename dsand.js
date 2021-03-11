@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.18'
+      value: '0.8.30'
     },
     $: {
       configurable: true,
@@ -194,8 +194,8 @@
         .get(`role.${k}`)
         .pipe(
           m => typeof m === 'function'
-          ? m(e, $(e)['@look'])
-          : _(m).call(e.type)(e, $(e)['@look'])._
+          ? m(e, $(e).look)
+          : _(m).call(e.type)(e, $(e).look)._
         )._;
       }
     },
@@ -327,7 +327,7 @@
         return this.RorS('bind');
       }
     },
-    '@look': {
+    look: {
       configurable: true,
       get () {
         return typeof this.get('bind') === 'string'

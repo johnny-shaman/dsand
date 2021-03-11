@@ -45,6 +45,7 @@ _($.data).put({
 //$.role reforming data structure functions that name have Elemnent.class
 _($.role).put({
   sample (e, d) {
+    // d is $(e).look that looking upto $.data[key_word]
     return _(d.next().value).loop(
       v => alert(`${v} time(s) clicked!`)
     )._;
@@ -79,13 +80,13 @@ _($.role).put({
   },
   /*
   // can use async await
-  async asyncEx (e) {
-    return await $(e).look();
+  async asyncEx (e, d) {
+    return await d();
   },
   // also can use 
   asyncEx : {
-    async click (e) {
-      return await $(e).look();
+    async click (e, d) {
+      return await d();
     }
   }
   */
@@ -178,7 +179,7 @@ $body
       p.$(img.$("https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")),
 
       // button & clicks
-      // $.data like QueryKeyword for $.data : data-bindings
+      // $.data : data-bindings
       // $.role[$.class](e)
       // $.pack[$.class](e, d: $.role's return data)
       // $.off can removeListener
