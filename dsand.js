@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.31'
+      value: '0.8.32'
     },
     $: {
       configurable: true,
@@ -1162,7 +1162,7 @@
       value (o) {
         return this.loop(
           ({n}) => _(o).each(
-            (k, v) => $(n[k]).now(v)
+            (k, v) => typeof $(n[k]).now === 'function' && $(n[k]).now(v)
           )
         );
       }

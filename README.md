@@ -5,10 +5,10 @@
 ### html : white_cats@0.1.27 or later
 
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.50/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.31/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.51/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.32/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.31/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.32/pvp.js"></script>
 ~~~
 
 Let's try on
