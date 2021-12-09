@@ -756,6 +756,25 @@
         return _.sure(this.n.rows).map($);
       }
     },
+    insertR: {
+      configurable: true,
+      value (i = -1) {
+        return (...r) => this.loop(
+          t => r.forEach(a => $(t.n.insertRow(i++)).$(0, ...a)),
+          t => t.row.forEach(
+            (v, r) => v.put({r}).each(c => c.put({r, c: c.c}))
+          )
+        );
+      }
+    },
+    insertC: {
+      configurable: true,
+      value (i = -1) {
+        return (...c) => this.loop(
+          t => _(c).rotate.each((a, r) => t.row[r].insert(i, ...a))
+        );
+      }
+    },
     cell: {
       configurable: true,
       get () {
@@ -777,6 +796,12 @@
   })});
 
   _.put($['#'], {TR: _.upto($['#'].Element, {
+    r: {
+      configurable: true,
+      get () {
+        return this.get('r');
+      }
+    },    
     $: {
       configurable: true,
       value (r, ...a) {
@@ -807,6 +832,15 @@
       configurable: true,
       get () {
         return _.sure(this.n.cells).map($);
+      }
+    },
+    insert: {
+      configurable: true,
+      value (i, ...a) {
+        return this.loop(
+          ({n}) => a.forEach(v => $(n.insertCell.call(n, i++)).$(v)),
+          t => t.cell.forEach((o, c) => o.put({r: t.r, c}))
+        )
       }
     },
     each: {

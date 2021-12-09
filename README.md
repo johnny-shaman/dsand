@@ -5,10 +5,10 @@
 ### html : white_cats@0.1.27 or later
 
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.51/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.32/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.53/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.33/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.32/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.33/pvp.js"></script>
 ~~~
 
 Let's try on
@@ -198,6 +198,13 @@ $body
         [4, 5, 6],
         [7, 8, 9]
       )
+      /*
+      .insertR(index)([...], [...], ...) //and
+      .insertC(index)([...], [...], ...) //is ready
+      //They are so likely to work insertRow and insertCell
+      // Ex: index = -1 then Insert to Tail and
+      //     index = 0  then Insert to Head
+      */
       .each(
         e => (
           e
@@ -213,6 +220,7 @@ $body
           .on("dragstart, dragover, dragend, drop")
         )
       ),
+      //drag and drop test
       table
       .caption("Test Table")
       .cHead("rNum", "c1", "c2", "c3")
@@ -223,7 +231,6 @@ $body
         [7, 8, 9]
       )
       .cFoot("rNum", "c1", "c2", "c3"),
-      //drag and drop test
       //ul, ol
       ul.$(
         "総則",
