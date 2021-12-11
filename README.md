@@ -198,13 +198,22 @@ $body
         [4, 5, 6],
         [7, 8, 9]
       )
+      
       /*
-      .insertR(index)([...], [...], ...) //and
-      .insertC(index)([...], [...], ...) //is ready
+      // new Table control method is ready!!!
+
+      .insertR(index)([...], [...], ...) //insertRow
+      .insertC(index)([...], [...], ...) //insertColumn
+      
       //They are so likely to work insertRow and insertCell
       // Ex: index = -1 then Insert to Tail and
       //     index = 0  then Insert to Head
+      
+      .deleteR(start, end) //deleteRow
+      .deleteC(start, end) //deleteColumn      
+      
       */
+
       .each(
         e => (
           e

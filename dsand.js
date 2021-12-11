@@ -760,7 +760,7 @@
       configurable: true,
       value (i = -1) {
         return (...r) => this.loop(
-          t => r.forEach(a => $(t.n.insertRow(i++)).$(0, ...a)),
+          ({n}) => r.forEach(a => $(n.insertRow(i++)).$(0, ...a)),
           t => t.row.forEach(
             (v, r) => v.put({r}).each(c => c.put({r, c: c.c}))
           )
@@ -775,6 +775,28 @@
         );
       }
     },
+    deleteR: {
+      configurable: true,
+      value (v, w) {
+        return this.loop(
+          ({n}) => (
+            w == null
+            ? n.deleteRow(v)
+            : [..._._(v, w)].sort().forEach((x, k) => n.deleteRow(x - k))
+          ),
+          t => t.row.forEach(
+            (v, r) => v.put({r}).each(c => c.put({r, c: c.c}))
+          )
+        )
+      }
+    },
+    deleteC: {
+      value (v, w) {
+        return this.loop(
+          t => t.row.forEach(r => r.delete(v, w))
+        )
+      }
+    },
     cell: {
       configurable: true,
       get () {
@@ -784,7 +806,7 @@
     cols: {
       configurable: true,
       get () {
-        return _(this.cell).rotate._;
+        return _(this.row).map(r => r.cell).rotate._;
       }
     },
     each: {
@@ -839,6 +861,19 @@
       value (i, ...a) {
         return this.loop(
           ({n}) => a.forEach(v => $(n.insertCell.call(n, i++)).$(v)),
+          t => t.cell.forEach((o, c) => o.put({r: t.r, c}))
+        )
+      }
+    },
+    delete: {
+      configurable: true,
+      value (v, w) {
+        return this.loop(
+          ({n}) => (
+            w == null
+            ? n.deleteCell.call(n, v)
+            : [..._._(v, w)].sort().forEach((x, k) => n.deleteCell.call(n, x - k))
+          ),
           t => t.cell.forEach((o, c) => o.put({r: t.r, c}))
         )
       }
