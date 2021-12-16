@@ -6,9 +6,13 @@
         n: {
           configurable: true,
           get () {
-            return n instanceof Event
-            ? n.target
-            : n;
+            return n == null
+            ? document.createElement('unknown')
+            : (
+              n instanceof Event
+              ? n.target
+              : n
+            );
           }
         },
         raw: {
