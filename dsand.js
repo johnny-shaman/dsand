@@ -1,18 +1,18 @@
 ((apex) => {
   const $ = _(function (n) {
     return _.upto(
-      _(n).pipe($['@Event'], $['@Inherit'])._,
+      _(
+        n == null
+        ? document.createElement('unknown')
+        : n
+      ).pipe($['@Event'], $['@Inherit'])._,
       {
         n: {
           configurable: true,
           get () {
-            return n == null
-            ? document.createElement('unknown')
-            : (
-              n instanceof Event
-              ? n.target
-              : n
-            );
+            n instanceof Event
+            ? n.target
+            : n;
           }
         },
         raw: {

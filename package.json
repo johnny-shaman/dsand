@@ -1,6 +1,6 @@
 {
   "name": "dsand",
-  "version": "0.8.35",
+  "version": "0.8.36",
   "description": "$(dsand).$ is front-end framework on white_cats",
   "main": "dsand.js",
   "dependencies": {
