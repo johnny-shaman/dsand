@@ -6,7 +6,7 @@
         n: {
           configurable: true,
           get () {
-            n instanceof Event
+            return n instanceof Event
             ? n.target
             : n;
           }
@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.41'
+      value: '0.8.35'
     },
     $: {
       configurable: true,
@@ -1328,7 +1328,6 @@
       checkbox.name(n),
       (s || n)
     )},
-    range:    {get: () => input.type('range')},
     field:    {value: l => (...e) => fieldset.$(legend.$(l), ...e)},
     autoText: {value: s => (...l) => [text.autocomplete(true).name(s).list(s), datalist.id(s).$(...l.flat())]},
     range:    {get: () => input.type('range')},

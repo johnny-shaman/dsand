@@ -309,7 +309,7 @@ $body
           check("tCheck1", "test"), check("tCheck2", "test1"), br,
           ...radios("tRadio1")([1, 2, 3]), br,
           ...radios("tRadio2")({ test1: 1, test2: 2 }), br,
-          range.min(-100).max(100), br,
+          range.name('tRange').min(-50).max(50), br,
           button.data("formData").class("getData").$("Get FormData").on("click")
         )
       )
@@ -320,7 +320,8 @@ $body
         tCheck1: false,
         tCheck2: true,
         tRadio1: 3,
-        tRadio2: 1
+        tRadio2: 1,
+        tRange:  0
       })
     )
   )
