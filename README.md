@@ -5,10 +5,10 @@
 ### html : white_cats@0.1.27 or later
 
 ~~~html
-<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.53/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.40/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.54/cat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.33/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.40/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.33/pvp.js"></script>
 ~~~
 
 Let's try on
@@ -309,6 +309,7 @@ $body
           check("tCheck1", "test"), check("tCheck2", "test1"), br,
           ...radios("tRadio1")([1, 2, 3]), br,
           ...radios("tRadio2")({ test1: 1, test2: 2 }), br,
+          range.min(-100).max(100), br,
           button.data("formData").class("getData").$("Get FormData").on("click")
         )
       )

@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.32'
+      value: '0.8.41'
     },
     $: {
       configurable: true,
@@ -1328,6 +1328,7 @@
       checkbox.name(n),
       (s || n)
     )},
+    range:    {get: () => input.type('range')},
     field:    {value: l => (...e) => fieldset.$(legend.$(l), ...e)},
     autoText: {value: s => (...l) => [text.autocomplete(true).name(s).list(s), datalist.id(s).$(...l.flat())]},
     range:    {get: () => input.type('range')},
