@@ -6,9 +6,9 @@
 
 ~~~html
 <script src="https://cdn.jsdelivr.net/npm/white_cats@0.1.54/cat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.50/dsand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.60/dsand.js"></script>
 <!--If You Want to Get Peer to Peer Connection then you read it-->
-<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.50/pvp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dsand@0.8.60/pvp.js"></script>
 ~~~
 
 Let's try on
@@ -362,7 +362,7 @@ $.byClass('wrapper')[0].class("wrapper", "warp", "foooooYah");
 //append
 $.byId('today').append(
   p.$("appended")
-)
+);
 
 //Likely Backend window Item can use it
 $(new WebSocket("http://sample.io/")).class("test").on("message");
@@ -371,7 +371,16 @@ $(new WebSocket("http://sample.io/")).class("test").on("message");
 $.byId('myForm').$();
 
 //formdata to js Object
-$.byId('myForm').take
+$.byId('myForm').take;
+
+// reset data, role, pack
+$.reset;
+
+// clear EventAction of role and pack
+$.recast;
+
+// clear EventAction of role, pack and take over from $.data choice keys about QueryString
+$.restart('countUp, drop');
 
 //imports
 imports("http://sample.io/foo.js", "http://sample.io/bar.js", "http://sample.io/baz.js");

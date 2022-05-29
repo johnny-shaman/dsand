@@ -23,7 +23,7 @@
   .define({
     dsand: {
       configurable: true,
-      value: '0.8.50'
+      value: '0.8.60'
     },
     $: {
       configurable: true,
@@ -53,6 +53,59 @@
     pack: {
       configurable: true,
       value: {}
+    },
+    reset: {
+      configurable: true,
+      get () {
+        return _($).define({
+          data: {
+            configurable: true,
+            value: {}
+          },
+          role: {
+            configurable: true,
+            value: {}
+          },
+          pack: {
+            configurable: true,
+            value: {}
+          }
+        })._;
+      }
+    },
+    recast: {
+      configurable: true,
+      get () {
+        return _($).define({
+          role: {
+            configurable: true,
+            value: {}
+          },
+          pack: {
+            configurable: true,
+            value: {}
+          }
+        })._;
+      }
+    },
+    restart: {
+      configurable: true,
+      value (s) {
+        return _($).define({
+          data: {
+            configurable: true,
+            value: _($.data).pick(s)._
+          },
+          role: {
+            configurable: true,
+            value: {}
+          },
+          pack: {
+            configurable: true,
+            value: {}
+          }
+        })._;
+      }
     },
     names: {
       configurable: true,
