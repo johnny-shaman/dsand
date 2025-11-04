@@ -1,5 +1,5 @@
-# $(dsand).$()
-## $(dsand).$() is a pure javascript Render with [white_cats](https://www.npmjs.com/package/white_cats)
+# `$(dsand).\$()`
+## `$(dsand).\$()` is a pure javascript Render with [white_cats](https://www.npmjs.com/package/white_cats)
 ## Usage
 
 ### html : white_cats@0.1.27 or later
