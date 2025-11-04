@@ -1,4 +1,7 @@
 # `$(dsand).$()`
+
+<img alt="$(dsand).$(logo)" src="./dsand_logo.svg"/>
+
 ## `$(dsand).$()` is a pure javascript Render with [white_cats](https://www.npmjs.com/package/white_cats)
 ## Usage
 
